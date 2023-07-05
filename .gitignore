@@ -1,9 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/.next
+/.vscodes
 /node_modules
 /.pnp
 .pnp.js
+package-lock.json
 
 # testing
 /coverage
@@ -27,13 +30,17 @@ yarn-error.log*
 
 # local env files
 .env
+.env*.example
 .env*.local
 
 # vercel
 .vercel
+vercel.json
 
 # Turborepo
 .turbo
+tubo.json
 
 # typescript
 *.tsbuildinfo
+.vscode/
