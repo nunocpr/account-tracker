@@ -1,25 +1,29 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import { Suspense } from 'react'
-import Table from '@/components/table'
-import TablePlaceholder from '@/components/table-placeholder'
-import ExpandingArrow from '@/components/expanding-arrow'
+import { LoginButton, LogoutButton, ProfileButton, RegisterButton } from "@/app/_components/buttons.component"
+import { getServerSession } from "next-auth"
+import { authOptions } from "@lib/auth"
+import { User } from "./_components/user.component"
 
-// Prisma does not support Edge without the Data Proxy currently
-// export const runtime = 'edge'
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'
 
-export default function Home() {
+export default async function Home() {
+    const session = await getServerSession(authOptions)
+    console.log("SESSION ON MAIN PAGE: ", session)
+
     return (
         <main className="relative flex min-h-screen flex-col items-center justify-center">
-            <h1 className="pt-4 pb-8 bg-gradient-to-br from-black via-[#171717] to-[#575757] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
-                MongoDB on Vercel
+            <h1 className="pt-4 pb-8 bg-gradient-to-br from-black via-[#6d6d6d] to-[#cecece] bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
+                Personal Account Tracker
             </h1>
-            <Suspense fallback={<TablePlaceholder />}>
-                {/* @ts-expect-error Async Server Component */}
-                <Table />
-            </Suspense>
+
+            <div>
+                <LoginButton />
+                <RegisterButton />
+                <LogoutButton />
+                <ProfileButton />
+            </div>
+            <pre>{JSON.stringify(session)}</pre>
+            <User />
         </main>
     )
 }

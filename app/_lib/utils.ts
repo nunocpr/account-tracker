@@ -1,3 +1,7 @@
+// Modules needed to support key generation, token encryption, and HTTP cookie manipulation 
+import { randomUUID } from 'crypto'
+import { v4 as uuidv4 } from 'uuid'
+import { encode, decode } from 'next-auth/jwt'
 import ms from 'ms'
 import trim from 'validator/lib/trim'
 import escape from 'validator/lib/escape'
@@ -40,4 +44,14 @@ export const sanitizeNumber = (input: number) => {
     const sanitizedValue = input;
 
     return sanitizedValue;
+}
+
+// Helper functions to generate unique keys and calculate the expiry dates for session cookies
+export const generateSessionToken = () => {
+    // Use `randomUUID` if available. (Node 15.6++)
+    return uuidv4()
+}
+
+export const fromDate = (time: number, date = Date.now()) => {
+    return new Date(date + time * 1000)
 }

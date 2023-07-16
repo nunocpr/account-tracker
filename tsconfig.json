@@ -29,10 +29,10 @@
                 "./*"
             ],
             "@components/*": [
-                "components/*"
+                "app/_components/*"
             ],
             "@lib/*": [
-                "lib/*"
+                "app/_lib/*"
             ],
         }
     },
