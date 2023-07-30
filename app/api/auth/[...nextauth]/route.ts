@@ -39,12 +39,11 @@ const callbacks = {
             const sessionMaxAge = 60 * 60 * 24 * 30; // 30Days
             const sessionExpiry = fromDate(sessionMaxAge);
 
-            const session = await adapter.createSession({
+            await adapter.createSession({
                 sessionToken: sessionToken,
                 userId: userExists?.id as string,
                 expires: sessionExpiry,
             });
-            console.log("SESSION HAS BEEN CREATED: ", session)
 
         }
 
@@ -54,10 +53,6 @@ const callbacks = {
         return url.startsWith(baseUrl) ? url : baseUrl;
     },
     async jwt({ token, user, account, profile, isNewUser }: any) {
-        // console.log("PROFILE FROM JWT CALLBACK: ", profile)
-        // console.log("ACCOUNT FROM JWT CALLBACK: ", account)
-        // console.log("TOKEN FROM JWT CALLBACK: ", token)
-        // console.log("USER FROM JWT CALLBACK: ", user)
 
         if (user && account.type === 'credentials' && account.provider === 'credentials') {
             token.id = user.id;
@@ -67,8 +62,6 @@ const callbacks = {
         return token;
     },
     async session({ session, token }: any) {
-        // console.log("TOKEN FROM SESSION CALLBACK: ", token)
-        // console.log("SESSION FROM SESSION CALLBACK: ", session)
 
         if (token) {
             session.id = token.id;
@@ -163,15 +156,6 @@ export const authOptions: AuthOptions = {
         },
     },
     callbacks,
-    events: {
-        async signOut({ token }: any) {
-            try {
-                await adapter.deleteSession(token.sessionToken);
-            } catch (e) {
-                console.log("ERROR DELETING SESSION: ", e)
-            }
-        }
-    },
     debug: process.env.NODE_ENV === "development"
 }
 

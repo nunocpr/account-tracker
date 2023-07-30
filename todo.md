@@ -1,7 +1,5 @@
 ### TODO
 
-    - Implement the functionality to save a session in the database for the google oauth option.
-
     - Implement a way for the user to change his password (if user has credentials provider).
 
     - Implement a way for the user to delete his account.
