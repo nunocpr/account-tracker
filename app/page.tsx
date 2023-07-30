@@ -1,7 +1,7 @@
 import { LoginButton, LogoutButton, ProfileButton, RegisterButton } from "@/app/_components/buttons.component"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@lib/auth"
 import { User } from "./_components/user.component"
+import { authOptions } from "./api/auth/[...nextauth]/route"
 
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'
@@ -19,8 +19,8 @@ export default async function Home() {
             <div>
                 <LoginButton />
                 <RegisterButton />
-                <LogoutButton />
-                <ProfileButton />
+                {session && <LogoutButton />}
+                {session && <ProfileButton />}
             </div>
             <pre>{JSON.stringify(session)}</pre>
             <User />

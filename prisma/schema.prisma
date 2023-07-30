@@ -11,7 +11,7 @@ datasource db {
 }
 
 //* --------------------------------- *//
-//*               AUTH MODELS              *//
+//*            AUTH MODELS            *//
 //* --------------------------------- *//
 model Account {
     id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -35,9 +35,10 @@ model User {
     id             String         @id @default(auto()) @map("_id") @db.ObjectId
     name           String
     email          String         @unique
+    username       String?        @unique
     hashedPassword String?        @map("password")
     emailVerified  DateTime?      @map("verifiedAt")
-    sessionToken   String
+    sessionToken   String?
     image          String?
     accounts       Account[]
     sessions       Session[]
