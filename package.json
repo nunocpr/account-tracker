@@ -44,5 +44,6 @@
         "ts-node": "^10.9.1",
         "turbo": "^1.10.7",
         "validator": "^13.9.0"
-    }
+    },
+    "packageManager": "npm@8.19.3"
 }
