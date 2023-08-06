@@ -24,7 +24,7 @@ export default async function RootLayout({
 
     const themeCookie = cookies().get('theme');
 
-    if (!themeCookie?.value.includes(Theme.dark) || !themeCookie?.value.includes(Theme.light)) {
+    if (!themeCookie?.value.includes('dark') || !themeCookie?.value.includes('light')) {
         themeCookie?.value === 'dark'
     }
 
