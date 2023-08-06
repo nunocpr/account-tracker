@@ -5,11 +5,15 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
     './app/**/*.{js,ts,jsx,tsx}',
   ],
+  darkMode: ["class"],
   theme: {
     extend: {
       fontFamily: {
         default: ['var(--font-inter)'],
       },
+      animation: {
+        'spin-slow': 'spin 4s linear infinite',
+      }
     },
   },
   plugins: [],

@@ -14,12 +14,12 @@ export const LoginButton = () => {
 export const RegisterButton = () => {
     return (
         <Link href="/register" className="mr-3">
-            Register
+            Login / Register
         </Link>
     );
 };
 
-const handleLogout = async () => {
+export const handleLogout = async () => {
     try {
         fetch('/api/auth/logout', {
             method: 'POST',

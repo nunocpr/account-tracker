@@ -1,11 +1,11 @@
 import { RegisterForm } from "@components/registerForm.component";
+import { LoginForm } from "../_components/loginForm.component";
 
 export default function RegisterPage() {
     return (
         <div className="flex h-[70dvh] justify-center items-center">
             <div>
-                <h1>Register</h1>
-                <RegisterForm />
+                <LoginForm />
             </div>
         </div>
     );

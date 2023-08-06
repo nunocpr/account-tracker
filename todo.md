@@ -1,7 +1,5 @@
 ### TODO
 
-    - Implement a way for the user to change his password (if user has credentials provider).
-
     - Implement a way for the user to delete his account.
 
     - Develop api routes to handle the transaction's creation, update and deletion.
