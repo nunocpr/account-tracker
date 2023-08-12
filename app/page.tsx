@@ -1,8 +1,6 @@
-import { LogoutButton, ProfileButton, RegisterButton } from "@/app/_components/buttons.component"
 import { getServerSession } from "next-auth"
 import { User } from "./_components/user.component"
 import { authOptions } from "./api/auth/[...nextauth]/route"
-import { useRouter } from "next/navigation"
 
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'

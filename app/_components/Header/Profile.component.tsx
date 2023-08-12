@@ -3,10 +3,17 @@ import { cn } from "@lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
-import { handleLogout } from "../buttons.component";
+import { handleDeleteUser, handleLogout } from "@lib/authFunctions";
 
 
 export default function Profile({ user }: { user: any }) {
+
+    const userNavigation = [
+        { name: 'Your Profile', href: '#' },
+        { name: 'Settings', href: '#' },
+        { name: 'Sign out', href: '#' },
+    ]
+
 
     return (
         <Menu as="div" className="relative ml-3">
@@ -70,6 +77,19 @@ export default function Profile({ user }: { user: any }) {
                                 onClick={() => handleLogout()}
                             >
                                 Sign out
+                            </button>
+                        )}
+                    </Menu.Item>
+                    <Menu.Item>
+                        {({ active }) => (
+                            <button
+                                className={cn(
+                                    active ? 'bg-red-400' : 'bg-red-500',
+                                    'block w-full text-start px-4 py-2 text-sm text-white'
+                                )}
+                                onClick={() => handleDeleteUser()}
+                            >
+                                Delete Account
                             </button>
                         )}
                     </Menu.Item>

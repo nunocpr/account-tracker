@@ -1,36 +1,19 @@
 import NextAuth from "next-auth";
 import type { AuthOptions } from "next-auth";
-// import CredentialsProvider from "next-auth/providers/credentials";
-// import { compare } from "bcryptjs";
-// import { cookies } from "next/headers";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { fromDate, generateSessionToken } from "@/app/_lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/app/_lib/prisma";
-import { encode, decode, JWT, JWTDecodeParams } from 'next-auth/jwt'
 
 const adapter = PrismaAdapter(prisma);
 const callbacks = {
     async signIn({ user, account, profile, email, credentials }: any) {
-        // Check if this sign in callback is being called in the credentials authentication flow. If so, use the next-auth adapter to create a session entry in the database (SignIn is called after authorize so we can safely assume the user is valid and already authenticated).
-        // if (
-        //     account.type === 'credentials' &&
-        //     account.provider === 'credentials'
-        // ) {
-        //     if (user) {
-        //         cookies().set("next-auth.session-token", user.sessionToken, {
-        //             expires: user.sessionExpiry,
-        //         });
-        //     }
-        // }
-
         if (account.provider === 'google' && account.type === 'oauth' && user) {
-
-            const userExists = await prisma?.user.findUnique({
+            const userExists = await prisma.user.findUnique({
                 where: {
                     email: user.email,
-                },
+                }
             });
 
             if (!userExists) return true;
@@ -39,13 +22,15 @@ const callbacks = {
             const sessionMaxAge = 60 * 60 * 24 * 30; // 30Days
             const sessionExpiry = fromDate(sessionMaxAge);
 
-            // returns the session
-            await adapter.createSession({
-                sessionToken: sessionToken,
-                userId: userExists?.id as string,
-                expires: sessionExpiry,
+            const newSession = await prisma.session.create({
+                data: {
+                    sessionToken: sessionToken,
+                    userId: userExists.id,
+                    expires: sessionExpiry,
+                },
             });
 
+            return true;
         }
 
         return true;
@@ -53,20 +38,11 @@ const callbacks = {
     async redirect({ url, baseUrl }: any) {
         return url.startsWith(baseUrl) ? url : baseUrl;
     },
-    async jwt({ token, user, account, profile, isNewUser }: any) {
-
-        // if (user && account.type === 'credentials' && account.provider === 'credentials') {
-        //     token.id = user.id;
-        //     token.sessionToken = user.sessionToken
-        // }
-
-        return token;
-    },
     async session({ session, token }: any) {
 
         if (token) {
             session.id = token.id;
-            session.sessionToken = token.sessionToken;
+            session.isNewUser = token.isNewUser;
         }
         return session;
     }
@@ -79,19 +55,22 @@ export const authOptions: AuthOptions = {
         signIn: "/login",
     },
     session: {
-        strategy: "jwt",
+        // strategy: "jwt",
+        strategy: "database",
         // Seconds - How long until an idle session expires and is no longer valid.
         maxAge: 30 * 24 * 60 * 60, // 30 days
         // Seconds - Throttle how frequently to write to database to extend a session.
         // Use it to limit write operations. Set to 0 to always update the database.
         // Note: This option is ignored if using JSON Web Tokens
         updateAge: 24 * 60 * 60, // 24 hours
+        generateSessionToken() {
+            return generateSessionToken();
+        },
     },
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-            allowDangerousEmailAccountLinking: true
         }),
         // CredentialsProvider({
         //     name: "credentials",
@@ -145,21 +124,9 @@ export const authOptions: AuthOptions = {
         //     },
         // }),
     ],
-    jwt: {
-        // Customize the JWT encode and decode functions to overwrite the default behaviour of storing the JWT token in the session  cookie when using credentials providers. Instead we will store the session token reference to the session in the database.
-        async encode({ token, secret, maxAge }: any): Promise<string> {
-            return encode({ token, secret, maxAge });
-        },
-        async decode(params: JWTDecodeParams): Promise<JWT | null> {
-            const { token, secret } = params;
-
-            return decode({ token, secret });
-        },
-    },
     callbacks,
-    debug: process.env.NODE_ENV === "development"
-}
-
+    // debug: process.env.NODE_ENV === "development"
+};
 
 async function auth(req: NextApiRequest, res: NextApiResponse) {
     return await NextAuth(req, res, authOptions);

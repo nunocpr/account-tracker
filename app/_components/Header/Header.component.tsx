@@ -7,7 +7,7 @@ import { cn } from '@lib/utils'
 import Profile from './Profile.component'
 import PrimaryButton from '../Common/PrimaryButton.component';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { handleDeleteUser, handleLogout } from '@/app/_lib/authFunctions';
 
 function getInitials(name: string): string {
     const initials = name
@@ -157,16 +157,41 @@ export default function Header({ session }: { session: any }) {
                                             </button>
                                         </div>
                                         <div className="mt-3 space-y-1 px-2 sm:px-3">
-                                            {userNavigation.map((item) => (
-                                                <Disclosure.Button
-                                                    key={item.name}
-                                                    as="a"
-                                                    href={item.href}
+                                            <Disclosure.Button
+                                                className="w-full text-start"
+                                            >
+                                                <Link
+                                                    href="#"
+                                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
+
+                                                >
+                                                    Your Profile
+                                                </Link>
+                                            </Disclosure.Button>
+                                            <Disclosure.Button
+                                                className="w-full text-start"
+                                            >
+                                                <Link
+                                                    href="#"
                                                     className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
                                                 >
-                                                    {item.name}
-                                                </Disclosure.Button>
-                                            ))}
+                                                    Settings
+                                                </Link>
+                                            </Disclosure.Button>
+                                            <Disclosure.Button
+                                                as="a"
+                                                onClick={() => handleLogout()}
+                                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+                                            >
+                                                Sign out
+                                            </Disclosure.Button>
+                                            <Disclosure.Button
+                                                as="a"
+                                                onClick={() => handleDeleteUser()}
+                                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+                                            >
+                                                Delete Account
+                                            </Disclosure.Button>
                                         </div>
                                     </>
                                     :

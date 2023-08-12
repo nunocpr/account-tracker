@@ -38,7 +38,6 @@ model User {
     username       String?        @unique
     hashedPassword String?        @map("password")
     emailVerified  DateTime?      @map("verifiedAt")
-    sessionToken   String?
     image          String?
     accounts       Account[]
     sessions       Session[]
@@ -56,14 +55,9 @@ model Session {
     expires      DateTime @map("expiresAt")
 }
 
-model VerificationToken {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    identifier String
-    token      String   @unique
-    expires    DateTime @map("expiresAt")
-
-    @@unique([identifier, token])
-}
+//* --------------------------------- *//
+//*         TRANSACTION MODELS        *//
+//* --------------------------------- *//
 
 model Transaction {
     id             String        @id @default(auto()) @map("_id") @db.ObjectId
