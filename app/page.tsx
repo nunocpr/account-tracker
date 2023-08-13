@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth"
 import { User } from "./_components/user.component"
 import { authOptions } from "./api/auth/[...nextauth]/route"
+import MultiSelect from "./_components/Form/MultiSelect.component"
 
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'
@@ -19,8 +20,9 @@ export default async function Home() {
             <p className="text-start">
                 {session && "You are currently logged in as: "}
             </p>
-            <code className="break-words">{JSON.stringify(session) || "You are not logged in."}</code>
-            <User />
+            <code className="break-words">{session ? JSON.stringify(session) : "You are not logged in."}</code>
+            {/* <MultiSelect /> */}
+            {session && <User />}
         </div>
     )
 }

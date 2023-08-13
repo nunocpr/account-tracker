@@ -105,12 +105,12 @@ export default function Header({ session }: { session: any }) {
                                         {/* LOGIN / REGISTER BUTTON */}
                                         <ThemeSwitcher />
                                         <div className="flex-shrink-0 ml-4 hidden md:block">
-                                            <PrimaryButton>
-                                                <UserCircleIcon className="-ml-0.5 h-7 w-7" aria-hidden="true" />
-                                                <Link href="/register" className="mr-3">
+                                            <Link href="/register" className="mr-3">
+                                                <PrimaryButton>
+                                                    <UserCircleIcon className="-ml-0.5 h-7 w-7" aria-hidden="true" />
                                                     Login / Register
-                                                </Link>
-                                            </PrimaryButton>
+                                                </PrimaryButton>
+                                            </Link>
                                         </div>
                                     </div>
                             }
