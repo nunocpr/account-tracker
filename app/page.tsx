@@ -21,8 +21,8 @@ export default async function Home() {
                 {session && "You are currently logged in as: "}
             </p>
             <code className="break-words">{session ? JSON.stringify(session) : "You are not logged in."}</code>
-            {/* <MultiSelect /> */}
             {session && <User />}
+            <MultiSelect />
         </div>
     )
 }

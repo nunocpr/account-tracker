@@ -1,101 +1,192 @@
 'use client'
-import { Fragment, useState } from "react";
-import { Combobox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { Fragment, useState } from 'react'
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
 
+interface Person {
+    id: number;
+    name: string;
+    avatar: string;
+}
+
+const people = [
+    {
+        id: 1,
+        name: 'Wade Cooper',
+        avatar:
+            'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 2,
+        name: 'Arlene Mccoy',
+        avatar:
+            'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 3,
+        name: 'Devon Webb',
+        avatar:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80',
+    },
+    {
+        id: 4,
+        name: 'Tom Cook',
+        avatar:
+            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 5,
+        name: 'Tanya Fox',
+        avatar:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 6,
+        name: 'Hellen Schmidt',
+        avatar:
+            'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 7,
+        name: 'Caroline Schultz',
+        avatar:
+            'https://images.unsplash.com/photo-1568409938619-12e139227838?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 8,
+        name: 'Mason Heaney',
+        avatar:
+            'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 9,
+        name: 'Claudie Smitham',
+        avatar:
+            'https://images.unsplash.com/photo-1584486520270-19eca1efcce5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    {
+        id: 10,
+        name: 'Emil Schaefer',
+        avatar:
+            'https://images.unsplash.com/photo-1561505457-3bcad021f8ee?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+]
 
 export default function MultiSelect() {
-    const people = [
-        { id: 1, name: "Wade Cooper" },
-        { id: 2, name: "Arlene Mccoy" },
-        { id: 3, name: "Devon Webb" },
-        { id: 4, name: "Tom Cook" },
-        { id: 5, name: "Tanya Fox" },
-        { id: 6, name: "Hellen Schmidt" },
-    ];
-    const [selectedPeople, setSelectedPeople] = useState([people[2], people[4]]);
-    const [query, setQuery] = useState("");
+    const [selectedPeople, setSelectedPeople] = useState<Person[]>([people[0], people[1]]);
 
-    const filteredPeople =
-        query === ""
-            ? people
-            : people.filter((person) =>
-                person.name
-                    .toLowerCase()
-                    .replace(/\s+/g, "")
-                    .includes(query.toLowerCase().replace(/\s+/g, ""))
-            );
+    const handlePersonClick = (person: Person) => {
+        setSelectedPeople(prevSelectedPeople => {
+            const isPersonSelected = prevSelectedPeople.some(p => p.id === person.id);
+
+            if (isPersonSelected) {
+                // Remove the person from selectedPeople array
+                const updatedPeople = prevSelectedPeople.filter(p => p.id !== person.id);
+                return updatedPeople;
+            } else {
+                // Add the person to selectedPeople array
+                const updatedPeople = [...prevSelectedPeople, person];
+                return updatedPeople;
+            }
+        });
+    };
+
 
     return (
-        <div className="flex justify-center items-center h-screen">
-            <div className="fixed top-16 lg:w-1/4 w-full">
-                <Combobox value={selectedPeople} onChange={setSelectedPeople}>
+        <Listbox as="div" className="space-y-4" multiple>
+            {({ open }) => (
+                <>
+                    <Listbox.Label className="block text-sm font-medium text-gray-700">
+                        Assigned to
+                    </Listbox.Label>
                     <div className="relative mt-1">
-                        <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                            <Combobox.Input
-                                className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                                displayValue={(people: any) =>
-                                    people.map((person: any) => person.name).join(", ")
-                                }
-                            />
-                            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                        <Listbox.Button className="w-full py-2 pl-3 pr-10 text-left rounded-md bg-white border border-gray-300 focus:ring focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none sm:text-sm">
+                            <span className="flex items-center space-x-4">
+                                {selectedPeople.map((person) => (
+                                    <div className="flex" key={person.id}>
+                                        <img
+                                            src={person.avatar}
+                                            alt=""
+                                            className="w-6 h-6 rounded-full"
+                                        />
+                                        <span className="ml-3 block truncate">
+                                            {person.name}
+                                        </span>
+                                    </div>
+                                )
+                                )}
+                            </span>
+                            <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                 <ChevronUpDownIcon
-                                    className="h-5 w-5 text-gray-400"
+                                    className="w-5 h-5 text-gray-400"
                                     aria-hidden="true"
                                 />
-                            </Combobox.Button>
-                        </div>
+                            </span>
+                        </Listbox.Button>
+
                         <Transition
+                            show={open}
                             as={Fragment}
                             leave="transition ease-in duration-100"
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
-                            afterLeave={() => setQuery("")}
                         >
-                            <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                {filteredPeople.length === 0 && query !== "" ? (
-                                    <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                                        Nothing found.
-                                    </div>
-                                ) : (
-                                    filteredPeople.map((person) => (
-                                        <Combobox.Option
-                                            key={person.id}
-                                            className={({ active }) =>
-                                                `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? "bg-teal-600 text-white" : "text-gray-900"
-                                                }`
+                            <Listbox.Options
+                                static
+                                className="absolute w-full py-1 mt-2 space-y-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                            >
+                                {people.map(person => (
+                                    <Listbox.Option
+                                        key={person.id}
+                                        className={({ active }) =>
+                                            `${active
+                                                ? 'text-white bg-indigo-600'
+                                                : 'text-gray-900'
                                             }
-                                            value={person}
-                                        >
-                                            {({ selected, active }) => (
-                                                <>
+                                                cursor-pointer select-none relative `
+                                        }
+                                        value={person}
+                                    >
+                                        {({ active, selected }) => (
+                                            <>
+                                                <div
+                                                    className="flex items-center py-2 pl-10 pr-4"
+                                                    onClick={() =>
+                                                        handlePersonClick(person)
+                                                    }
+                                                >
+                                                    <img
+                                                        src={person.avatar}
+                                                        alt=""
+                                                        className="w-6 h-6 rounded-full"
+                                                    />
                                                     <span
-                                                        className={`block truncate ${selected ? "font-medium" : "font-normal"
-                                                            }`}
+                                                        className={`${selectedPeople
+                                                            ? 'font-semibold'
+                                                            : 'font-normal'
+                                                            } ml-3 block truncate`}
                                                     >
                                                         {person.name}
                                                     </span>
-                                                    {selected ? (
-                                                        <span
-                                                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-teal-600"
-                                                                }`}
-                                                        >
-                                                            <CheckIcon
-                                                                className="h-5 w-5"
-                                                                aria-hidden="true"
-                                                            />
-                                                        </span>
-                                                    ) : null}
-                                                </>
-                                            )}
-                                        </Combobox.Option>
-                                    ))
-                                )}
-                            </Combobox.Options>
+                                                </div>
+
+                                                {selectedPeople.length > 0 && selectedPeople.some(p => p.id === person.id) && !active && (
+                                                    <span className="text-indigo-600 absolute inset-y-0 left-0 flex items-center pl-3">
+                                                        <CheckIcon
+                                                            className="w-5 h-5"
+                                                            aria-hidden="true"
+                                                        />
+                                                    </span>
+                                                )}
+                                            </>
+                                        )}
+                                    </Listbox.Option>
+                                ))}
+                            </Listbox.Options>
                         </Transition>
                     </div>
-                </Combobox>
-            </div>
-        </div>
+                </>
+            )}
+        </Listbox>
     );
 }
