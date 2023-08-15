@@ -12,7 +12,8 @@ export default async function Home() {
 
     const session = await getServerSession(authOptions)
 
-    const res = await fetch('http://localhost:3000/api/mainCategory', {
+    const baseURL = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_URL : 'http://localhost:3000'
+    const res = await fetch(baseURL + '/api/mainCategory', {
         method: 'GET',
         headers: Object.fromEntries(headers()),
         next: {
