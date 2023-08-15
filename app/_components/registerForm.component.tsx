@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { ChangeEvent, useState } from "react";
+import { cn } from "../_lib/utils";
 
 export const RegisterForm = () => {
     let [loading, setLoading] = useState(false);
@@ -46,12 +47,7 @@ export const RegisterForm = () => {
     return (
         <form
             onSubmit={onSubmit}
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                width: 500,
-                rowGap: 10,
-            }}
+            className="flex flex-col w-[500px] gap-y-3"
         >
             <label htmlFor="name">Name</label>
             <input
@@ -60,7 +56,7 @@ export const RegisterForm = () => {
                 name="name"
                 value={formValues.name}
                 onChange={handleChange}
-                style={{ padding: "1rem" }}
+                className="p-4"
             />
             <label htmlFor="email">Email</label>
             <input
@@ -69,7 +65,7 @@ export const RegisterForm = () => {
                 name="email"
                 value={formValues.email}
                 onChange={handleChange}
-                style={{ padding: "1rem" }}
+                className="p-4"
             />
             <label htmlFor="password">Password</label>
             <input
@@ -78,15 +74,10 @@ export const RegisterForm = () => {
                 name="password"
                 value={formValues.password}
                 onChange={handleChange}
-                style={{ padding: "1rem" }}
+                className="p-4"
             />
             <button
-                style={{
-                    backgroundColor: `${loading ? "#ccc" : "#3446eb"}`,
-                    color: "#fff",
-                    padding: "1rem",
-                    cursor: "pointer",
-                }}
+                className={cn(loading ? 'bg-[#ccc]' : 'bg-[#3446eb]', 'p-4 cursor-pointer text-white')}
                 disabled={loading}
             >
                 {loading ? "loading..." : "Register"}

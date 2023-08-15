@@ -7,7 +7,6 @@ import { cookies } from 'next/headers'
 import Header from './_components/Header/Header.component'
 import { authOptions } from './api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth'
-import { Theme } from './_components/Header/ThemeSwitcher.component'
 
 const inter = Inter({
     variable: '--font-inter',
@@ -36,7 +35,6 @@ export default async function RootLayout({
                 <NextAuthProvider>
                     <Header session={session} />
                     <main className="relative flex min-h-screen flex-col items-center justify-center">
-
                         {children}
                     </main>
                 </NextAuthProvider>

@@ -1,48 +1,50 @@
-interface IMainCategory {
-    id: string;
-    name: string;
-    userId: string;
-}
+import { revalidateTag } from "next/cache";
+import { CustomError } from "./exceptions";
+import { sanitizeString } from "./utils";
 
 
-export const addMainCategory = (mainCategory: IMainCategory) => {
+export const addMainCategory = async (mainCategory: string) => {
     try {
-        fetch('/api/mainCategory/add', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(mainCategory)
+            body: JSON.stringify(
+                {
+                    type: 'add',
+                    data: {
+                        mainCategory: sanitizeString(mainCategory),
+                    }
+                }
+            )
         });
+
+        return res;
     } catch (e) {
-        console.log(e);
+        throw new CustomError('Error adding category');
     }
 }
 
-export const editMainCategory = (mainCategory: IMainCategory) => {
-    try {
-        fetch('/api/mainCategory/edit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(mainCategory)
-        });
-    } catch (e) {
-        console.log(e);
-    }
-}
 
-export const removeMainCategory = (mainCategory: IMainCategory) => {
+export const removeMainCategory = async (mainCategory: string) => {
     try {
-        fetch('/api/mainCategory/remove', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(mainCategory)
+            body: JSON.stringify(
+                {
+                    type: 'remove',
+                    data: {
+                        mainCategory: sanitizeString(mainCategory)
+                    }
+                }
+            )
         });
+        return res;
     } catch (e) {
-        console.log(e);
+        throw new CustomError('Error removing category');
     }
 }
