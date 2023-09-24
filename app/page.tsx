@@ -3,6 +3,7 @@ import { User } from "./_components/user.component"
 import { authOptions } from "./api/auth/[...nextauth]/route"
 import { headers } from 'next/headers'
 import MultiSelect from "./_components/Form/MultiSelect.component"
+import ComboMultiSelect from "./_components/Form/ComboMultiSelect.component"
 
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'
@@ -12,7 +13,7 @@ export default async function Home() {
 
     const session = await getServerSession(authOptions)
 
-    const baseURL = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_URL : 'http://localhost:3000'
+    const baseURL = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_URL : 'http://localhost:3000';
     const res = await fetch(baseURL + '/api/mainCategory', {
         method: 'GET',
         headers: Object.fromEntries(headers()),
@@ -35,6 +36,8 @@ export default async function Home() {
             <h2 className="text-xl font-semibold underline">Server Session</h2>
 
             <MultiSelect mainCategories={mainCategories} />
+            <ComboMultiSelect />
+
 
             <p>The DOM will already load this info. It comes directly from the server.</p>
             <p className="text-start">

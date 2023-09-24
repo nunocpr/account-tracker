@@ -38,7 +38,7 @@ export default function AddMainCategory() {
     }
 
     return (
-        <div className="flex max-w-md">
+        <div className="flex max-w-md my-8">
             <input
                 type="text"
                 name="add_category"

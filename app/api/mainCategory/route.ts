@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
                     name: sanitizeString(mainCategory),
+                    selected: true || false,
                     userId: userId,
                 },
             });
@@ -76,6 +77,7 @@ export async function POST(request: NextRequest) {
             const newMainCategory = await prisma.mainCategory.create({
                 data: {
                     name: sanitizeString(mainCategory),
+                    selected: false,
                     user: {
                         connect: {
                             id: userId
@@ -89,7 +91,7 @@ export async function POST(request: NextRequest) {
 
         } else if (type === ActionType.Edit) {
 
-            const { mainCategory, newMainCategory } = data;
+            const { mainCategory, newMainCategory, selected } = data;
 
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
@@ -97,6 +99,7 @@ export async function POST(request: NextRequest) {
                     userId: userId,
                 },
             });
+
             if (!existingMainCategory) {
                 return NextResponse.json({ error: 'Main category not found' }, { status: 404, statusText: 'Main category not found' });
             }
@@ -107,6 +110,7 @@ export async function POST(request: NextRequest) {
                 },
                 data: {
                     name: sanitizeString(newMainCategory),
+                    selected: !!selected,
                 },
             });
 

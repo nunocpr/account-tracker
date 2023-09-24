@@ -1,8 +1,10 @@
 'use client'
 import { Fragment, useState } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { CheckIcon, ChevronUpDownIcon, PencilSquareIcon } from '@heroicons/react/20/solid'
 import AddMainCategory from '../MainCategory/AddMainCategory.component';
+import { cn } from '@/app/_lib/utils';
+
 
 interface Person {
     id: number;
@@ -99,11 +101,13 @@ export default function MultiSelect({ mainCategories }: any) {
             <Listbox as="div" className="max-w-md space-y-4" multiple>
                 {({ open }) => (
                     <>
-                        <Listbox.Label className="block text-sm font-medium text-gray-700">
-                            Assigned to
+                        <Listbox.Label className="block text-sm font-medium text-gray-800">
+                            Main Categories:
                         </Listbox.Label>
                         <div className="relative mt-1">
-                            <Listbox.Button className="w-full py-2 pl-3 pr-10 text-left rounded-md bg-white border border-gray-300 focus:ring focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none sm:text-sm">
+
+                            <Listbox.Button className="w-full py-2 pl-3 pr-10 text-left rounded-md bg-white dark:bg-gray-800 dark:text-white border border-gray-300 focus:ring-1 focus:ring-black dark:focus:ring-white dark:focus:border-white focus:border-black focus:outline-none sm:text-sm">
+
                                 <span className="flex items-center space-x-4">
                                     {selectedPeople.length > 0 ? selectedPeople.map((person) => (
                                         <div className="flex items-center" key={person.id}>
@@ -112,7 +116,7 @@ export default function MultiSelect({ mainCategories }: any) {
                                                 alt=""
                                                 className="w-6 h-6 rounded-full"
                                             />
-                                            <span className="ml-3 block truncate">
+                                            <span className="ml-3 block truncate font-semibold">
                                                 {person.name}
                                             </span>
                                         </div>
@@ -123,12 +127,14 @@ export default function MultiSelect({ mainCategories }: any) {
                                         </span>
                                     )}
                                 </span>
+
                                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                                     <ChevronUpDownIcon
                                         className="w-5 h-5 text-gray-400"
                                         aria-hidden="true"
                                     />
                                 </span>
+
                             </Listbox.Button>
 
                             <Transition
@@ -140,15 +146,15 @@ export default function MultiSelect({ mainCategories }: any) {
                             >
                                 <Listbox.Options
                                     static
-                                    className="overflow-y-auto absolute w-full py-1 mt-2 space-y-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                                    className="overflow-y-auto absolute w-full py-1 space-y-1 bg-white dark:bg-gray-800 border border-gray-300 rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                                 >
                                     {people.map(person => (
                                         <Listbox.Option
                                             key={person.id}
                                             className={({ active }) =>
                                                 `${active
-                                                    ? 'text-white bg-indigo-600'
-                                                    : 'text-gray-900'
+                                                    ? 'text-gray-900 dark:text-white bg-gray-300 dark:bg-gray-500'
+                                                    : 'text-gray-900 dark:text-white'
                                                 }
                                                 cursor-pointer select-none relative `
                                             }
@@ -156,6 +162,21 @@ export default function MultiSelect({ mainCategories }: any) {
                                         >
                                             {({ active }) => (
                                                 <>
+                                                    {/* Check Icon */}
+                                                    {selectedPeople.length > 0 && selectedPeople.some(p => p.id === person.id) && (
+                                                        <span
+                                                            className={cn(
+                                                                "text-indigo-600 absolute inset-y-0 left-0 flex items-center pl-3",
+                                                                active && 'text-gray-800 dark:text-indigo-200'
+                                                            )}>
+                                                            <CheckIcon
+                                                                className="w-5 h-5"
+                                                                aria-hidden="true"
+                                                            />
+                                                        </span>
+                                                    )}
+
+                                                    {/* Image + Name */}
                                                     <div
                                                         className="flex items-center py-2 pl-10 pr-4"
                                                         onClick={() =>
@@ -177,14 +198,18 @@ export default function MultiSelect({ mainCategories }: any) {
                                                         </span>
                                                     </div>
 
-                                                    {selectedPeople.length > 0 && selectedPeople.some(p => p.id === person.id) && !active && (
-                                                        <span className="text-indigo-600 absolute inset-y-0 left-0 flex items-center pl-3">
-                                                            <CheckIcon
-                                                                className="w-5 h-5"
-                                                                aria-hidden="true"
-                                                            />
-                                                        </span>
-                                                    )}
+                                                    {/* Edit Button */}
+                                                    <div className="absolute inset-y-0 right-2 flex items-center justify-center pl-3">
+                                                        <PencilSquareIcon
+                                                            className={
+                                                                cn(
+                                                                    "h-6 w-6 text-indigo-600",
+                                                                    active && 'text-gray-800 dark:text-indigo-200'
+                                                                )
+                                                            }
+                                                        />
+                                                    </div>
+
                                                 </>
                                             )}
                                         </Listbox.Option>

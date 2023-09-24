@@ -1,3 +1,11 @@
+### UTIL
+
+. Updates and saves the updated versions in package.json. Installs them afterwards.
+
+npm update --save && npm outdated --save | awk '{if(NR>1)print $1"@"$4}' | xargs npm install --save
+
+
+
 ### TODO
 
     - before creating the "create transaction" stuff, we need to create a form with all the input fields. While thinking about them, I've decided to start building the mainCategory functions and API routes (/api/mainCategory/add).
@@ -15,3 +23,7 @@
     - Create a reconfirmation modal (when user clicks to delete his account or another  important actions, make sure user reconfirms his a action.)
 
     - ...
+
+
+
+

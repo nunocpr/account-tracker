@@ -77,6 +77,7 @@ model Transaction {
 model MainCategory {
     id            String        @id @default(auto()) @map("_id") @db.ObjectId
     name          String        @unique
+    selected      Boolean
     transactions  Transaction[]
     subCategories SubCategory[]
     user          User          @relation(fields: [userId], references: [id])
