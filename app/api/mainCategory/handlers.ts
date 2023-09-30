@@ -1,4 +1,3 @@
-'server only'
 import { getServerSession } from "next-auth";
 import prisma from "@lib/prisma";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -34,18 +33,23 @@ export async function getMainCategories(session: {
         image?: string | null,
     }
 }) {
+
     try {
         // fetch all main categories of the user
-        console.log("CALLING SESSION IN getMainCategories: ", session)
+
+        // console.log("CALLING SESSION IN getMainCategories: ", session)
+
         if (!session) {
             throw new AuthRequiredError('You must be logged in to view main categories.');
         }
 
         const userId = await getUserIdFromSession(session);
+
         if (!userId) {
             throw new CustomError('There was an error fetching the user.', 403);
         }
-        console.log("CALLING userId IN getMainCategories: ", userId)
+
+        // console.log("CALLING userId IN getMainCategories: ", userId)
 
         const mainCategories = await prisma.mainCategory.findMany({
             where: {

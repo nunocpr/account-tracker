@@ -67,7 +67,9 @@ export const removeMainCategory = async (mainCategory: string) => {
                 }
             )
         });
+
         return res;
+
     } catch (e) {
         throw new CustomError('Error removing category');
     }

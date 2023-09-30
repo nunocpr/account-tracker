@@ -34,7 +34,7 @@ export default async function RootLayout({
             <body className={cn(inter.variable, 'transition-colors duration-700 h-full w-full')}>
                 <NextAuthProvider>
                     <Header session={session} />
-                    <main className="relative flex min-h-screen flex-col items-center justify-center">
+                    <main className="relative flex min-h-screen flex-col justify-start  bg-gradient-to-b from-slate-50 to-slate-200 dark:from-gray-800 dark:to-gray-600">
                         {children}
                     </main>
                 </NextAuthProvider>

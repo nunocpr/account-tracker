@@ -1,6 +1,7 @@
 import prisma from "@/app/_lib/prisma";
 import { getServerSession } from "next-auth"
 import { authOptions } from "../[...nextauth]/route";
+import { NextResponse } from "next/server";
 
 export async function POST() {
     const session = await getServerSession(authOptions);
@@ -31,22 +32,22 @@ export async function POST() {
                 })
                 // test is we need to signout here or if we can do it by making a sign out call
             } else {
-                return {
+                return NextResponse.json({
                     status: 404,
                     body: {
                         message: "User not found"
                     }
-                }
+                })
             }
 
         }
 
     }
 
-    return {
+    return NextResponse.json({
         status: 200,
         body: {
             message: "User deletion successful"
         }
-    }
+    });
 }

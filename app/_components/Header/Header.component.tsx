@@ -38,7 +38,7 @@ export default function Header({ session }: { session: any }) {
     const user = session?.user;
 
     return (
-        <Disclosure as="nav" className="bg-white dark:bg-gray-800 shadow">
+        <Disclosure as="nav" className="bg-slate-50 dark:bg-gray-800 shadow">
             {({ open }) => (
                 <>
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -66,7 +66,7 @@ export default function Header({ session }: { session: any }) {
                                             key={item.name}
                                             href={item.href}
                                             className={cn(
-                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
+                                                item.current ? 'bg-white text-gray-800 dark:bg-gray-900 dark:text-white' : 'text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
                                                 'rounded-md px-3 py-2 text-sm font-medium'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}

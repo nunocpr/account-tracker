@@ -18,13 +18,14 @@ export async function GET() {
 
         const mainCategories = await getMainCategories(session);
 
+        revalidateTag('mainCategory');
 
         return NextResponse.json({ mainCategories }, { status: 200 });
+
     } catch (error) {
-        handleErrorResponse(error);
+        return handleErrorResponse(error);
     }
 }
-
 
 /**
  * 
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
 
         // get session
         const session = await getServerSession(authOptions);
-        console.log("POST SESSION: ", session)
+
         // if no session, return unauthorized
         if (!session) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, statusText: 'You must be logged in to perform this action' });
@@ -62,10 +63,13 @@ export async function POST(request: NextRequest) {
         if (type === ActionType.Add) {
             const { mainCategory } = data;
 
+            if (mainCategory === '') {
+                return NextResponse.json({ error: 'Category must not be empty.' }, { status: 400 })
+            }
+
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
                     name: sanitizeString(mainCategory),
-                    selected: true || false,
                     userId: userId,
                 },
             });
@@ -77,7 +81,6 @@ export async function POST(request: NextRequest) {
             const newMainCategory = await prisma.mainCategory.create({
                 data: {
                     name: sanitizeString(mainCategory),
-                    selected: false,
                     user: {
                         connect: {
                             id: userId
@@ -91,7 +94,7 @@ export async function POST(request: NextRequest) {
 
         } else if (type === ActionType.Edit) {
 
-            const { mainCategory, newMainCategory, selected } = data;
+            const { mainCategory, newMainCategory } = data;
 
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
@@ -110,7 +113,6 @@ export async function POST(request: NextRequest) {
                 },
                 data: {
                     name: sanitizeString(newMainCategory),
-                    selected: !!selected,
                 },
             });
 
@@ -153,6 +155,6 @@ export async function POST(request: NextRequest) {
 
 
     } catch (error) {
-        handleErrorResponse(error);
+        return handleErrorResponse(error);
     }
 }
