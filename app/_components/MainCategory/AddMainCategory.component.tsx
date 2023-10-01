@@ -1,6 +1,7 @@
 'use client'
 import { AuthFailedError, AuthRequiredError, CustomError, handleError } from "@/app/_lib/exceptions";
 import { addMainCategory } from "@/app/_lib/mainCategoryFunctions";
+import { notifyError, notifySuccess } from "@/app/_lib/toastFunctions";
 import { cn } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
@@ -21,13 +22,13 @@ export default function AddMainCategory() {
             const res = await addMainCategory(category);
 
             if (!res?.ok) {
-                alert(res.statusText || 'Something went wrong. Please try again later');
+                notifyError(res.statusText || 'Something went wrong. Please try again later');
                 return;
             }
 
             setCategory('');
 
-            alert('Category added successfully');
+            notifySuccess('Category added successfully');
 
             router.refresh()
 

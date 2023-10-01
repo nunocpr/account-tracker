@@ -35,16 +35,25 @@ export default async function Home() {
             {/* BreadCrumbs */}
 
             {/* Welcome message */}
-
+            <p className="text-white py-4">Welcome, <span>
+                {
+                    !session ? (
+                        "please register above."
+                    ) : (
+                        "heh"
+                    )
+                }
+            </span>
+            </p>
             {/* Add Transaction */}
 
             {/* Latest Transactions */}
 
 
 
-            <ComboMultiSelect mainCategories={mainCategories} />
+            {session && <ComboMultiSelect mainCategories={mainCategories} />}
 
-            <AddMainCategory />
+            {session && <AddMainCategory />}
 
             {/* 
             <h2 className="text-xl font-semibold underline">Server Session</h2>

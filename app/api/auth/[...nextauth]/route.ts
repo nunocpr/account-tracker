@@ -33,7 +33,7 @@ const callbacks = {
             return true;
         }
 
-        return true;
+        return false;
     },
     async redirect({ url, baseUrl }: any) {
         return url.startsWith(baseUrl) ? url : baseUrl;

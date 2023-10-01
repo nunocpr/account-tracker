@@ -79,7 +79,7 @@ model MainCategory {
     name          String        @unique
     transactions  Transaction[]
     subCategories SubCategory[]
-    user          User          @relation(fields: [userId], references: [id])
+    user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String        @db.ObjectId
     createdAt     DateTime      @default(now())
 }

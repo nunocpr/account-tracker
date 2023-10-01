@@ -30,7 +30,7 @@ export async function POST() {
                         email: userEmail
                     }
                 })
-                // test is we need to signout here or if we can do it by making a sign out call
+
             } else {
                 return NextResponse.json({
                     status: 404,
