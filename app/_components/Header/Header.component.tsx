@@ -66,7 +66,7 @@ export default function Header({ session }: { session: any }) {
                                             key={item.name}
                                             href={item.href}
                                             className={cn(
-                                                item.current ? 'bg-white text-gray-800 dark:bg-gray-900 dark:text-white' : 'text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
+                                                item.current ? 'bg-slate-50 hover:bg-slate-200 transition-colors duration-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-white' : '',
                                                 'rounded-md px-3 py-2 text-sm font-medium'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}

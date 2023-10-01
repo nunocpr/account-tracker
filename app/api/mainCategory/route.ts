@@ -93,9 +93,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ newMainCategory }, { status: 200 });
 
         } else if (type === ActionType.Edit) {
-
             const { mainCategory, newMainCategory } = data;
 
+            // find if there is a category to edit
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
                     name: sanitizeString(mainCategory),
@@ -103,8 +103,31 @@ export async function POST(request: NextRequest) {
                 },
             });
 
+            const existingNewNameCategory = await prisma.mainCategory.findFirst({
+                where: {
+                    name: sanitizeString(newMainCategory),
+                    userId: userId,
+                }
+            })
+
+            // if there was no change, do nothing
+            if (mainCategory === newMainCategory) {
+                return;
+            }
+
+            // if there isn't a category to edit, return error
             if (!existingMainCategory) {
                 return NextResponse.json({ error: 'Main category not found' }, { status: 404, statusText: 'Main category not found' });
+            }
+
+            // if the new name is empty, return error.
+            if (newMainCategory === '') {
+                return NextResponse.json({ error: 'New category name must not be empty.' }, { status: 400 })
+            }
+
+            // if there is already a category with the same name as the new category, return error.
+            if (existingNewNameCategory) {
+                return NextResponse.json({ error: 'There is already a category with this name. Please choose another.' }, { status: 400, statusText: 'Category\' name already exists' });
             }
 
             const updatedMainCategory = await prisma.mainCategory.update({
@@ -118,7 +141,8 @@ export async function POST(request: NextRequest) {
 
             if (!updatedMainCategory) {
                 return NextResponse.json({ error: 'Could not update category.' }, { status: 500, statusText: 'An error occurred when updating category' });
-            }
+            };
+
             revalidateTag('mainCategory');
 
             return NextResponse.json({ updatedMainCategory }, { status: 200, statusText: `The category has been updated to ${newMainCategory}` });
@@ -127,11 +151,12 @@ export async function POST(request: NextRequest) {
             const { mainCategory } = data;
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
-                    name: sanitizeString(mainCategory),
+                    id: mainCategory,
                     userId: userId,
                 },
             });
             if (!existingMainCategory) {
+                console.log('couldnt find category.')
                 return NextResponse.json({ error: 'Main category not found' }, { status: 404, statusText: 'Main category not found' });
             }
 

@@ -6,7 +6,7 @@ const globalForPrisma = global as unknown as { prisma: PrismaClient };
 const prisma =
     globalForPrisma.prisma ||
     new PrismaClient({
-        log: ["query", "info", "warn", "error"],
+        // log: ["query", "info", "warn", "error"],
         datasources: {
             db: {
                 url: process.env.NODE_ENV !== 'production' ? process.env.MONGODB_DEV_URI : process.env.MONGODB_URI,

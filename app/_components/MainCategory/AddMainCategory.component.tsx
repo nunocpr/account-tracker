@@ -44,7 +44,7 @@ export default function AddMainCategory() {
     }
 
     return (
-        <div className="flex max-w-md">
+        <div className="flex max-w-fit shadow-sm rounded-md border border-gray-100 dark:border-gray-600">
             <input
                 type="text"
                 name="add_category"
