@@ -1,10 +1,9 @@
 import { getServerSession } from "next-auth"
-import { User } from "./_components/user.component"
-import { authOptions } from "./api/auth/[...nextauth]/route"
 import { headers } from 'next/headers'
-import MultiSelect from "./_components/Form/MultiSelect.component"
-import ComboMultiSelect from "./_components/Form/ComboMultiSelect.component"
-import AddMainCategory from "./_components/MainCategory/AddMainCategory.component"
+import { baseURL } from "@lib/constants"
+import { authOptions } from "@api/auth/[...nextauth]/route"
+import ComboMultiSelect from "@components/Form/ComboMultiSelect.component"
+import AddMainCategory from "@components/MainCategory/AddMainCategory.component"
 
 export const preferredRegion = 'home'
 export const dynamic = 'force-dynamic'
@@ -14,8 +13,6 @@ export default async function Home() {
 
     const session = await getServerSession(authOptions)
 
-    const baseURL = process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASE_URL : 'http://localhost:3000';
-
     const res = await fetch(baseURL + '/api/mainCategory', {
         method: 'GET',
         headers: Object.fromEntries(headers()),
@@ -24,7 +21,7 @@ export default async function Home() {
         }
     })
 
-    const mainCategories = await res.json();
+    const { mainCategories } = await res.json();
 
     return (
         <div className="container p-12 md:px-32 space-y-4 min-h-screen">

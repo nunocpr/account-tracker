@@ -1,14 +1,14 @@
 
-import './globals.css'
-import { Inter } from 'next/font/google'
-import { NextAuthProvider } from './clientProviders'
-import { cn } from '@lib/utils'
-import { cookies } from 'next/headers'
-import Header from './_components/Header/Header.component'
-import { authOptions } from './api/auth/[...nextauth]/route'
-import { getServerSession } from 'next-auth'
-import { ToastContainer } from 'react-toastify'
-import "react-toastify/dist/ReactToastify.css";
+import './globals.css';
+import 'react-toastify/dist/ReactToastify.css';
+import { cn } from '@lib/utils';
+import { cookies } from 'next/headers';
+import { Inter } from 'next/font/google';
+import { getServerSession } from 'next-auth';
+import { ToastContainer } from 'react-toastify';
+import { NextAuthProvider } from '@/app/clientProviders';
+import { authOptions } from '@api/auth/[...nextauth]/route';
+import Header from '@components/Header/Header.component';
 
 const inter = Inter({
     variable: '--font-inter',
@@ -18,7 +18,7 @@ const inter = Inter({
 
 
 export default async function RootLayout({
-    children,
+    children
 }: {
     children: React.ReactNode
 }) {

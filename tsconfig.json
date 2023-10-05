@@ -38,6 +38,9 @@
             "@appTypes/*": [
                 "app/_types/*"
             ],
+            "@api/*": [
+                "app/api/*"
+            ],
         }
     },
     "include": [

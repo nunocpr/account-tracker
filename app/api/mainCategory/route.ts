@@ -1,12 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server'
 import prisma from "@lib/prisma";
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
-import { sanitizeString } from '@lib/utils';
 import { ActionType } from '@appTypes/api';
-import { getMainCategories, getUserIdFromSession } from './handlers';
-import { handleErrorResponse } from '@/app/_lib/exceptions';
 import { revalidateTag } from 'next/cache';
+import { getServerSession } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server'
+import { authOptions } from '../auth/[...nextauth]/route';
+import { handleErrorResponse } from '@lib/exceptions';
+import { getUserIdFromSession } from '@lib/authFunctions';
+import { getMainCategories } from '@lib/mainCategoryFunctions';
+import { sanitizeString } from '@lib/utils';
 
 export async function GET() {
     try {
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
 
         // get user ID from session
         const userId = await getUserIdFromSession(session);
+
         // if no user ID, return unauthorized
         if (!userId) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, statusText: 'You must be logged in to create a new main category.' });

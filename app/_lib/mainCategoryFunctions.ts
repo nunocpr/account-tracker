@@ -1,7 +1,8 @@
-import { CustomError } from "./exceptions";
-import { sanitizeString } from "./utils";
+import { getUserIdFromSession } from "@/app/_lib/authFunctions";
+import { AuthRequiredError, CustomError } from "@lib/exceptions";
 import { IMainCategory } from "../_types/mainCategories";
-
+import { sanitizeString } from "./utils";
+import prisma from "@lib/prisma";
 
 export const addMainCategory = async (mainCategory: string) => {
     try {
@@ -70,5 +71,42 @@ export const removeMainCategory = async (mainCategory: string) => {
 
     } catch (e) {
         throw new CustomError('Error removing category');
+    }
+}
+
+export const getMainCategories = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
+
+    try {
+        // fetch all main categories of the user
+
+        // console.log("CALLING SESSION IN getMainCategories: ", session)
+
+        if (!session) {
+            throw new AuthRequiredError('You must be logged in to view main categories.');
+        }
+
+        const userId = await getUserIdFromSession(session);
+
+        if (!userId) {
+            throw new CustomError('There was an error fetching the user.', 403);
+        }
+
+        // console.log("CALLING userId IN getMainCategories: ", userId)
+
+        const mainCategories = await prisma.mainCategory.findMany({
+            where: {
+                userId: userId,
+            },
+            select: {
+                id: true,
+                name: true,
+            },
+        });
+
+        return mainCategories;
+
+    } catch (error) {
+        console.log("ERROR FROM getMainCategories: ", error)
+        throw new CustomError('There was an error fetching main categories.', 500);
     }
 }

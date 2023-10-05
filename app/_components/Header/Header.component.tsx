@@ -1,39 +1,22 @@
 'use client'
-import ThemeSwitcher from '@/app/_components/Header/ThemeSwitcher.component'
-import { Disclosure } from '@headlessui/react'
-import { ChartBarSquareIcon, Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { PlusIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { cn } from '@lib/utils'
-import Profile from './Profile.component'
-import PrimaryButton from '../Common/PrimaryButton.component';
 import Link from 'next/link';
-import { handleDeleteUser, handleLogout } from '@/app/_lib/authFunctions';
+import Profile from '@components/Header/Profile.component';
+import ThemeSwitcher from '@components/Header/ThemeSwitcher.component';
+import PrimaryButton from '@components/Common/PrimaryButton.component';
+import { cn } from '@lib/utils';
+import { usePathname } from 'next/navigation';
+import { Disclosure } from '@headlessui/react';
+import { handleDeleteUser, handleLogout } from '@lib/authFunctions';
+import { ChartBarSquareIcon, Bars3Icon, BellIcon, XMarkIcon, PlusIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 
-function getInitials(name: string): string {
-    const initials = name
-        .split(' ')
-        .map((word) => word.charAt(0))
-        .join('')
-        .toUpperCase();
-    return initials;
-}
-
-const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-]
-const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
-]
-
-// TODO - Get user, navigation and userNav as props
-// is user is NOT logged in:
-// show login button, hide new transaction + nav + userNav buttons
-
-// After log in, show new transaction + nav + userNav buttons
 
 export default function Header({ session }: { session: any }) {
+    const pathname = usePathname();
+
+    const navigation = [
+        { name: 'Dashboard', href: '/dashboard', current: pathname.includes('dashboard') },
+        // { name: 'Derpboard', href: '/derpboard', current: pathname.includes('derpboard') },
+    ]
 
     const user = session?.user;
 
@@ -57,7 +40,9 @@ export default function Header({ session }: { session: any }) {
                                 </div>
                                 {/* Logo */}
                                 <div className="flex flex-shrink-0 items-center">
-                                    <ChartBarSquareIcon className="h-10 w-auto text-indigo-600 hover:text-indigo-500 dark:text-white dark:hover:text-indigo-300 cursor-pointer" />
+                                    <Link href="/">
+                                        <ChartBarSquareIcon className="h-10 w-auto text-indigo-600 hover:text-indigo-500 dark:text-white dark:hover:text-indigo-300 cursor-pointer" />
+                                    </Link>
                                 </div>
                                 {/* Main Navigation */}
                                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
@@ -66,8 +51,8 @@ export default function Header({ session }: { session: any }) {
                                             key={item.name}
                                             href={item.href}
                                             className={cn(
-                                                item.current ? 'bg-slate-50 hover:bg-slate-200 transition-colors duration-200 text-gray-700 dark:bg-gray-800 dark:hover:bg-gray-900 dark:text-white' : '',
-                                                'rounded-md px-3 py-2 text-sm font-medium'
+                                                item.current ? 'bg-slate-50 hover:bg-slate-200 dark:bg-indigo-500' : 'dark:bg-gray-800 dark:hover:bg-gray-900',
+                                                'rounded-md px-3 py-2 text-sm font-medium text-gray-700  dark:text-white transition-colors duration-200'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
                                         >

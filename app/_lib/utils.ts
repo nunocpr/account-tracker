@@ -52,5 +52,4 @@ export const fromDate = (time: number, date = Date.now()) => {
     return new Date(date + time * 1000)
 }
 
-
 export const cn = (...classes: any[]) => classes.filter(Boolean).join(' ');

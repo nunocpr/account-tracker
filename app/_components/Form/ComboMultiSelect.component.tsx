@@ -10,11 +10,7 @@ import { notifyError, notifySuccess } from '@/app/_lib/toastFunctions';
 import { useLocalStorage } from '@/app/_lib/hooks';
 
 
-interface IComboMultiSelectProps {
-    mainCategories: IMainCategory[];
-}
-
-export default function ComboMultiSelect({ mainCategories }: { mainCategories: IComboMultiSelectProps }) {
+export default function ComboMultiSelect({ mainCategories }: { mainCategories: IMainCategory[] }) {
 
     const router = useRouter();
 
@@ -176,105 +172,114 @@ export default function ComboMultiSelect({ mainCategories }: { mainCategories: I
 
                     <div className="absolute mt-1 w-full rounded-md bg-white dark:bg-gray-800 shadow-lg">
                         <Combobox.Options className="shadow-xs max-h-60 overflow-auto scrollbar-thin scrollbar-thumb-amber-500 border border-gray-100 dark:border-gray-600 rounded-md py-1 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5">
-                            {mainCategories.mainCategories
-                                .filter((category: IMainCategory) => category.name.toLowerCase().includes(query.toLowerCase())) // filters based on query
-                                .sort((a: any, b: any) => a.name.localeCompare(b.name)) // sorts categories alphabetically
-                                .map((category: IMainCategory, i: number) => (
-                                    <Combobox.Option
-                                        key={i}
-                                        value={category}
-                                        className={({ active }) => {
-                                            return cn(
-                                                'relative cursor-default select-none py-2 pl-6 pr-9 focus:outline-none group',
-                                                active ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white' : 'text-gray-800 dark:text-white',
-                                                category === editingCategory && 'pointer-events-none'
-                                            );
-                                        }}
-                                        onClick={() => handleCategoryClick(category)}
-                                    >
-                                        {({ active, selected }) => (
-                                            <div className="flex justify-between pl-4">
+                            {
+                                mainCategories.length !== 0 ?
+                                    mainCategories.filter((category: IMainCategory) => category.name.toLowerCase().includes(query.toLowerCase())) // filters based on query
+                                        .sort((a: any, b: any) => a.name.localeCompare(b.name)) // sorts categories alphabetically
+                                        .map((category: IMainCategory, i: number) => (
+                                            <Combobox.Option
+                                                key={i}
+                                                value={category}
+                                                className={({ active }) => {
+                                                    return cn(
+                                                        'relative cursor-default select-none py-2 pl-6 pr-9 focus:outline-none group',
+                                                        active ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white' : 'text-gray-800 dark:text-white',
+                                                        category === editingCategory && 'pointer-events-none'
+                                                    );
+                                                }}
+                                                onClick={() => handleCategoryClick(category)}
+                                            >
+                                                {({ active, selected }) => (
+                                                    <div className="flex justify-between pl-4">
 
-                                                {
-                                                    selected && (
-                                                        <span
-                                                            className={cn(
-                                                                'absolute inset-y-0 left-2 flex items-center pr-4',
-                                                                active ? 'text-amber-400 dark:text-white' : 'text-amber-400'
-                                                            )}
-                                                        >
-                                                            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path
-                                                                    fillRule="evenodd"
-                                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                                    clipRule="evenodd"
+                                                        {
+                                                            selected && (
+                                                                <span
+                                                                    className={cn(
+                                                                        'absolute inset-y-0 left-2 flex items-center pr-4',
+                                                                        active ? 'text-amber-400 dark:text-white' : 'text-amber-400'
+                                                                    )}
+                                                                >
+                                                                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                                        <path
+                                                                            fillRule="evenodd"
+                                                                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                                            clipRule="evenodd"
+                                                                        />
+                                                                    </svg>
+                                                                </span>
+                                                            )
+                                                        }
+
+                                                        {
+                                                            editingCategory === category ? (
+                                                                <input
+                                                                    type="text"
+                                                                    className={cn("pl-2 bg-transparent border border-gray-300 text-white", isLoading && 'pointer-events-none')}
+                                                                    defaultValue={category.name}
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                    }}
+                                                                    onChange={(e) => setNewCategoryName(e.target.value)}
+                                                                    onBlur={() => {
+                                                                        !isLoading && handleCategoryEdit(category, newCategoryName);
+                                                                        setEditingCategory(null);
+                                                                    }}
+                                                                    placeholder="Edit Category Name"
+                                                                    autoFocus
                                                                 />
-                                                            </svg>
-                                                        </span>
-                                                    )
-                                                }
+                                                            ) : (
+                                                                <span className={cn('block truncate', selected ? 'font-bold ' : 'font-normal')}>
+                                                                    {category.name}
+                                                                </span>
+                                                            )
+                                                        }
+                                                        <div className="flex space-x-4">
 
-                                                {
-                                                    editingCategory === category ? (
-                                                        <input
-                                                            type="text"
-                                                            className={cn("pl-2 bg-transparent border border-gray-300 text-white", isLoading && 'pointer-events-none')}
-                                                            defaultValue={category.name}
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                            }}
-                                                            onChange={(e) => setNewCategoryName(e.target.value)}
-                                                            onBlur={() => {
-                                                                !isLoading && handleCategoryEdit(category, newCategoryName);
-                                                                setEditingCategory(null);
-                                                            }}
-                                                            placeholder="Edit Category Name"
-                                                            autoFocus
-                                                        />
-                                                    ) : (
-                                                        <span className={cn('block truncate', selected ? 'font-bold ' : 'font-normal')}>
-                                                            {category.name}
-                                                        </span>
-                                                    )
-                                                }
-                                                <div className="flex space-x-4">
+                                                            <PencilSquareIcon
+                                                                className="h-6 w-6 cursor-pointer text-indigo-600 dark:group-hover:text-indigo-200"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    e.preventDefault();
 
-                                                    <PencilSquareIcon
-                                                        className="h-6 w-6 cursor-pointer text-indigo-600 dark:group-hover:text-indigo-200"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            e.preventDefault();
+                                                                    if (!isLoading) {
 
-                                                            if (!isLoading) {
+                                                                        if (editingCategory) {
 
-                                                                if (editingCategory) {
+                                                                            setEditingCategory(null);
 
-                                                                    setEditingCategory(null);
+                                                                        } else {
 
-                                                                } else {
+                                                                            setEditingCategory(category);
 
-                                                                    setEditingCategory(category);
+                                                                        }
+                                                                    }
 
-                                                                }
-                                                            }
+                                                                }}
+                                                            />
 
-                                                        }}
-                                                    />
-
-                                                    <TrashIcon
-                                                        className="h-6 w-6 cursor-pointer text-red-500 dark:group-hover:text-red-200"
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            handleCategoryDelete(category);
-                                                        }}
-                                                    />
-                                                </div>
+                                                            <TrashIcon
+                                                                className="h-6 w-6 cursor-pointer text-red-500 dark:group-hover:text-red-200"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleCategoryDelete(category);
+                                                                }}
+                                                            />
+                                                        </div>
 
 
-                                            </div>
-                                        )}
-                                    </Combobox.Option>
-                                ))}
+                                                    </div>
+                                                )}
+                                            </Combobox.Option>
+                                        ))
+                                    :
+                                    (<Combobox.Option
+                                        value=""
+                                        className={cn("relative pointer-events-none cursor-default select-none py-2 pl-6 pr-9 focus:outline-none group dark:text-white")}
+                                    >
+                                        There are no categories in your account
+                                    </Combobox.Option>)
+                            }
                         </Combobox.Options>
                     </div>
                 </div>

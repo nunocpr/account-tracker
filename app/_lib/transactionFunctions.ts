@@ -1,14 +1,7 @@
-interface ITransaction {
-    id: string,
-    type: string,
-    amount: number,
-    description: string | null,
-    mainCategoryId: string | null,
-    subCategoryId: string | null,
-    userId: string,
-    createdAt: Date,
-    updatedAt: Date
-}
+import prisma from "@lib/prisma";
+import { ITransaction } from "@appTypes/transactions";
+import { getUserIdFromSession } from "@lib/authFunctions";
+import { AuthRequiredError, CustomError } from "@lib/exceptions";
 
 export const addTransaction = (transaction: ITransaction) => {
     try {
@@ -49,5 +42,41 @@ export const removeTransaction = (transaction: ITransaction) => {
         });
     } catch (e) {
         console.log(e);
+    }
+}
+
+export const getTransactions = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
+
+    try {
+        // fetch all user transactions
+
+        // console.log("CALLING SESSION IN getTransactions: ", session)
+
+        if (!session) {
+            throw new AuthRequiredError('You must be logged in to view main categories.');
+        }
+
+        const userId = await getUserIdFromSession(session);
+
+        if (!userId) {
+            throw new CustomError('There was an error fetching the user.', 403);
+        }
+
+        // console.log("CALLING userId IN getTransactions: ", userId)
+
+        const transactions = await prisma.transaction.findMany({
+            where: {
+                userId: userId,
+            },
+            select: {
+                id: true
+            },
+        });
+
+        return transactions;
+
+    } catch (error) {
+        console.log("ERROR FROM getTransactions: ", error)
+        throw new CustomError('There was an error fetching main categories.', 500);
     }
 }
