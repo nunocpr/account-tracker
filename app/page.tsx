@@ -26,7 +26,6 @@ export default async function Home() {
 
     const mainCategories = await res.json();
 
-
     return (
         <div className="container p-12 md:px-32 space-y-4 min-h-screen">
             <h1 className="pt-4 pb-8 bg-gradient-to-br from-slate-950 via-slate-500 to-slate-400 dark:from-slate-600 dark:via-slate-300 dark:to-slate-50 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
@@ -40,7 +39,7 @@ export default async function Home() {
                     !session ? (
                         "please register above."
                     ) : (
-                        "heh"
+                        session?.user?.name
                     )
                 }
             </span>

@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Combobox } from '@headlessui/react'
 import { cn } from '@/app/_lib/utils';
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
@@ -7,6 +7,7 @@ import { IMainCategory } from '@/app/_types/mainCategories';
 import { editMainCategory, removeMainCategory } from '@/app/_lib/mainCategoryFunctions';
 import { useRouter } from 'next/navigation';
 import { notifyError, notifySuccess } from '@/app/_lib/toastFunctions';
+import { useLocalStorage } from '@/app/_lib/hooks';
 
 
 interface IComboMultiSelectProps {
@@ -16,17 +17,12 @@ interface IComboMultiSelectProps {
 export default function ComboMultiSelect({ mainCategories }: { mainCategories: IComboMultiSelectProps }) {
 
     const router = useRouter();
-    const preferencesFromLocalStorage = localStorage.getItem('categoryPreferences');
-    const initialCategories = preferencesFromLocalStorage ? JSON.parse(preferencesFromLocalStorage) : [];
-    const [activeCategories, setActiveCategories] = useState<IMainCategory[]>(initialCategories);
+
+    const [activeCategories, setActiveCategories] = useLocalStorage<IMainCategory[]>('categoryPreferences', []);
     const [editingCategory, setEditingCategory] = useState<IMainCategory | null>(null);
     const [newCategoryName, setNewCategoryName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [query, setQuery] = useState('');
-
-    useEffect(() => {
-        localStorage.setItem('categoryPreferences', JSON.stringify(activeCategories.sort((a: any, b: any) => a.name.localeCompare(b.name))));
-    }, [activeCategories]);
 
     const handleCategoryClick = (category: IMainCategory) => {
         setActiveCategories((existing) => {
@@ -129,7 +125,10 @@ export default function ComboMultiSelect({ mainCategories }: { mainCategories: I
                 name="categories"
                 multiple
             >
-                <Combobox.Label className="block text-sm font-medium leading-5 text-gray-800 dark:text-white">
+                <Combobox.Label
+                    htmlFor='searchCategory'
+                    className="block text-sm font-medium leading-5 text-gray-800 dark:text-white"
+                >
                     Categories
                 </Combobox.Label>
 
@@ -138,6 +137,7 @@ export default function ComboMultiSelect({ mainCategories }: { mainCategories: I
                         <div className="relative w-full cursor-default rounded-md shadow-sm border border-gray-100 dark:border-gray-600 bg-white dark:bg-gray-800 dark:text-white focus:ring-1 focus:ring-black dark:focus:ring-white dark:focus:border-white focus:border-black focus:outline-none sm:text-sm py-1 pl-2 pr-10 text-left transition duration-150 ease-in-out sm:leading-5">
                             <span className="flex flex-wrap gap-2 space-x-2">
                                 <Combobox.Input
+                                    id='searchCategory'
                                     onChange={(event) => setQuery(event.target.value)}
                                     className="py-2 pl-3 rounded-sm outline outline-1 outline-gray-300 dark:outline-gray-500  text-gray-800 dark:text-white bg-transparent focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400 transition-all duration-200"
                                     displayValue={(_) => query}
@@ -279,10 +279,10 @@ export default function ComboMultiSelect({ mainCategories }: { mainCategories: I
                     </div>
                 </div>
             </Combobox>
-            <button className="mt-2 inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            {/* <button className="mt-2 inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                 Submit
             </button>
-            {/* </form> */}
+            </form> */}
 
         </div >
     );

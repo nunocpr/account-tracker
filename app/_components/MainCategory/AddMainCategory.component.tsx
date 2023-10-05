@@ -52,7 +52,8 @@ export default function AddMainCategory() {
                 onChange={handleChange}
                 value={category}
                 placeholder="Home..."
-                className="p-2 min-w-[100px] outline-none dark:bg-gray-800 dark:text-white rounded-l-md placeholder:text-sm"
+                // className="p-2 pl-3 min-w-[100px] outline-none dark:bg-gray-800 dark:text-white rounded-l-md placeholder:text-sm"
+                className="py-2 pl-3 placeholder:text-sm rounded-l-md outline outline-1 outline-gray-300 dark:outline-gray-500  text-gray-800 dark:bg-gray-800 dark:text-white focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400 transition-all duration-200"
             />
             <button
                 onClick={onSubmit}
