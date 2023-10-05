@@ -99,13 +99,10 @@ export async function POST(request: NextRequest) {
 
             // return NextResponse.json({ deletedtransaction }, { status: 200, statusText: `The transaction ${transaction} has been deleted` });
 
-        } else {
-
-            // if the request type is none of the above, return 'Invalid Request' error
-            return NextResponse.json({ error: 'Invalid request' }, { status: 400, statusText: 'Invalid request' });
-
         }
 
+        // if the request type is none of the above, return 'Invalid Request' error
+        return NextResponse.json({ error: 'Invalid request' }, { status: 400, statusText: 'Invalid request' });
 
     } catch (error) {
         return handleErrorResponse(error);

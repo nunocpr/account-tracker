@@ -112,9 +112,9 @@ export async function POST(request: NextRequest) {
                 }
             })
 
-            // if there was no change, do nothing
+            // if there was no change, or newMainCategory has a falsy value, do nothing
             if (mainCategory === newMainCategory) {
-                return;
+                return NextResponse.json({ error: 'There was an error while creating the new category.' }, { status: 400 })
             }
 
             // if there isn't a category to edit, return error
@@ -150,13 +150,16 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ updatedMainCategory }, { status: 200, statusText: `The category has been updated to ${newMainCategory}` });
 
         } else if (type === ActionType.Remove) {
+
             const { mainCategory } = data;
+
             const existingMainCategory = await prisma.mainCategory.findFirst({
                 where: {
                     id: mainCategory,
                     userId: userId,
                 },
             });
+
             if (!existingMainCategory) {
                 console.log('couldnt find category.')
                 return NextResponse.json({ error: 'Main category not found' }, { status: 404, statusText: 'Main category not found' });
@@ -171,6 +174,7 @@ export async function POST(request: NextRequest) {
             if (!deletedMainCategory) {
                 return NextResponse.json({ error: 'Could not delete category.' }, { status: 500, statusText: 'An error occurred when deleting category' });
             }
+
             revalidateTag('mainCategory');
 
             return NextResponse.json({ deletedMainCategory }, { status: 200, statusText: `The category ${mainCategory} has been deleted` });
