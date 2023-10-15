@@ -3,54 +3,82 @@ import { ITransaction } from "@appTypes/transactions";
 import { getUserIdFromSession } from "@lib/authFunctions";
 import { AuthRequiredError, CustomError } from "@lib/exceptions";
 
-export const addTransaction = (transaction: ITransaction) => {
+export const addTransaction = async (transaction: ITransaction) => {
     try {
-        fetch('/api/transaction/add', {
+
+        const res = await fetch('/api/transaction', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(transaction)
+            body: JSON.stringify(
+                {
+                    type: 'add',
+                    data: {
+                        transaction,
+                    }
+                }
+            )
         });
+
+        return res;
+
     } catch (e) {
-        console.log(e);
+        throw new CustomError('Error adding transaction');
     }
 }
 
-export const editTransaction = (transaction: ITransaction) => {
+export const editTransaction = async (transaction: ITransaction) => {
     try {
-        fetch('/api/transaction/edit', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(transaction)
+            body: JSON.stringify(
+                {
+                    type: 'edit',
+                    data: {
+                        transaction,
+                    }
+                }
+            )
         });
+        return res;
     } catch (e) {
-        console.log(e);
+        throw new CustomError('Error editing category');
     }
 }
 
-export const removeTransaction = (transaction: ITransaction) => {
+export const removeTransaction = async (transaction: ITransaction) => {
     try {
-        fetch('/api/transaction/remove', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(transaction)
+            body: JSON.stringify(
+                {
+                    type: 'remove',
+                    data: {
+                        transaction,
+                    }
+                }
+            )
         });
+
+        return res;
     } catch (e) {
-        console.log(e);
+        throw new CustomError('Error removing category');
     }
 }
 
-export const getTransactions = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
+export const fetchTransactions = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
 
     try {
         // fetch all user transactions
 
-        // console.log("CALLING SESSION IN getTransactions: ", session)
+        // console.log("CALLING SESSION IN fetchTransactions: ", session)
 
         if (!session) {
             throw new AuthRequiredError('You must be logged in to view main categories.');
@@ -62,7 +90,7 @@ export const getTransactions = async (session: { user?: { name?: string | null, 
             throw new CustomError('There was an error fetching the user.', 403);
         }
 
-        // console.log("CALLING userId IN getTransactions: ", userId)
+        // console.log("CALLING userId IN fetchTransactions: ", userId)
 
         const transactions = await prisma.transaction.findMany({
             where: {
@@ -76,7 +104,7 @@ export const getTransactions = async (session: { user?: { name?: string | null, 
         return transactions;
 
     } catch (error) {
-        console.log("ERROR FROM getTransactions: ", error)
+        console.log("ERROR FROM fetchTransactions: ", error)
         throw new CustomError('There was an error fetching main categories.', 500);
     }
 }

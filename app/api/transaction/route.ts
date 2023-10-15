@@ -62,42 +62,85 @@ export async function POST(request: NextRequest) {
 
         // Perform add, edit or remove actions based on type
         if (type === ActionType.Add) {
-            const { transaction } = data;
-
-            /*
-                const newTransaction = await prisma.transaction.create({
-                    data: {
-                        amount: sanitizeNumber(transaction.amount),
-                        type: sanitizeString(transaction.type),
-                        mainCategory: transaction.mainCategoryId ? { connect: { id: sanitizeString(transaction.mainCategoryId) } } : undefined,
-                        subCategory: transaction.subCategoryId ? { connect: { id: sanitizeString(transaction.subCategoryId) } } : undefined,
-                        description: transaction.description ? sanitizeString(transaction.description) : undefined,
-                        user: { connect: { id: userId } },
-                    }
-                })
-            */
 
             //* create a transaction
+            const { transaction } = data;
+
+            const newTransaction = await prisma.transaction.create({
+                data: {
+                    amount: sanitizeNumber(transaction.amount),
+                    type: sanitizeString(transaction.type),
+                    mainCategory: transaction.mainCategoryId ? { connect: { id: sanitizeString(transaction.mainCategoryId) } } : undefined,
+                    subCategory: transaction.subCategoryId ? { connect: { id: sanitizeString(transaction.subCategoryId) } } : undefined,
+                    description: transaction.description ? sanitizeString(transaction.description) : undefined,
+                    user: { connect: { id: userId } },
+                }
+            })
 
             revalidateTag('transaction');
 
-            // return NextResponse.json({ newTransaction }, { status: 200 });
+            return NextResponse.json({ newTransaction }, { status: 200 });
 
         } else if (type === ActionType.Edit) {
 
             //* edit a transaction
+            const { transactionId, newTransaction } = data;
+
+            // Find the existing transaction
+            const existingTransaction = await prisma.transaction.findUnique({
+                where: {
+                    id: sanitizeString(transactionId),
+                },
+            });
+
+            if (!existingTransaction) {
+                return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
+            }
+
+            // Update the transaction with the new data
+            const editedTransaction = await prisma.transaction.update({
+                where: {
+                    id: existingTransaction.id,
+                },
+                data: {
+                    amount: sanitizeNumber(newTransaction.amount),
+                    type: sanitizeString(newTransaction.type),
+                    mainCategory: newTransaction.mainCategoryId ? { connect: { id: sanitizeString(newTransaction.mainCategoryId) } } : undefined,
+                    subCategory: newTransaction.subCategoryId ? { connect: { id: sanitizeString(newTransaction.subCategoryId) } } : undefined,
+                    description: newTransaction.description ? sanitizeString(newTransaction.description) : undefined,
+                },
+            });
 
             revalidateTag('transaction');
 
-            // return NextResponse.json({ updatedTransaction }, { status: 200, statusText: `The transaction has been updated to ${newTransaction}` });
+            return NextResponse.json({ editedTransaction }, { status: 200, statusText: `The transaction has been updated to ${newTransaction}` });
 
         } else if (type === ActionType.Remove) {
 
             //* remove a transaction
+            const { transactionId } = data;
+
+            // Find the existing transaction
+            const existingTransaction = await prisma.transaction.findUnique({
+                where: {
+                    id: sanitizeString(transactionId),
+                },
+            });
+
+            if (!existingTransaction) {
+                return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
+            }
+
+            // Delete the transaction
+            await prisma.transaction.delete({
+                where: {
+                    id: existingTransaction.id,
+                },
+            });
 
             revalidateTag('transaction');
 
-            // return NextResponse.json({ deletedtransaction }, { status: 200, statusText: `The transaction ${transaction} has been deleted` });
+            return NextResponse.json({ message: 'The transaction has been deleted.' }, { status: 200 });
 
         }
 
