@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route';
 import { handleErrorResponse } from '@lib/exceptions';
 import { getUserIdFromSession } from '@lib/authFunctions';
-import { fetchMainCategories } from '@lib/mainCategoryFunctions';
+import { fetchSubCategories } from '@lib/subCategoryFunctions';
 import { sanitizeString } from '@lib/utils';
 
 export async function GET() {
@@ -17,11 +17,11 @@ export async function GET() {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401, statusText: 'You must be logged in to perform this action' });
         }
 
-        const mainCategories = await fetchMainCategories(session);
+        const subCategories = await fetchSubCategories(session);
 
-        revalidateTag('mainCategory');
+        revalidateTag('subCategory');
 
-        return NextResponse.json({ mainCategories }, { status: 200 });
+        return NextResponse.json({ subCategories }, { status: 200 });
 
     } catch (error) {
         return handleErrorResponse(error);
@@ -30,14 +30,14 @@ export async function GET() {
 
 /**
  * 
- * Having in mind the user, this route will create, edit or remove a main category, based on the type of the request.
- * The request should be a POST request with a JSON body containing the type of the request and the main category.
- * ex: { type: 'add', mainCategory: 'Bank' }
- *     { type: 'edit', mainCategory: 'Bank', newMainCategory: 'Banking' }
- *     { type: 'delete', mainCategory: 'Bank' }
+ * Having in mind the user, this route will create, edit or remove a sub category, based on the type of the request.
+ * The request should be a POST request with a JSON body containing the type of the request and the sub category.
+ * ex: { type: 'add', subCategory: 'Bank' }
+ *     { type: 'edit', subCategory: 'Bank', newSubCategory: 'Banking' }
+ *     { type: 'delete', subCategory: 'Bank' }
  * 
  * @param request POST request
- * @returns a response with the new main category or errors
+ * @returns a response with the new sub category or errors
  */
 export async function POST(request: NextRequest) {
     try {
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
         // if no user ID, return unauthorized
         if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401, statusText: 'You must be logged in to create a new main category.' });
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401, statusText: 'You must be logged in to create a new sub category.' });
         }
 
         // get request body
@@ -63,26 +63,31 @@ export async function POST(request: NextRequest) {
 
         // Perform add, edit or remove actions based on type
         if (type === ActionType.Add) {
-            const { mainCategory } = data;
+            const { subCategory, mainCategoryId } = data;
 
-            if (mainCategory === '') {
+            if (subCategory === '') {
                 return NextResponse.json({ error: 'Category must not be empty.' }, { status: 400 })
             }
 
-            const existingMainCategory = await prisma.mainCategory.findFirst({
+            const existingSubCategory = await prisma.subCategory.findFirst({
                 where: {
-                    name: sanitizeString(mainCategory),
+                    name: sanitizeString(subCategory),
                     userId: userId,
                 },
             });
 
-            if (existingMainCategory) {
-                return NextResponse.json({ error: 'Main category already exists' }, { status: 400, statusText: 'Main category already exists' });
+            if (existingSubCategory) {
+                return NextResponse.json({ error: 'Sub category already exists' }, { status: 400, statusText: 'Sub category already exists' });
             }
 
-            const newMainCategory = await prisma.mainCategory.create({
+            const newSubCategory = await prisma.subCategory.create({
                 data: {
-                    name: sanitizeString(mainCategory),
+                    name: sanitizeString(subCategory),
+                    mainCategory: {
+                        connect: {
+                            id: mainCategoryId,
+                        }
+                    },
                     user: {
                         connect: {
                             id: userId
@@ -90,40 +95,40 @@ export async function POST(request: NextRequest) {
                     }
                 }
             });
-            revalidateTag('mainCategory');
+            revalidateTag('subCategory');
 
-            return NextResponse.json({ newMainCategory }, { status: 200 });
+            return NextResponse.json({ newSubCategory }, { status: 200 });
 
         } else if (type === ActionType.Edit) {
-            const { mainCategory, newMainCategory } = data;
+            const { subCategory, newSubCategory } = data;
 
             // find if there is a category to edit
-            const existingMainCategory = await prisma.mainCategory.findFirst({
+            const existingSubCategory = await prisma.subCategory.findFirst({
                 where: {
-                    name: sanitizeString(mainCategory),
+                    name: sanitizeString(subCategory),
                     userId: userId,
                 },
             });
 
-            const existingNewNameCategory = await prisma.mainCategory.findFirst({
+            const existingNewNameCategory = await prisma.subCategory.findFirst({
                 where: {
-                    name: sanitizeString(newMainCategory),
+                    name: sanitizeString(newSubCategory),
                     userId: userId,
                 }
             })
 
-            // if there was no change, or newMainCategory has a falsy value, do nothing
-            if (mainCategory === newMainCategory) {
+            // if there was no change, or newSubCategory has a falsy value, do nothing
+            if (subCategory === newSubCategory) {
                 return NextResponse.json({ error: 'There was an error while creating the new category.' }, { status: 400 })
             }
 
             // if there isn't a category to edit, return error
-            if (!existingMainCategory) {
-                return NextResponse.json({ error: 'Main category not found' }, { status: 404, statusText: 'Main category not found' });
+            if (!existingSubCategory) {
+                return NextResponse.json({ error: 'Sub category not found' }, { status: 404, statusText: 'Sub category not found' });
             }
 
             // if the new name is empty, return error.
-            if (newMainCategory === '') {
+            if (newSubCategory === '') {
                 return NextResponse.json({ error: 'New category name must not be empty.' }, { status: 400 })
             }
 
@@ -132,52 +137,52 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ error: 'There is already a category with this name. Please choose another.' }, { status: 400, statusText: 'Category\' name already exists' });
             }
 
-            const updatedMainCategory = await prisma.mainCategory.update({
+            const updatedSubCategory = await prisma.subCategory.update({
                 where: {
-                    id: existingMainCategory.id,
+                    id: existingSubCategory.id,
                 },
                 data: {
-                    name: sanitizeString(newMainCategory),
+                    name: sanitizeString(newSubCategory),
                 },
             });
 
-            if (!updatedMainCategory) {
+            if (!updatedSubCategory) {
                 return NextResponse.json({ error: 'Could not update category.' }, { status: 500, statusText: 'An error occurred when updating category' });
             };
 
-            revalidateTag('mainCategory');
+            revalidateTag('subCategory');
 
-            return NextResponse.json({ updatedMainCategory }, { status: 200, statusText: `The category has been updated to ${newMainCategory}` });
+            return NextResponse.json({ updatedSubCategory }, { status: 200, statusText: `The category has been updated to ${newSubCategory}` });
 
         } else if (type === ActionType.Remove) {
 
-            const { mainCategory } = data;
+            const { subCategory } = data;
 
-            const existingMainCategory = await prisma.mainCategory.findFirst({
+            const existingSubCategory = await prisma.subCategory.findFirst({
                 where: {
-                    id: mainCategory,
+                    id: subCategory,
                     userId: userId,
                 },
             });
 
-            if (!existingMainCategory) {
-                console.log('couldnt find category.')
-                return NextResponse.json({ error: 'Main category not found' }, { status: 404, statusText: 'Main category not found' });
+            if (!existingSubCategory) {
+                // console.log('Couldnt find category.')
+                return NextResponse.json({ error: 'Sub category not found' }, { status: 404, statusText: 'Sub category not found' });
             }
 
-            const deletedMainCategory = await prisma.mainCategory.delete({
+            const deletedSubCategory = await prisma.subCategory.delete({
                 where: {
-                    id: existingMainCategory.id,
+                    id: existingSubCategory.id,
                 },
             });
 
-            if (!deletedMainCategory) {
+            if (!deletedSubCategory) {
                 return NextResponse.json({ error: 'Could not delete category.' }, { status: 500, statusText: 'An error occurred when deleting category' });
             }
 
-            revalidateTag('mainCategory');
+            revalidateTag('subCategory');
 
-            return NextResponse.json({ deletedMainCategory }, { status: 200, statusText: `The category ${mainCategory} has been deleted` });
+            return NextResponse.json({ deletedSubCategory }, { status: 200, statusText: `The category ${subCategory} has been deleted` });
 
         } else {
             // if the request type is none of the above, return 'Invalid Request' error
