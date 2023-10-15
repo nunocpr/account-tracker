@@ -41,6 +41,9 @@
             "@api/*": [
                 "app/api/*"
             ],
+            "@styles/*": [
+                "app/_styles/*"
+            ],
         }
     },
     "include": [

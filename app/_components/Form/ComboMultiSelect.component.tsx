@@ -1,13 +1,13 @@
 'use client'
-import React, { useState } from 'react'
-import { Combobox } from '@headlessui/react'
 import { cn } from '@/app/_lib/utils';
-import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
-import { IMainCategory } from '@/app/_types/mainCategories';
-import { editMainCategory, removeMainCategory } from '@/app/_lib/mainCategoryFunctions';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { notifyError, notifySuccess } from '@/app/_lib/toastFunctions';
+import { Combobox } from '@headlessui/react';
 import { useLocalStorage } from '@/app/_lib/hooks';
+import { IMainCategory } from '@/app/_types/mainCategories';
+import { notifyError, notifySuccess } from '@/app/_lib/toastFunctions';
+import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
+import { editMainCategory, removeMainCategory } from '@/app/_lib/mainCategoryFunctions';
 
 
 export default function ComboMultiSelect({ mainCategories }: { mainCategories: IMainCategory[] }) {
@@ -105,14 +105,6 @@ export default function ComboMultiSelect({ mainCategories }: { mainCategories: I
 
     return (
         <div className="space-y-1">
-            {/* 
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log(e.currentTarget);
-                    console.log([...new FormData(e.currentTarget).entries()]);
-                }}
-            > */}
 
             <Combobox
                 value={activeCategories}
@@ -284,11 +276,6 @@ export default function ComboMultiSelect({ mainCategories }: { mainCategories: I
                     </div>
                 </div>
             </Combobox>
-            {/* <button className="mt-2 inline-flex items-center rounded border border-gray-300 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                Submit
-            </button>
-            </form> */}
-
         </div >
     );
 };

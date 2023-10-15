@@ -1,5 +1,5 @@
 
-import './globals.css';
+import '@styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { cn } from '@lib/utils';
 import { cookies } from 'next/headers';

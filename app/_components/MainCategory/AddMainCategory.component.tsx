@@ -1,5 +1,5 @@
 'use client'
-import { AuthFailedError, AuthRequiredError, CustomError, handleError } from "@/app/_lib/exceptions";
+import { handleError } from "@/app/_lib/exceptions";
 import { addMainCategory } from "@/app/_lib/mainCategoryFunctions";
 import { notifyError, notifySuccess } from "@/app/_lib/toastFunctions";
 import { cn } from "@/app/_lib/utils";
