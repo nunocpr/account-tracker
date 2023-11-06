@@ -1,6 +1,4 @@
 import { getServerSession } from "next-auth"
-import { headers } from 'next/headers'
-import { baseURL } from "@lib/constants"
 import { authOptions } from "@api/auth/[...nextauth]/route"
 
 export const preferredRegion = 'home'

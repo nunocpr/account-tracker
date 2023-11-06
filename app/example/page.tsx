@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
-import Example from "../_components/sidebar_on_dark";
+import Header from "@components/Header/Header.component";
 
 export default async function ProtectedPage() {
 
@@ -12,10 +12,7 @@ export default async function ProtectedPage() {
 
     return (
         <div>
-            <h1>Protected Page</h1>
-            <h2>{session.user?.name}</h2>
-
-            <Example />
+            <Header session={session} />
         </div>
     )
 }

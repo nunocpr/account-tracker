@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation';
 import { Disclosure } from '@headlessui/react';
 import { handleDeleteUser, handleLogout } from '@lib/authFunctions';
 import { ChartBarSquareIcon, Bars3Icon, BellIcon, XMarkIcon, PlusIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon } from '@heroicons/react/24/solid';
 
 
 export default function Header({ session }: { session: any }) {
@@ -18,13 +19,24 @@ export default function Header({ session }: { session: any }) {
         // { name: 'Derpboard', href: '/derpboard', current: pathname.includes('derpboard') },
     ]
 
+    const subNav = [
+        { name: 'Summary Overview', href: '/overview', current: pathname.includes('overview') },
+        { name: 'Transaction History', href: '/history', current: pathname.includes('history') },
+        { name: 'Income', href: '/income', current: pathname.includes('income') },
+        { name: 'Expenses', href: '/expenses', current: pathname.includes('expenses') },
+        { name: 'Budget Tracking', href: '/tracking', current: pathname.includes('tracking') },
+        { name: 'Financial Goals', href: '/goals', current: pathname.includes('goals') },
+        { name: 'Reports and Insights', href: '/reports', current: pathname.includes('reports') },
+    ]
+
+
     const user = session?.user;
 
     return (
-        <Disclosure as="nav" className="bg-slate-50 dark:bg-gray-800 shadow">
+        <Disclosure as="nav" className="bg-slate-50 dark:bg-gray-800 shadow z-20 fixed left-0 right-0">
             {({ open }) => (
                 <>
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="mx-auto w-screen max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 justify-between items-center">
                             <div className="flex">
                                 {/* Mobile menu button */}
@@ -52,7 +64,7 @@ export default function Header({ session }: { session: any }) {
                                             href={item.href}
                                             className={cn(
                                                 item.current ? 'bg-slate-50 hover:bg-slate-200 dark:bg-indigo-500' : 'dark:bg-gray-800 dark:hover:bg-gray-900',
-                                                'rounded-md px-3 py-2 text-sm font-medium text-gray-700  dark:text-white transition-colors duration-200'
+                                                'rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-white transition-colors duration-200'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
                                         >
@@ -60,6 +72,7 @@ export default function Header({ session }: { session: any }) {
                                         </a>
                                     ))}
                                 </div>
+
                             </div>
                             {
                                 session ?
@@ -102,26 +115,68 @@ export default function Header({ session }: { session: any }) {
                         </div>
                     </div>
 
-
                     {/* Mobile Menu */}
-                    <Disclosure.Panel className="md:hidden">
-                        <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                            {session && navigation.map((item) => (
-                                <Disclosure.Button
-                                    key={item.name}
-                                    as="a"
-                                    href={item.href}
-                                    className={cn(
-                                        item.current ? 'dark:bg-gray-900 dark:text-white' : 'text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
-                                        'block rounded-md px-3 py-2 text-base font-medium'
-                                    )}
-                                    aria-current={item.current ? 'page' : undefined}
-                                >
-                                    {item.name}
-                                </Disclosure.Button>
-                            ))}
-                        </div>
-                        <div className="border-t border-gray-200 dark:border-gray-700 pb-3 pt-4">
+                    <Disclosure.Panel className="md:hidden flex flex-col">
+                        {/* Main Navigation */}
+                        {/* <Disclosure as="div" className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                            {({ open }) => (
+                                <>
+                                    <Disclosure.Button
+                                        className="mb-2 flex w-full items-center text-start dark:text-white space-x-2"
+                                    >
+                                        <p>Navigation</p>
+                                        <ChevronRightIcon className={cn(open ? 'rotate-90' : '', "w-4 h-4 transform duration-200")} />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="">
+                                        {session && navigation.map((item) => (
+                                            <Disclosure.Button
+                                                key={item.name}
+                                                as="a"
+                                                href={item.href}
+                                                className={cn(
+                                                    item.current ? 'dark:bg-gray-900 dark:text-white' : 'text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
+                                                    'block rounded-md px-4 py-2 text-base font-medium'
+                                                )}
+                                                aria-current={item.current ? 'page' : undefined}
+                                            >
+                                                {item.name}
+                                            </Disclosure.Button>
+                                        ))}
+                                    </Disclosure.Panel>
+                                </>
+                            )}
+                        </Disclosure> */}
+                        {/* Sub Navigation */}
+                        <Disclosure as="div" className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+                            {({ open }) => (
+                                <>
+                                    <Disclosure.Button
+                                        className="mb-2 flex w-full items-center text-start dark:text-white space-x-2"
+                                    >
+                                        <p>Dashboard</p>
+                                        <ChevronRightIcon className={cn(open ? 'rotate-90' : '', "w-4 h-4 transform duration-200")} />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel>
+                                        {session && subNav.map((item) => (
+                                            <Disclosure.Button
+                                                key={item.name}
+                                                as="a"
+                                                href={item.href}
+                                                className={cn(
+                                                    item.current ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100",
+                                                    "block ml-2 px-2 py-1 rounded-md text-base font-medium"
+                                                )}
+                                                aria-current={item.current ? 'page' : undefined}
+                                            >
+                                                {item.name}
+                                            </Disclosure.Button>
+                                        ))}
+                                    </Disclosure.Panel>
+                                </>
+                            )}
+                        </Disclosure>
+                        {/* User Settings */}
+                        <div className="border-y border-gray-200 dark:border-gray-700 pb-3 pt-4">
                             {
                                 session ?
                                     <>
@@ -193,7 +248,6 @@ export default function Header({ session }: { session: any }) {
                                     </div>
                             }
                         </div>
-
                     </Disclosure.Panel>
                 </>
             )
