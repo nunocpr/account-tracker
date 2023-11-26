@@ -4,16 +4,16 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { fromDate, generateSessionToken } from "@/app/_lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "@/app/_lib/prisma";
+import { prisma } from "@/app/_lib/prisma";
 
 const adapter = PrismaAdapter(prisma);
 const callbacks = {
     async signIn({ user, account, profile, email, credentials }: any) {
-        if (account.provider === 'google' && account.type === 'oauth' && user) {
+        if (account.provider === "google" && account.type === "oauth" && user) {
             const userExists = await prisma.user.findUnique({
                 where: {
                     email: user.email,
-                }
+                },
             });
 
             if (!userExists) return true;
@@ -39,14 +39,13 @@ const callbacks = {
         return url.startsWith(baseUrl) ? url : baseUrl;
     },
     async session({ session, token }: any) {
-
         if (token) {
             session.id = token.id;
             session.isNewUser = token.isNewUser;
         }
         return session;
-    }
-}
+    },
+};
 
 export const authOptions: AuthOptions = {
     adapter,
@@ -132,4 +131,4 @@ async function auth(req: NextApiRequest, res: NextApiResponse) {
     return await NextAuth(req, res, authOptions);
 }
 
-export { auth as GET, auth as POST }
+export { auth as GET, auth as POST };

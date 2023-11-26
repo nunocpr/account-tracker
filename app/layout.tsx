@@ -36,14 +36,14 @@ export default async function RootLayout({
             <body
                 className={cn(
                     inter.variable,
-                    "transition-colors duration-700  w-full"
+                    "transition-colors duration-700 w-full"
                 )}
             >
                 <NextAuthProvider>
                     <ToastContainer position="top-right" theme="light" />
-                    <main className="relative mx-auto w-screen h-screen flex flex-col justify-start bg-gradient-to-b from-slate-50 to-slate-200 dark:from-gray-800 dark:to-gray-600">
-                        <Header session={session} />
-                        <div className="pt-16">{children}</div>
+                    <Header session={session} />
+                    <main className="pt-16 -pb-32 h-screen bg-gradient-to-b from-slate-50 to-slate-200 dark:from-gray-800 dark:to-gray-600">
+                        {children}
                     </main>
                 </NextAuthProvider>
             </body>
