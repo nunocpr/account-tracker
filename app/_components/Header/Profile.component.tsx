@@ -3,7 +3,7 @@ import { cn } from "@lib/utils";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
-import { handleDeleteUser, handleLogout } from "@lib/authFunctions";
+import { handleDeleteUser, handleLogout } from "@/app/_lib/auth/authFunctions";
 
 
 export default function Profile({ user }: { user: any }) {

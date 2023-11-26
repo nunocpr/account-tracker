@@ -5,8 +5,8 @@ import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '../auth/[...nextauth]/route';
 import { handleErrorResponse } from '@lib/exceptions';
-import { getUserIdFromSession } from '@lib/authFunctions';
-import { fetchSubCategories } from '@lib/subCategoryFunctions';
+import { getUserIdFromSession } from '@/app/_lib/auth/authFunctions';
+import { fetchSubCategories } from '@/app/_lib/db/subCategoryFunctions';
 import { sanitizeString } from '@lib/utils';
 
 export async function GET() {

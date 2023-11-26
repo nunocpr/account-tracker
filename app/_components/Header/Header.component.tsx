@@ -4,36 +4,24 @@ import Profile from '@components/Header/Profile.component';
 import ThemeSwitcher from '@components/Header/ThemeSwitcher.component';
 import PrimaryButton from '@components/Common/PrimaryButton.component';
 import { cn } from '@lib/utils';
+import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure } from '@headlessui/react';
-import { handleDeleteUser, handleLogout } from '@lib/authFunctions';
+import { handleDeleteUser, handleLogout } from '@/app/_lib/auth/authFunctions';
 import { ChartBarSquareIcon, Bars3Icon, BellIcon, XMarkIcon, PlusIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
-
+import { getNav, getSubNav } from '@lib/routes/routes';
+import Image from 'next/image';
 
 export default function Header({ session }: { session: any }) {
     const pathname = usePathname();
+    const nav = useMemo(() => getNav(), [pathname]);
+    const subNav = useMemo(() => getSubNav(), [pathname]);
 
-    const navigation = [
-        { name: 'Dashboard', href: '/dashboard', current: pathname.includes('dashboard') },
-        // { name: 'Derpboard', href: '/derpboard', current: pathname.includes('derpboard') },
-    ]
-
-    const subNav = [
-        { name: 'Summary Overview', href: '/overview', current: pathname.includes('overview') },
-        { name: 'Transaction History', href: '/history', current: pathname.includes('history') },
-        { name: 'Income', href: '/income', current: pathname.includes('income') },
-        { name: 'Expenses', href: '/expenses', current: pathname.includes('expenses') },
-        { name: 'Budget Tracking', href: '/tracking', current: pathname.includes('tracking') },
-        { name: 'Financial Goals', href: '/goals', current: pathname.includes('goals') },
-        { name: 'Reports and Insights', href: '/reports', current: pathname.includes('reports') },
-    ]
-
-
-    const user = session?.user;
+    const user = useMemo(() => session?.user, [session]);
 
     return (
-        <Disclosure as="nav" className="bg-slate-50 dark:bg-gray-800 shadow z-20 fixed left-0 right-0">
+        <Disclosure as="nav" className="bg-slate-50 dark:bg-gray-800 shadow-sm dark:shadow-gray-600 z-20 fixed left-0 right-0">
             {({ open }) => (
                 <>
                     <div className="mx-auto w-screen max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -52,21 +40,21 @@ export default function Header({ session }: { session: any }) {
                                 </div>
                                 {/* Logo */}
                                 <div className="flex flex-shrink-0 items-center">
-                                    <Link href="/">
+                                    <Link href="/" aria-label="Home">
                                         <ChartBarSquareIcon className="h-10 w-auto text-indigo-600 hover:text-indigo-500 dark:text-white dark:hover:text-indigo-300 cursor-pointer" />
                                     </Link>
                                 </div>
                                 {/* Main Navigation */}
                                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
-                                    {session && navigation.map((item) => (
+                                    {session && nav.map((item) => (
                                         <a
                                             key={item.name}
                                             href={item.href}
                                             className={cn(
-                                                item.current ? 'bg-slate-50 hover:bg-slate-200 dark:bg-indigo-500' : 'dark:bg-gray-800 dark:hover:bg-gray-900',
+                                                pathname.includes(item.current) ? 'bg-slate-50 hover:bg-slate-200 dark:bg-indigo-500' : 'dark:bg-gray-800 dark:hover:bg-gray-900',
                                                 'rounded-md px-3 py-2 text-sm font-medium text-gray-700 dark:text-white transition-colors duration-200'
                                             )}
-                                            aria-current={item.current ? 'page' : undefined}
+                                            aria-current={pathname.includes(item.current) ? 'page' : undefined}
                                         >
                                             {item.name}
                                         </a>
@@ -117,35 +105,6 @@ export default function Header({ session }: { session: any }) {
 
                     {/* Mobile Menu */}
                     <Disclosure.Panel className="md:hidden flex flex-col">
-                        {/* Main Navigation */}
-                        {/* <Disclosure as="div" className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                            {({ open }) => (
-                                <>
-                                    <Disclosure.Button
-                                        className="mb-2 flex w-full items-center text-start dark:text-white space-x-2"
-                                    >
-                                        <p>Navigation</p>
-                                        <ChevronRightIcon className={cn(open ? 'rotate-90' : '', "w-4 h-4 transform duration-200")} />
-                                    </Disclosure.Button>
-                                    <Disclosure.Panel className="">
-                                        {session && navigation.map((item) => (
-                                            <Disclosure.Button
-                                                key={item.name}
-                                                as="a"
-                                                href={item.href}
-                                                className={cn(
-                                                    item.current ? 'dark:bg-gray-900 dark:text-white' : 'text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
-                                                    'block rounded-md px-4 py-2 text-base font-medium'
-                                                )}
-                                                aria-current={item.current ? 'page' : undefined}
-                                            >
-                                                {item.name}
-                                            </Disclosure.Button>
-                                        ))}
-                                    </Disclosure.Panel>
-                                </>
-                            )}
-                        </Disclosure> */}
                         {/* Sub Navigation */}
                         <Disclosure as="div" className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                             {({ open }) => (
@@ -163,14 +122,15 @@ export default function Header({ session }: { session: any }) {
                                                 as="a"
                                                 href={item.href}
                                                 className={cn(
-                                                    item.current ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100",
+                                                    pathname.includes(item.current) ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100",
                                                     "block ml-2 px-2 py-1 rounded-md text-base font-medium"
                                                 )}
-                                                aria-current={item.current ? 'page' : undefined}
+                                                aria-current={pathname.includes(item.current) ? 'page' : undefined}
                                             >
                                                 {item.name}
                                             </Disclosure.Button>
                                         ))}
+                                        {!session && <p className="pl-8 dark:text-white text-sm">You must be logged in to access your dashboard.</p>}
                                     </Disclosure.Panel>
                                 </>
                             )}
@@ -182,7 +142,13 @@ export default function Header({ session }: { session: any }) {
                                     <>
                                         <div className="flex items-center px-5 sm:px-6">
                                             <div className="flex-shrink-0">
-                                                {user?.image && <img className="h-10 w-10 rounded-full" src={user?.image} alt="Profile Picture" />}
+                                                {user?.image && (<Image
+                                                    className="h-8 w-8 rounded-full"
+                                                    width={32}
+                                                    height={32}
+                                                    src={user?.image}
+                                                    alt="Profile Picture"
+                                                />)}
                                             </div>
                                             <div className="ml-3">
                                                 <div className="text-base font-medium text-gray-800 dark:text-white">{user?.name}</div>
@@ -239,11 +205,9 @@ export default function Header({ session }: { session: any }) {
                                         <Disclosure.Button
                                             className="w-full block rounded-md px-3 py-2 text-start text-base font-medium text-gray-500 hover:bg-gray-700 hover:text-white dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
                                         >
-                                            {/* <div className="flex-shrink-0 ml-4 text-white"> */}
                                             <Link href="/register" className="mr-3 ">
                                                 Login / Register
                                             </Link>
-                                            {/* </div> */}
                                         </Disclosure.Button>
                                     </div>
                             }

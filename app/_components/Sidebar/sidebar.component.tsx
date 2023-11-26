@@ -1,27 +1,21 @@
 'use client'
 
+import { useMemo } from "react";
 import { cn } from "@/app/_lib/utils";
+import { getSubNav } from "@/app/_lib/routes/routes";
 import { Disclosure } from "@headlessui/react"
+import { usePathname } from "next/navigation"
 import { ChevronRightIcon } from "@heroicons/react/24/solid"
-import { usePathname } from "next/navigation";
 
 export default function Sidebar() {
-    const pathname = usePathname()
+    const pathname = usePathname();
 
-    const subNav = [
-        { name: 'Summary Overview', href: '/overview', current: pathname.includes('overview') },
-        { name: 'Transaction History', href: '/history', current: pathname.includes('history') },
-        { name: 'Income', href: '/income', current: pathname.includes('income') },
-        { name: 'Expenses', href: '/expenses', current: pathname.includes('expenses') },
-        { name: 'Budget Tracking', href: '/tracking', current: pathname.includes('tracking') },
-        { name: 'Financial Goals', href: '/goals', current: pathname.includes('goals') },
-        { name: 'Reports and Insights', href: '/reports', current: pathname.includes('reports') },
-    ]
+    const subNav = useMemo(() => getSubNav(), [pathname]);
 
     return (
         <>
             {/* <div className=""> */}
-            <Disclosure as="div" className="hidden md:block md:fixed left-0 top-0 bg-slate-50 dark:bg-gray-800 shadow h-screen z-10" >
+            <Disclosure as="div" className="hidden md:block md:fixed left-0 top-4 bg-slate-50 dark:bg-gray-800 shadow h-screen z-10" >
                 {
                     ({ open }) => (
                         <nav className="mt-16">
@@ -60,10 +54,10 @@ export default function Sidebar() {
                                                 <a
                                                     href={item.href}
                                                     className={cn(
-                                                        item.current ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100",
+                                                        pathname.includes(item.current) ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100" : "text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100",
                                                         "block px-2 py-1 rounded-md text-base font-medium"
                                                     )}
-                                                    aria-current={item.current ? 'page' : undefined}
+                                                    aria-current={pathname.includes(item.current) ? 'page' : undefined}
                                                 >
                                                     {item.name}
                                                 </a>

@@ -14,11 +14,10 @@ export default withAuth(
     }
 )
 
-
 export const config = {
     matcher: [
-        "/example",
-        // "/((?!register|api|login).*)"
+        // "/example", // will be protected
+        "/((?!register|api|login|$).*)" // will not be protected
     ]
 };
 

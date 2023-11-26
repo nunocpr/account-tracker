@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { Combobox } from '@headlessui/react';
 import { useLocalStorage } from '@/app/_lib/hooks';
 import { IMainCategory } from '@/app/_types/mainCategories';
-import { notifyError, notifySuccess } from '@/app/_lib/toastFunctions';
+import { notifyError, notifySuccess } from '@/app/_lib/toast/toastFunctions';
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
-import { editMainCategory, removeMainCategory } from '@/app/_lib/mainCategoryFunctions';
+import { editMainCategory, removeMainCategory } from '@/app/_lib/db/mainCategoryFunctions';
 
 
 export default function ComboMultiSelect({ mainCategories }: { mainCategories: IMainCategory[] }) {

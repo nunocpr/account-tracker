@@ -1,12 +1,12 @@
-import { getUserIdFromSession } from "@/app/_lib/authFunctions";
+import { getUserIdFromSession } from "@/app/_lib/auth/authFunctions";
 import { AuthRequiredError, CustomError } from "@lib/exceptions";
-import { ISubCategory } from "../_types/subCategories";
-import { sanitizeString } from "./utils";
+import { IMainCategory } from "../../_types/mainCategories";
+import { sanitizeString } from "../utils";
 import prisma from "@lib/prisma";
 
-export const addSubCategory = async (subCategory: string) => {
+export const addMainCategory = async (mainCategory: string) => {
     try {
-        const res = await fetch('/api/subCategory', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -15,7 +15,7 @@ export const addSubCategory = async (subCategory: string) => {
                 {
                     type: 'add',
                     data: {
-                        subCategory: sanitizeString(subCategory),
+                        mainCategory: sanitizeString(mainCategory),
                     }
                 }
             )
@@ -27,9 +27,9 @@ export const addSubCategory = async (subCategory: string) => {
     }
 }
 
-export const editSubCategory = async (subCategory: ISubCategory, newSubCategory: string) => {
+export const editMainCategory = async (mainCategory: IMainCategory, newMainCategory: string) => {
     try {
-        const res = await fetch('/api/subCategory', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -38,8 +38,8 @@ export const editSubCategory = async (subCategory: ISubCategory, newSubCategory:
                 {
                     type: 'edit',
                     data: {
-                        subCategory: sanitizeString(subCategory.name),
-                        newSubCategory: sanitizeString(newSubCategory),
+                        mainCategory: sanitizeString(mainCategory.name),
+                        newMainCategory: sanitizeString(newMainCategory),
                     }
                 }
             )
@@ -50,9 +50,9 @@ export const editSubCategory = async (subCategory: ISubCategory, newSubCategory:
     }
 }
 
-export const removeSubCategory = async (subCategory: string) => {
+export const removeMainCategory = async (mainCategory: string) => {
     try {
-        const res = await fetch('/api/subCategory', {
+        const res = await fetch('/api/mainCategory', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -61,7 +61,7 @@ export const removeSubCategory = async (subCategory: string) => {
                 {
                     type: 'remove',
                     data: {
-                        subCategory: sanitizeString(subCategory)
+                        mainCategory: sanitizeString(mainCategory)
                     }
                 }
             )
@@ -74,15 +74,15 @@ export const removeSubCategory = async (subCategory: string) => {
     }
 }
 
-export const fetchSubCategories = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
+export const fetchMainCategories = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
 
     try {
-        // fetch all sub categories of the user
+        // fetch all main categories of the user
 
-        // console.log("CALLING SESSION IN fetchSubCategories: ", session)
+        // console.log("CALLING SESSION IN fetchMainCategories: ", session)
 
         if (!session) {
-            throw new AuthRequiredError('You must be logged in to view sub categories.');
+            throw new AuthRequiredError('You must be logged in to view main categories.');
         }
 
         const userId = await getUserIdFromSession(session);
@@ -91,9 +91,9 @@ export const fetchSubCategories = async (session: { user?: { name?: string | nul
             throw new CustomError('There was an error fetching the user.', 403);
         }
 
-        // console.log("CALLING userId IN fetchSubCategories: ", userId)
+        // console.log("CALLING userId IN fetchMainCategories: ", userId)
 
-        const subCategories = await prisma.subCategory.findMany({
+        const mainCategories = await prisma.mainCategory.findMany({
             where: {
                 userId: userId,
             },
@@ -103,10 +103,10 @@ export const fetchSubCategories = async (session: { user?: { name?: string | nul
             },
         });
 
-        return subCategories;
+        return mainCategories;
 
     } catch (error) {
-        console.log("ERROR FROM fetchSubCategories: ", error)
-        throw new CustomError('There was an error fetching sub categories.', 500);
+        console.log("ERROR FROM fetchMainCategories: ", error)
+        throw new CustomError('There was an error fetching main categories.', 500);
     }
 }

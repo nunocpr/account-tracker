@@ -1,12 +1,12 @@
-import { getUserIdFromSession } from "@/app/_lib/authFunctions";
-import { AuthRequiredError, CustomError } from "@lib/exceptions";
-import { IMainCategory } from "../_types/mainCategories";
-import { sanitizeString } from "./utils";
 import prisma from "@lib/prisma";
+import { TTransaction } from "@appTypes/transactions";
+import { getUserIdFromSession } from "@/app/_lib/auth/authFunctions";
+import { AuthRequiredError, CustomError } from "@lib/exceptions";
 
-export const addMainCategory = async (mainCategory: string) => {
+export const addTransaction = async (transaction: TTransaction) => {
     try {
-        const res = await fetch('/api/mainCategory', {
+
+        const res = await fetch('/api/transaction', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -15,19 +15,20 @@ export const addMainCategory = async (mainCategory: string) => {
                 {
                     type: 'add',
                     data: {
-                        mainCategory: sanitizeString(mainCategory),
+                        transaction,
                     }
                 }
             )
         });
 
         return res;
+
     } catch (e) {
-        throw new CustomError('Error adding category');
+        throw new CustomError('Error adding transaction');
     }
 }
 
-export const editMainCategory = async (mainCategory: IMainCategory, newMainCategory: string) => {
+export const editTransaction = async (transaction: TTransaction) => {
     try {
         const res = await fetch('/api/mainCategory', {
             method: 'POST',
@@ -38,8 +39,7 @@ export const editMainCategory = async (mainCategory: IMainCategory, newMainCateg
                 {
                     type: 'edit',
                     data: {
-                        mainCategory: sanitizeString(mainCategory.name),
-                        newMainCategory: sanitizeString(newMainCategory),
+                        transaction,
                     }
                 }
             )
@@ -50,7 +50,7 @@ export const editMainCategory = async (mainCategory: IMainCategory, newMainCateg
     }
 }
 
-export const removeMainCategory = async (mainCategory: string) => {
+export const removeTransaction = async (transaction: TTransaction) => {
     try {
         const res = await fetch('/api/mainCategory', {
             method: 'POST',
@@ -61,25 +61,24 @@ export const removeMainCategory = async (mainCategory: string) => {
                 {
                     type: 'remove',
                     data: {
-                        mainCategory: sanitizeString(mainCategory)
+                        transaction,
                     }
                 }
             )
         });
 
         return res;
-
     } catch (e) {
         throw new CustomError('Error removing category');
     }
 }
 
-export const fetchMainCategories = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
+export const fetchTransactions = async (session: { user?: { name?: string | null, email?: string | null, image?: string | null } }) => {
 
     try {
-        // fetch all main categories of the user
+        // fetch all user transactions
 
-        // console.log("CALLING SESSION IN fetchMainCategories: ", session)
+        // console.log("CALLING SESSION IN fetchTransactions: ", session)
 
         if (!session) {
             throw new AuthRequiredError('You must be logged in to view main categories.');
@@ -91,22 +90,21 @@ export const fetchMainCategories = async (session: { user?: { name?: string | nu
             throw new CustomError('There was an error fetching the user.', 403);
         }
 
-        // console.log("CALLING userId IN fetchMainCategories: ", userId)
+        // console.log("CALLING userId IN fetchTransactions: ", userId)
 
-        const mainCategories = await prisma.mainCategory.findMany({
+        const transactions = await prisma.transaction.findMany({
             where: {
                 userId: userId,
             },
             select: {
-                id: true,
-                name: true,
+                id: true
             },
         });
 
-        return mainCategories;
+        return transactions;
 
     } catch (error) {
-        console.log("ERROR FROM fetchMainCategories: ", error)
+        console.log("ERROR FROM fetchTransactions: ", error)
         throw new CustomError('There was an error fetching main categories.', 500);
     }
 }

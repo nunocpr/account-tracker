@@ -9,3 +9,5 @@ export interface ITransaction {
     createdAt: Date,
     updatedAt: Date
 }
+
+export type TTransaction = ITransaction | null;

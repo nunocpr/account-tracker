@@ -1,7 +1,7 @@
 'use client'
 import { handleError } from "@/app/_lib/exceptions";
-import { addMainCategory } from "@/app/_lib/mainCategoryFunctions";
-import { notifyError, notifySuccess } from "@/app/_lib/toastFunctions";
+import { addMainCategory } from "@/app/_lib/db/mainCategoryFunctions";
+import { notifyError, notifySuccess } from "@/app/_lib/toast/toastFunctions";
 import { cn } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";

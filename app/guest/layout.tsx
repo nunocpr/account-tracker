@@ -13,9 +13,9 @@ export default async function RootLayout({
     return (
         <>
             <Header session={session} />
-            <main className="relative flex min-h-screen flex-col justify-start  bg-gradient-to-b from-slate-50 to-slate-200 dark:from-gray-800 dark:to-gray-600">
+            <section className="relative flex w-screen min-h-screen flex-col justify-start  bg-gradient-to-b from-slate-50 to-slate-200 dark:from-gray-800 dark:to-gray-600">
                 {children}
-            </main>
+            </section>
         </>
     )
 }
