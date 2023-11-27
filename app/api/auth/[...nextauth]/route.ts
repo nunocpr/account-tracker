@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { fromDate, generateSessionToken } from "@/app/_lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/app/_lib/prisma";
+import { redirect } from "next/navigation";
 
 const adapter = PrismaAdapter(prisma);
 const callbacks = {
@@ -36,7 +37,7 @@ const callbacks = {
         return false;
     },
     async redirect({ url, baseUrl }: any) {
-        return url.startsWith(baseUrl) ? url : baseUrl;
+        return url.startsWith(baseUrl) ? url : "/dashboard/overview";
     },
     async session({ session, token }: any) {
         if (token) {

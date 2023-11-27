@@ -1,25 +1,23 @@
-import AddMainCategory from "@components/MainCategory/AddMainCategory.component"
-import ComboMultiSelect from "@components/Form/ComboMultiSelect.component"
-import { authOptions } from "@api/auth/[...nextauth]/route"
-import { getServerSession } from "next-auth"
-import { baseURL } from "@lib/constants"
-import { headers } from 'next/headers'
+import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
+import ComboMultiSelect from "@components/Form/ComboMultiSelect.component";
+import { authOptions } from "@api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { baseURL } from "@lib/constants";
+import { headers } from "next/headers";
 
-export const preferredRegion = 'home'
-export const dynamic = 'force-dynamic'
-
+export const preferredRegion = "home";
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
+    const session = await getServerSession(authOptions);
 
-    const session = await getServerSession(authOptions)
-
-    const res = await fetch(baseURL + '/api/mainCategory', {
-        method: 'GET',
+    const res = await fetch(baseURL + "/api/mainCategory", {
+        method: "GET",
         headers: Object.fromEntries(headers()),
         next: {
-            tags: ['mainCategory'],
-        }
-    })
+            tags: ["mainCategory"],
+        },
+    });
 
     const { mainCategories } = await res.json();
 
@@ -31,21 +29,16 @@ export default async function Home() {
             {/* BreadCrumbs */}
 
             {/* Welcome message */}
-            <p className="text-white py-4">Welcome, <span>
-                {
-                    !session ? (
-                        "please register above."
-                    ) : (
-                        session?.user?.name
-                    )
-                }
-            </span>
+            <p className="text-white py-4">
+                Welcome,{" "}
+                <span>
+                    {!session ? "please register above." : session?.user?.name}
+                </span>
             </p>
 
             {session && <ComboMultiSelect mainCategories={mainCategories} />}
 
             {session && <AddMainCategory />}
-
         </div>
-    )
+    );
 }

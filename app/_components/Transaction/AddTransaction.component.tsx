@@ -7,7 +7,7 @@ import { cn } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-export default function AddTransaction() {
+export default function AddTransaction({ className }: { className?: string }) {
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
@@ -36,11 +36,23 @@ export default function AddTransaction() {
         }
     };
 
+    // TODO:
+    // get the types: income, expense
+    // get the mainCategories associated with user, and the subCategories associated with the mainCategory
+    // input for Amount is a number
+    // input for Type is a select
+    // input for Description is a text (check limits)
+    // input for Main Category is a multiselect
+    // input for Sub Category is a multiselect
+
     return (
         <form
             onSubmit={onSubmit}
             aria-disabled={loading}
-            className="flex flex-col max-w-fit shadow-sm rounded-md border border-gray-100 dark:border-gray-600"
+            className={cn(
+                className,
+                "flex flex-col space-y-1 max-w-md shadow-sm rounded-md"
+            )}
         >
             <input
                 type="number"
@@ -50,7 +62,7 @@ export default function AddTransaction() {
                 required
                 className={cn(
                     loading && "bg-gray-200",
-                    "h-10 border border-gray-300 rounded-md p-2"
+                    "h-10 border border-gray-300 rounded-md p-2 outline-none dark:text-gray-800 dark:bg-gray-50 placeholder-slate-400 transition-colors duration-150"
                 )}
             />
             <input
@@ -61,7 +73,7 @@ export default function AddTransaction() {
                 required
                 className={cn(
                     loading && "bg-gray-200",
-                    "h-10 border border-gray-300 rounded-md p-2"
+                    "h-10 border border-gray-300 rounded-md p-2 outline-none dark:text-gray-800 dark:bg-gray-50 placeholder-slate-400 transition-colors duration-150"
                 )}
             />
             <input
@@ -71,7 +83,7 @@ export default function AddTransaction() {
                 disabled={loading}
                 className={cn(
                     loading && "bg-gray-200",
-                    "h-10 border border-gray-300 rounded-md p-2"
+                    "h-10 border border-gray-300 rounded-md p-2 outline-none dark:text-gray-800 dark:bg-gray-50 placeholder-slate-400 transition-colors duration-150"
                 )}
             />
             <input
@@ -81,7 +93,7 @@ export default function AddTransaction() {
                 disabled={loading}
                 className={cn(
                     loading && "bg-gray-200",
-                    "h-10 border border-gray-300 rounded-md p-2"
+                    "h-10 border border-gray-300 rounded-md p-2 outline-none dark:text-gray-800 dark:bg-gray-50 placeholder-slate-400 transition-colors duration-150"
                 )}
             />
             <input
@@ -91,13 +103,14 @@ export default function AddTransaction() {
                 disabled={loading}
                 className={cn(
                     loading && "bg-gray-200",
-                    "h-10 border border-gray-300 rounded-md p-2"
+                    "h-10 border border-gray-300 rounded-md p-2 outline-none dark:text-gray-800 dark:bg-gray-50 placeholder-slate-400 transition-colors duration-150"
                 )}
             />
             <button
                 type="submit"
                 className={cn(
-                    "h-10 bg-blue-500 text-white hover:bg-blue-600 rounded-md px-4"
+                    loading ? "bg-slate-400" : "bg-indigo-600 ",
+                    "px-2 py-1 sm:px-6 sm:py-3 max-w-36 rounded-md cursor-pointer text-white text-sm"
                 )}
             >
                 {loading ? "Loading" : "Add Transaction"}

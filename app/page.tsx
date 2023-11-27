@@ -17,9 +17,7 @@ export default async function Homepage() {
                 </span>
             </p>
 
-            <div className="flex flex-col justify-center items-center">
-                <AddTransaction />
-            </div>
+            {/* <div className="flex flex-col justify-center items-center"></div> */}
         </div>
     );
 }
