@@ -17,7 +17,6 @@ export const addTransaction = async (transaction: FormData) => {
                     type: transaction.get("type"),
                     description: transaction.get("description"),
                     mainCategoryId: transaction.get("mainCategoryId"),
-                    subCategoryId: transaction.get("subCategoryId"),
                 },
             }),
         });

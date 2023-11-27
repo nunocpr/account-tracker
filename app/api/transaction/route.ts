@@ -91,15 +91,6 @@ export async function POST(request: NextRequest) {
                               },
                           }
                         : undefined,
-                    subCategory: data.subCategoryId
-                        ? {
-                              connect: {
-                                  id:
-                                      sanitizeString(data.subCategoryId) ||
-                                      undefined,
-                              },
-                          }
-                        : undefined,
                     description: data.description
                         ? sanitizeString(data.description)
                         : undefined,
@@ -140,15 +131,6 @@ export async function POST(request: NextRequest) {
             //                   connect: {
             //                       id: sanitizeString(
             //                           newTransaction.mainCategoryId
-            //                       ),
-            //                   },
-            //               }
-            //             : undefined,
-            //         subCategory: newTransaction.subCategoryId
-            //             ? {
-            //                   connect: {
-            //                       id: sanitizeString(
-            //                           newTransaction.subCategoryId
             //                       ),
             //                   },
             //               }

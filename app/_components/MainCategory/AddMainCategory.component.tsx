@@ -5,8 +5,9 @@ import { notifyError, notifySuccess } from "@/app/_lib/toast/toastFunctions";
 import { cn } from "@/app/_lib/utils";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
-export default function AddMainCategory() {
+export default function AddMainCategory({ className }: { className?: string }) {
     const router = useRouter();
 
     const [category, setCategory] = useState("");
@@ -45,24 +46,28 @@ export default function AddMainCategory() {
     };
 
     return (
-        <div className="flex max-w-fit shadow-sm rounded-md border border-gray-100 dark:border-gray-600">
+        <div className={cn(className, "flex shadow-sm rounded-md")}>
             <input
                 type="text"
                 name="add_category"
                 onChange={handleChange}
                 value={category}
-                placeholder="Home..."
-                className="py-2 pl-3 placeholder:text-sm rounded-l-md outline outline-1 outline-gray-300 dark:outline-gray-500  text-gray-800 dark:bg-gray-800 dark:text-white focus-visible:outline-amber-700 dark:focus-visible:outline-amber-400 transition-all duration-200"
+                placeholder="Add a Main Category"
+                className="min-w-0 py-1 pl-3 placeholder:text-sm rounded-l-md text-gray-800 dark:bg-gray-600 dark:text-white"
             />
             <button
                 onClick={onSubmit}
                 className={cn(
                     loading ? "bg-slate-400" : "bg-indigo-600 ",
-                    "px-2 py-1 sm:px-6 sm:py-3 max-w-36 rounded-r-md cursor-pointer text-white text-sm"
+                    "px-2 py-1 max-w-36 rounded-r-md cursor-pointer text-white text-sm"
                 )}
                 disabled={loading}
             >
-                {loading ? "Loading..." : "Add"}
+                {loading ? (
+                    "Loading..."
+                ) : (
+                    <PlusIcon className="h-6 w-6 text-white" />
+                )}
             </button>
         </div>
     );

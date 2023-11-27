@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import AddTransaction from "@components/Transaction/AddTransaction.component";
+import AddTransaction from "@/app/_components/Form/AddTransaction.component";
+// import AddTransaction from "@components/Transaction/AddTransaction.component";
 
 export const preferredRegion = "home";
 
@@ -13,11 +14,10 @@ export default async function Dashboard() {
     }
 
     return (
-        <div className="p-12 md:px-32 text-gray-700 dark:text-white">
+        <div className="px-12 md:px-32 py-12 text-gray-700 dark:text-white">
             <h1 className="text-3xl font-bold">Overview</h1>
-            <section>
-                <h2 className="mt-6 text-lg font-bold">Transactions</h2>
-                <AddTransaction className="my-6" />
+            <section className="mt-6">
+                <AddTransaction />
             </section>
             <section>
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
