@@ -120,7 +120,7 @@ export default function ComboMultiSelect({
         >
             <Combobox.Label
                 htmlFor="searchCategory"
-                className="block text-sm font-medium leading-6 text-white"
+                className="block text-sm font-medium leading-6 dark:text-white"
             >
                 {name}
             </Combobox.Label>
@@ -128,54 +128,58 @@ export default function ComboMultiSelect({
             <div className="relative mt-2">
                 <div className="inline-block w-full rounded-md shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 ">
                     <div className="relative w-full cursor-default rounded-md shadow-sm bg-white dark:bg-white/5 dark:text-white sm:text-sm pl-2 pr-10 text-left transition duration-150 ease-in-out sm:leading-5">
-                        <span className="flex flex-wrap gap-2 space-x-2">
+                        <span className="flex gap-2 space-x-2">
                             <Combobox.Input
                                 id="searchCategory"
                                 onChange={(event) =>
                                     setQuery(event.target.value)
                                 }
-                                className="pl-3 py-1 w-1/4 rounded-sm text-gray-800 dark:text-white bg-transparent border-0"
+                                className="pl-3 py-1.5 w-1/4 rounded-sm text-gray-500 font-medium dark:text-white bg-transparent border-0"
                                 displayValue={(_) => query}
                                 placeholder="Search..."
                             />
-                            <div className="border-r-2 border-gray-600"></div>
-                            {activeCategories.map(
-                                (category: any, i: number) => (
-                                    <div
-                                        key={i}
-                                        className="group flex cursor-pointer items-center rounded font-semibold p-1.5 group transition-all duration-200 border border-gray-500 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            e.preventDefault();
-                                            setActiveCategories((existing) =>
-                                                existing.filter(
-                                                    (c) => c !== category
-                                                )
-                                            );
-                                        }}
-                                    >
-                                        <span className="break-all line-clamp-2 align-middle leading-normal px-2 text-gray-600 dark:text-white">
-                                            {category.name}
-                                        </span>
-                                        <svg
-                                            className="h-4 w-4 text-gray-500 group-hover:text-gray-400 transition duration-150 ease-in-out"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg"
+                            <div className="border-r-2 border-gray-200 dark:border-gray-600"></div>
+                            <div className="divide-x-2 flex flex-wrap">
+                                {activeCategories.map(
+                                    (category: any, i: number) => (
+                                        <div
+                                            key={i}
+                                            className="group flex cursor-pointer items-center font-semibold p-1.5 group transition-all duration-200  border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                                setActiveCategories(
+                                                    (existing) =>
+                                                        existing.filter(
+                                                            (c) =>
+                                                                c !== category
+                                                        )
+                                                );
+                                            }}
                                         >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth="2"
-                                                d="M6 18L18 6M6 6l12 12"
-                                            />
-                                        </svg>
-                                    </div>
-                                )
-                            )}
+                                            <span className="break-all line-clamp-2 align-middle leading-normal px-2 text-gray-600 dark:text-white">
+                                                {category.name}
+                                            </span>
+                                            <svg
+                                                className="h-4 w-4 text-gray-500 group-hover:text-gray-400 transition duration-150 ease-in-out"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth="2"
+                                                    d="M6 18L18 6M6 6l12 12"
+                                                />
+                                            </svg>
+                                        </div>
+                                    )
+                                )}
+                            </div>
                         </span>
-                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                        <Combobox.Button className="absolute right-0 pr-4 pl-12 inset-y-0 flex items-center justify-center">
                             <svg
                                 className="h-5 w-5 text-gray-400"
                                 viewBox="0 0 20 20"
@@ -194,7 +198,7 @@ export default function ComboMultiSelect({
                 </div>
 
                 <div className="absolute mt-1 w-full rounded-md bg-white dark:bg-gray-700 shadow-lg z-20">
-                    <Combobox.Options className="flex flex-col shadow-xs max-h-60 overflow-auto scrollbar-thin scrollbar-thumb-amber-500 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500  rounded-md py-1 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5">
+                    <Combobox.Options className="flex flex-col shadow-xs max-h-60 overflow-auto scrollbar-thin scrollbar-thumb-amber-500 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500  rounded-md py-6 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5">
                         <>
                             {mainCategories.length !== 0 ? (
                                 mainCategories
@@ -261,7 +265,7 @@ export default function ComboMultiSelect({
                                                             <input
                                                                 type="text"
                                                                 className={cn(
-                                                                    "pl-2 bg-transparent border border-gray-300 text-white",
+                                                                    "pl-2 bg-transparent border border-gray-300 dark:text-white",
                                                                     isLoading &&
                                                                         "pointer-events-none"
                                                                 )}

@@ -36,7 +36,7 @@ export default async function RootLayout({
             <body
                 className={cn(
                     inter.variable,
-                    "transition-colors duration-700 w-full bg-gradient-to-b from-slate-50 to-slate-200 dark:from-gray-800 dark:to-gray-600"
+                    "min-h-screen w-full from-gray-100 to-gray-200 bg-gradient-to-b dark:from-gray-800 dark:to-gray-600"
                 )}
             >
                 <NextAuthProvider>
