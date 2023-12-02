@@ -1,11 +1,11 @@
 "use client";
 
 import { useMemo } from "react";
-import { cn } from "@/app/_lib/utils";
-import { getDashboardNav } from "@/app/_lib/routes/routes";
-import { Disclosure } from "@headlessui/react";
 import { usePathname } from "next/navigation";
+import { Disclosure } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { cn } from "@lib/utils";
+import { getDashboardNav } from "@lib/routes/routes";
 
 export default function Sidebar() {
     const pathname = usePathname();

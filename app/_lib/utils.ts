@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import ms from "ms";
 import trim from "validator/lib/trim";
 import escape from "validator/lib/escape";
-import { parse } from "path";
 
 /**
  * Returns the time ago from the timestamp

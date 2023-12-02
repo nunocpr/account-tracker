@@ -1,12 +1,12 @@
-import { PlusIcon } from "@heroicons/react/24/solid"
-
 interface PrimaryButtonProps {
-    children: React.ReactNode,
-    buttonText?: string,
+    children: React.ReactNode;
+    buttonText?: string;
 }
 
-
-export default function PrimaryButton({ children, buttonText }: PrimaryButtonProps) {
+export default function PrimaryButton({
+    children,
+    buttonText,
+}: PrimaryButtonProps) {
     return (
         <button
             type="button"
@@ -15,5 +15,5 @@ export default function PrimaryButton({ children, buttonText }: PrimaryButtonPro
             {children}
             {buttonText}
         </button>
-    )
-};
+    );
+}

@@ -1,7 +1,5 @@
 import { signOut } from "next-auth/react";
-import { getServerSession } from "next-auth";
 import { prisma } from "@lib/prisma";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { CustomError } from "@lib/exceptions";
 
 export const handleLogout = async () => {

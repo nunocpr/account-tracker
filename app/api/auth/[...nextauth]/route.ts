@@ -1,11 +1,10 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 import type { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { fromDate, generateSessionToken } from "@/app/_lib/utils";
-import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "@/app/_lib/prisma";
-import { redirect } from "next/navigation";
+import { fromDate, generateSessionToken } from "@lib/utils";
+import { prisma } from "@lib/prisma";
 
 const adapter = PrismaAdapter(prisma);
 const callbacks = {

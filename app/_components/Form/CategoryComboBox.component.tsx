@@ -1,17 +1,17 @@
 "use client";
-import { cn } from "@/app/_lib/utils";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Combobox } from "@headlessui/react";
-import { useLocalStorage } from "@/app/_lib/hooks";
-import { IMainCategory } from "@/app/_types/mainCategories";
-import { notifyError, notifySuccess } from "@/app/_lib/toast/toastFunctions";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
+import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
+import { IMainCategory } from "@appTypes/mainCategories";
+import { useLocalStorage } from "@lib/hooks";
+import { cn } from "@lib/utils";
 import {
     editMainCategory,
     removeMainCategory,
-} from "@/app/_lib/db/mainCategoryFunctions";
-import AddMainCategory from "../MainCategory/AddMainCategory.component";
+} from "@lib/db/mainCategoryFunctions";
+import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
 
 export default function CategoryComboBox({
     mainCategories,

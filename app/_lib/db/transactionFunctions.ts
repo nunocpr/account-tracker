@@ -1,5 +1,5 @@
 import { prisma } from "@lib/prisma";
-import { getUserIdFromSession } from "@/app/_lib/auth/authFunctions";
+import { getUserIdFromSession } from "@lib/auth/authFunctions";
 import { AuthRequiredError, CustomError } from "@lib/exceptions";
 import { baseURL } from "../constants";
 

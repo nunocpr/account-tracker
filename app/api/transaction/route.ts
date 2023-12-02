@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { handleErrorResponse } from "@lib/exceptions";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@api/auth/[...nextauth]/route";
-import { getUserIdFromSession } from "@/app/_lib/auth/authFunctions";
+import { getUserIdFromSession } from "@lib/auth/authFunctions";
 
 export async function GET(request: Request) {
     const session = await getServerSession(authOptions);

@@ -1,9 +1,9 @@
 "use client";
 import OptionsSelect from "./OptionsSelect.component";
 import CategoryComboBox from "./CategoryComboBox.component";
-import { addTransaction } from "@/app/_lib/db/transactionFunctions";
-import { notifyError, notifySuccess } from "@/app/_lib/toast/toastFunctions";
-import { IMainCategory } from "@/app/_types/mainCategories";
+import { addTransaction } from "@lib/db/transactionFunctions";
+import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
+import { IMainCategory } from "@appTypes/mainCategories";
 
 export default function AddTransaction({
     mainCategories,

@@ -1,13 +1,16 @@
 "use client";
 import Link from "next/link";
-import Profile from "@components/Header/Profile.component";
-import ThemeSwitcher from "@components/Header/ThemeSwitcher.component";
-import PrimaryButton from "@components/Common/PrimaryButton.component";
-import { cn } from "@lib/utils";
+import Image from "next/image";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { Disclosure, Popover } from "@headlessui/react";
-import { handleDeleteUser, handleLogout } from "@/app/_lib/auth/authFunctions";
+import { handleDeleteUser, handleLogout } from "@lib/auth/authFunctions";
+import { getNav, getDashboardNav } from "@lib/routes/routes";
+import { cn } from "@lib/utils";
+
+import Profile from "@components/Header/Profile.component";
+import ThemeSwitcher from "@components/Header/ThemeSwitcher.component";
+import PrimaryButton from "@components/Common/PrimaryButton.component";
 import {
     ChartBarSquareIcon,
     Bars3Icon,
@@ -17,8 +20,6 @@ import {
     UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import { getNav, getDashboardNav } from "@lib/routes/routes";
-import Image from "next/image";
 
 export default function Header({ session }: { session: any }) {
     const pathname = usePathname();

@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import AddTransaction from "@/app/_components/Form/AddTransaction.component";
-import { baseURL } from "@/app/_lib/constants";
 import { headers } from "next/headers";
+import { baseURL } from "@lib/constants";
+import { authOptions } from "@api/auth/[...nextauth]/route";
+import AddTransaction from "@components/Form/AddTransaction.component";
 
 export const preferredRegion = "home";
 

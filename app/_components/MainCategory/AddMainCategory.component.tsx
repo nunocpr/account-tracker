@@ -1,11 +1,11 @@
 "use client";
-import { handleError } from "@/app/_lib/exceptions";
-import { addMainCategory } from "@/app/_lib/db/mainCategoryFunctions";
-import { notifyError, notifySuccess } from "@/app/_lib/toast/toastFunctions";
-import { cn } from "@/app/_lib/utils";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { handleError } from "@lib/exceptions";
+import { addMainCategory } from "@lib/db/mainCategoryFunctions";
+import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
+import { cn } from "@lib/utils";
 
 export default function AddMainCategory({ className }: { className?: string }) {
     const router = useRouter();

@@ -1,34 +1,31 @@
-'use client'
-import { cn } from "@lib/utils";
-import { Menu, Transition } from "@headlessui/react";
+"use client";
 import { Fragment } from "react";
 import Image from "next/image";
-import { handleDeleteUser, handleLogout } from "@/app/_lib/auth/authFunctions";
-
+import { Menu, Transition } from "@headlessui/react";
+import { handleDeleteUser, handleLogout } from "@lib/auth/authFunctions";
+import { cn } from "@lib/utils";
 
 export default function Profile({ user }: { user: any }) {
-
     const userNavigation = [
-        { name: 'Your Profile', href: '#' },
-        { name: 'Settings', href: '#' },
-        { name: 'Sign out', href: '#' },
-    ]
-
+        { name: "Your Profile", href: "#" },
+        { name: "Settings", href: "#" },
+        { name: "Sign out", href: "#" },
+    ];
 
     return (
         <Menu as="div" className="relative ml-3">
             <div>
                 <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:bg-gray-800 dark:focus:ring-white dark:focus:ring-offset-gray-800">
                     <span className="sr-only">Open user menu</span>
-                    {
-                        user?.image && (<Image
+                    {user?.image && (
+                        <Image
                             className="h-8 w-8 rounded-full"
                             width={32}
                             height={32}
                             src={user?.image}
                             alt="Profile Picture"
-                        />)
-                    }
+                        />
+                    )}
                 </Menu.Button>
             </div>
             <Transition
@@ -46,8 +43,8 @@ export default function Profile({ user }: { user: any }) {
                             <a
                                 href="#"
                                 className={cn(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
                                 )}
                             >
                                 Your Profile
@@ -59,8 +56,8 @@ export default function Profile({ user }: { user: any }) {
                             <a
                                 href="#"
                                 className={cn(
-                                    active ? 'bg-gray-100' : '',
-                                    'block px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
                                 )}
                             >
                                 Settings
@@ -71,8 +68,8 @@ export default function Profile({ user }: { user: any }) {
                         {({ active }) => (
                             <button
                                 className={cn(
-                                    active ? 'bg-gray-100' : '',
-                                    'block w-full text-start px-4 py-2 text-sm text-gray-700'
+                                    active ? "bg-gray-100" : "",
+                                    "block w-full text-start px-4 py-2 text-sm text-gray-700"
                                 )}
                                 onClick={() => handleLogout()}
                             >
@@ -84,8 +81,8 @@ export default function Profile({ user }: { user: any }) {
                         {({ active }) => (
                             <button
                                 className={cn(
-                                    active ? 'bg-red-400' : 'bg-red-500',
-                                    'block w-full text-start px-4 py-2 text-sm text-white'
+                                    active ? "bg-red-400" : "bg-red-500",
+                                    "block w-full text-start px-4 py-2 text-sm text-white"
                                 )}
                                 onClick={() => handleDeleteUser()}
                             >
@@ -96,5 +93,5 @@ export default function Profile({ user }: { user: any }) {
                 </Menu.Items>
             </Transition>
         </Menu>
-    )
+    );
 }

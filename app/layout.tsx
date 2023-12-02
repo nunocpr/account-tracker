@@ -5,9 +5,9 @@ import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import { NextAuthProvider } from "@/app/clientProviders";
-import Header from "./_components/Header/Header.component";
+import Header from "@components/Header/Header.component";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@api/auth/[...nextauth]/route";
 
 const inter = Inter({
     variable: "--font-inter",

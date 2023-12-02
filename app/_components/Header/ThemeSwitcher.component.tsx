@@ -1,28 +1,26 @@
-"use client"
-
-import { FC, useState } from "react";
-import { SunIcon, MoonIcon } from '@heroicons/react/24/solid'
+"use client";
+import { useState } from "react";
+import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 
 export enum Theme {
-    dark = 'dark',
-    light = 'light',
+    dark = "dark",
+    light = "light",
 }
 
 export default function ThemeSwitcher() {
-
     const [currentTheme, setCurrentTheme] = useState<Theme>(Theme.dark);
 
     const toggleTheme = () => {
-
         const newTheme = currentTheme === Theme.dark ? Theme.light : Theme.dark;
 
         document.documentElement.classList.remove(currentTheme);
         document.documentElement.classList.add(newTheme);
 
         setCurrentTheme(newTheme);
-        document.cookie = `theme=${newTheme}; path=/; sameSite=lax; secure=${process.env.NODE_ENV === 'production'}`;
-
-    }
+        document.cookie = `theme=${newTheme}; path=/; sameSite=lax; secure=${
+            process.env.NODE_ENV === "production"
+        }`;
+    };
 
     return (
         <button
@@ -30,7 +28,11 @@ export default function ThemeSwitcher() {
             onClick={toggleTheme}
             aria-label="Toggle theme"
         >
-            {currentTheme === Theme.dark ? <SunIcon className="w-6 h-6 text-yellow-500" /> : <MoonIcon className="w-6 h-6 text-gray-400" />}
+            {currentTheme === Theme.dark ? (
+                <SunIcon className="w-6 h-6 text-yellow-500" />
+            ) : (
+                <MoonIcon className="w-6 h-6 text-gray-400" />
+            )}
         </button>
-    )
+    );
 }

@@ -1,9 +1,9 @@
 import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
+import CategoryComboBox from "@components/Form/CategoryComboBox.component";
 import { authOptions } from "@api/auth/[...nextauth]/route";
-import { getServerSession } from "next-auth";
 import { baseURL } from "@lib/constants";
 import { headers } from "next/headers";
-import CategoryComboBox from "@/app/_components/Form/CategoryComboBox.component";
+import { getServerSession } from "next-auth";
 
 export const preferredRegion = "home";
 export const dynamic = "force-dynamic";

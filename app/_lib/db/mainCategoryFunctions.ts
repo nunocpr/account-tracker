@@ -1,7 +1,7 @@
-import { getUserIdFromSession } from "@/app/_lib/auth/authFunctions";
+import { getUserIdFromSession } from "@lib/auth/authFunctions";
 import { AuthRequiredError, CustomError } from "@lib/exceptions";
-import { IMainCategory } from "../../_types/mainCategories";
-import { sanitizeString } from "../utils";
+import { IMainCategory } from "@appTypes/mainCategories";
+import { sanitizeString } from "@lib/utils";
 import { prisma } from "@lib/prisma";
 
 export const addMainCategory = async (mainCategory: string) => {

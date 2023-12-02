@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { cn } from "@/app/_lib/utils";
+import { cn } from "@lib/utils";
 
 export default function Example({ options }: { options: { name: string }[] }) {
     const [selected, setSelected] = useState(options[0]);
