@@ -29,7 +29,7 @@ export const isEmpty = (val: any): boolean =>
     (typeof val === "object" && Object.keys(val).length === 0) ||
     (typeof val === "string" && val.trim().length === 0);
 
-export const sanitizeString = (input: string | FormDataEntryValue) => {
+export const sanitizeString = (input: string | File) => {
     if (typeof input !== "string") {
         return "";
     }
@@ -39,7 +39,7 @@ export const sanitizeString = (input: string | FormDataEntryValue) => {
     return sanitizedValue;
 };
 
-export const sanitizeNumber = (input: FormDataEntryValue | null): number => {
+export const sanitizeNumber = (input: string | File | null): number => {
     if (typeof input === "number") {
         return input;
     }

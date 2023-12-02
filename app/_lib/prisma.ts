@@ -3,22 +3,18 @@
 import {
     PrismaClient as GeneratedPrismaClient,
     TransactionType,
-} from "@prisma/client";
+} from "@prisma/client/edge";
 
+// const prisma = new GeneratedPrismaClient();
 const globalForPrisma = global as unknown as { prisma: GeneratedPrismaClient };
+const devDB = process.env.DATABASE_DEV_URL;
+const prodDB = process.env.DATABASE_URL;
 
 const prisma =
     globalForPrisma.prisma ||
     new GeneratedPrismaClient({
         // log: ["query", "info", "warn", "error"],
-        datasources: {
-            db: {
-                url:
-                    process.env.NODE_ENV !== "production"
-                        ? process.env.MONGODB_DEV_URI
-                        : process.env.MONGODB_URI,
-            },
-        },
+        datasourceUrl: process.env.NODE_ENV !== "production" ? devDB : prodDB,
     });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

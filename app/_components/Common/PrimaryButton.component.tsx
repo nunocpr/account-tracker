@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 interface PrimaryButtonProps {
-    children: React.ReactNode;
+    children: ReactNode | ReactNode[];
     buttonText?: string;
 }
 

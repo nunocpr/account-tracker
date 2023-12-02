@@ -4,17 +4,25 @@ import CategoryComboBox from "./CategoryComboBox.component";
 import { addTransaction } from "@lib/db/transactionFunctions";
 import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
 import { IMainCategory } from "@appTypes/mainCategories";
+import { FormEvent, useRef } from "react";
 
 export default function AddTransaction({
     mainCategories,
 }: {
     mainCategories: IMainCategory[];
 }) {
-    const handleSubmit = async (data: FormData) => {
+    const formRef = useRef<HTMLFormElement>(null);
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
         try {
             const res = await addTransaction(data);
             if (res.ok) {
                 notifySuccess("Transaction added successfully");
+                if (formRef.current) {
+                    formRef.current.reset();
+                }
             } else {
                 notifyError("Something went wrong. Please try again");
             }
@@ -24,7 +32,7 @@ export default function AddTransaction({
     };
 
     return (
-        <form action={handleSubmit}>
+        <form ref={formRef} onSubmit={handleSubmit}>
             <div className="space-y-12">
                 <div className="border-b border-white/10 pb-12">
                     <h2 className="text-base font-semibold leading-7 dark:text-white">

@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../[...nextauth]/route";
+import { auth } from "@/auth";
 
-export async function POST() {
-    const session = await getServerSession(authOptions);
-
-    return NextResponse.json({
-        status: 200,
-        body: {
-            message: "Logout successful",
-        },
-    });
-}
+export const POST = auth(async (req) => {
+    if (req.auth && req.auth.user) {
+        return NextResponse.json({
+            status: 200,
+            body: {
+                message: "Logout successful",
+            },
+        });
+    }
+});

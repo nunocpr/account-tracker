@@ -1,8 +1,8 @@
-import { getUserIdFromSession } from "@lib/auth/authFunctions";
-import { AuthRequiredError, CustomError } from "@lib/exceptions";
+import { CustomError } from "@lib/exceptions";
 import { IMainCategory } from "@appTypes/mainCategories";
 import { sanitizeString } from "@lib/utils";
 import { prisma } from "@lib/prisma";
+import { User } from "next-auth";
 
 export const addMainCategory = async (mainCategory: string) => {
     try {
@@ -70,35 +70,12 @@ export const removeMainCategory = async (mainCategory: string) => {
     }
 };
 
-export const fetchMainCategories = async (session: {
-    user?: {
-        name?: string | null;
-        email?: string | null;
-        image?: string | null;
-    };
-}) => {
+export const fetchMainCategories = async (user: User) => {
     try {
         // fetch all main categories of the user
-
-        // console.log("CALLING SESSION IN fetchMainCategories: ", session)
-
-        if (!session) {
-            throw new AuthRequiredError(
-                "You must be logged in to view main categories."
-            );
-        }
-
-        const userId = await getUserIdFromSession(session);
-
-        if (!userId) {
-            throw new CustomError("There was an error fetching the user.", 403);
-        }
-
-        // console.log("CALLING userId IN fetchMainCategories: ", userId)
-
         const mainCategories = await prisma.mainCategory.findMany({
             where: {
-                userId: userId,
+                userId: user.id,
             },
             select: {
                 id: true,

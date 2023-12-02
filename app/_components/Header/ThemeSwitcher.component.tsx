@@ -3,7 +3,9 @@ import { useState } from "react";
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 
 export enum Theme {
+    // eslint-disable-next-line no-unused-vars
     dark = "dark",
+    // eslint-disable-next-line no-unused-vars
     light = "light",
 }
 

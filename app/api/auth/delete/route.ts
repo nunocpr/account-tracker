@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../[...nextauth]/route";
 import { prisma } from "@lib/prisma";
+import { auth } from "@/auth";
+import { User } from "next-auth";
 
-export async function POST() {
-    const session = await getServerSession(authOptions);
-
-    // if there's a session
-    if (session) {
-        const userEmail = session.user?.email;
+export const POST = auth(async (req) => {
+    if (req.auth && req.auth.user) {
+        const user: User = req.auth.user;
+        const userEmail = user.email;
 
         if (userEmail) {
             // find the user
@@ -20,6 +18,16 @@ export async function POST() {
 
             // if there's a user, delete all their data
             if (user) {
+                await prisma.transaction.deleteMany({
+                    where: {
+                        userId: user.id,
+                    },
+                });
+                await prisma.mainCategory.deleteMany({
+                    where: {
+                        userId: user.id,
+                    },
+                });
                 await prisma.account.deleteMany({
                     where: {
                         userId: user.id,
@@ -39,12 +47,19 @@ export async function POST() {
                 });
             }
         }
-    }
 
-    return NextResponse.json({
-        status: 200,
-        body: {
-            message: "User deletion successful",
-        },
-    });
-}
+        return NextResponse.json({
+            status: 200,
+            body: {
+                message: "User deletion successful",
+            },
+        });
+    } else {
+        return NextResponse.json({
+            status: 401,
+            body: {
+                message: "User not authenticated",
+            },
+        });
+    }
+});

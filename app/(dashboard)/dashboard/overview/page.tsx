@@ -1,14 +1,13 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { baseURL } from "@lib/constants";
-import { authOptions } from "@api/auth/[...nextauth]/route";
 import AddTransaction from "@components/Form/AddTransaction.component";
+import { auth } from "@/auth";
 
 export const preferredRegion = "home";
 
 export default async function Dashboard() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     if (!session) {
         redirect("/register");

@@ -1,5 +1,5 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { handleError } from "@lib/exceptions";
@@ -13,7 +13,7 @@ export default function AddMainCategory({ className }: { className?: string }) {
     const [category, setCategory] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const onSubmit = async (e: React.FormEvent) => {
+    const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         setLoading(true);

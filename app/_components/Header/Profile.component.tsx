@@ -6,12 +6,6 @@ import { handleDeleteUser, handleLogout } from "@lib/auth/authFunctions";
 import { cn } from "@lib/utils";
 
 export default function Profile({ user }: { user: any }) {
-    const userNavigation = [
-        { name: "Your Profile", href: "#" },
-        { name: "Settings", href: "#" },
-        { name: "Sign out", href: "#" },
-    ];
-
     return (
         <Menu as="div" className="relative ml-3">
             <div>

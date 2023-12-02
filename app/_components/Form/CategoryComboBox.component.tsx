@@ -133,6 +133,7 @@ export default function CategoryComboBox({
                                     setQuery(event.target.value)
                                 }
                                 className="py-1.5 w-1/4 rounded-sm text-gray-500 font-medium dark:text-white bg-transparent border-0 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                                // eslint-disable-next-line no-unused-vars
                                 displayValue={(_) => query}
                                 placeholder="Search..."
                             />

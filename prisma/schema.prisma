@@ -6,8 +6,10 @@ generator client {
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("MONGODB_URI")
+    provider  = "mongodb"
+    // url      = env("MONGODB_URI")
+    url       = env("DATABASE_URL")
+    directUrl = env("DATABASE_URL")
 }
 
 //* --------------------------------- *//
@@ -76,8 +78,8 @@ model MainCategory {
     name           String        @unique
     transactions   Transaction[] @relation(fields: [transactionIds], references: [id])
     transactionIds String[]      @db.ObjectId
-    user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId         String        @db.ObjectId
+    user           User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId         String?       @db.ObjectId
     createdAt      DateTime      @default(now())
 }
 
