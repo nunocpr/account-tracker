@@ -10,7 +10,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 export default function Sidebar() {
     const pathname = usePathname();
 
-    const subNav = useMemo(() => getDashboardNav(), [pathname]);
+    const subNav = useMemo(() => getDashboardNav(), []);
 
     return (
         <>

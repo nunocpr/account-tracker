@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
-import AddTransaction from "./_components/Transaction/AddTransaction.component";
 
 export default async function Homepage() {
     const session = await getServerSession(authOptions);

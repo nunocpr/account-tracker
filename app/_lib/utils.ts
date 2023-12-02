@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import ms from "ms";
 import trim from "validator/lib/trim";
 import escape from "validator/lib/escape";
+import { parse } from "path";
 
 /**
  * Returns the time ago from the timestamp
@@ -29,9 +30,9 @@ export const isEmpty = (val: any): boolean =>
     (typeof val === "object" && Object.keys(val).length === 0) ||
     (typeof val === "string" && val.trim().length === 0);
 
-export const sanitizeString = (input: string | FormDataEntryValue | null) => {
+export const sanitizeString = (input: string | FormDataEntryValue) => {
     if (typeof input !== "string") {
-        return null;
+        return "";
     }
 
     const sanitizedValue = trim(escape(input));
@@ -39,20 +40,17 @@ export const sanitizeString = (input: string | FormDataEntryValue | null) => {
     return sanitizedValue;
 };
 
-export const sanitizeNumber = (input: FormDataEntryValue | null) => {
-    if (typeof input !== "number" || typeof input !== "string") return null;
-
-    if (
-        typeof input === "string" &&
-        !isNaN(parseInt(input)) &&
-        typeof parseInt(input) === "number"
-    ) {
-        return parseInt(input);
+export const sanitizeNumber = (input: FormDataEntryValue | null): number => {
+    if (typeof input === "number") {
+        return input;
     }
 
-    const sanitizedValue = input;
+    if (typeof input === "string") {
+        const parsedValue = parseFloat(input);
+        return isNaN(parsedValue) ? 0 : parsedValue;
+    }
 
-    return sanitizedValue;
+    return 0;
 };
 
 export const generateSessionToken = () => {

@@ -1,9 +1,9 @@
 import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
-import ComboMultiSelect from "@components/Form/ComboMultiSelect.component";
 import { authOptions } from "@api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 import { baseURL } from "@lib/constants";
 import { headers } from "next/headers";
+import CategoryComboBox from "@/app/_components/Form/CategoryComboBox.component";
 
 export const preferredRegion = "home";
 export const dynamic = "force-dynamic";
@@ -36,7 +36,12 @@ export default async function Home() {
                 </span>
             </p>
 
-            {session && <ComboMultiSelect mainCategories={mainCategories} />}
+            {session && (
+                <CategoryComboBox
+                    name={"Categories"}
+                    mainCategories={mainCategories}
+                />
+            )}
 
             {session && <AddMainCategory />}
         </div>

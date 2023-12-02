@@ -73,22 +73,28 @@ export async function POST(request: NextRequest) {
 
         // Perform add, edit or remove actions based on type
         if (type === ActionType.Add) {
+            // validate input
+            if (!data.amount || sanitizeNumber(data.amount) === 0) {
+                return NextResponse.json(
+                    { error: "Amount is required" },
+                    { status: 400, statusText: "Amount is required" }
+                );
+            }
             //* create a transaction
-
             const newTransaction = await prisma.transaction.create({
                 data: {
-                    amount: sanitizeNumber(data.amount) || 0,
+                    amount: sanitizeNumber(data.amount),
                     type:
-                        data.type === "Expense"
-                            ? TransactionType.Expense
-                            : TransactionType.Income,
-                    mainCategory: data.mainCategoryId
+                        data.type === "Income"
+                            ? TransactionType.Income
+                            : TransactionType.Expense,
+                    mainCategories: data.mainCategoryId
                         ? {
-                              connect: {
-                                  id:
-                                      sanitizeString(data.mainCategoryId) ||
-                                      undefined,
-                              },
+                              connect: data.mainCategoryIds.map(
+                                  (id: string) => ({
+                                      id: sanitizeString(id) || undefined,
+                                  })
+                              ),
                           }
                         : undefined,
                     description: data.description

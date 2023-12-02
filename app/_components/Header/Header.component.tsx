@@ -22,8 +22,8 @@ import Image from "next/image";
 
 export default function Header({ session }: { session: any }) {
     const pathname = usePathname();
-    const nav = useMemo(() => getNav(), [pathname]);
-    const dashboardNav = useMemo(() => getDashboardNav(), [pathname]);
+    const nav = useMemo(() => getNav(), []);
+    const dashboardNav = useMemo(() => getDashboardNav(), []);
 
     const user = useMemo(() => session?.user, [session]);
 

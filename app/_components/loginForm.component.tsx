@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 
@@ -53,7 +54,9 @@ export const LoginForm = () => {
     return (
         <form onSubmit={() => signIn("google", { callbackUrl })}>
             {error && (
-                <p className="text-center bg-red-300 py-4 mb-6 rounded">{error}</p>
+                <p className="text-center bg-red-300 py-4 mb-6 rounded">
+                    {error}
+                </p>
             )}
             {/* <div className="mb-6">
                 <input
@@ -96,12 +99,7 @@ export const LoginForm = () => {
                 onClick={() => signIn("google", { callbackUrl })}
                 role="button"
             >
-                <img
-                    className="pr-2"
-                    src="/images/google.svg"
-                    alt=""
-                    style={{ height: "2rem" }}
-                />
+                <Image className="pr-2 h-8" src="/images/google.svg" alt="" />
                 Continue with Google
             </a>
         </form>

@@ -1,65 +1,86 @@
 import { prisma } from "@lib/prisma";
-import { TTransaction } from "@appTypes/transactions";
 import { getUserIdFromSession } from "@/app/_lib/auth/authFunctions";
 import { AuthRequiredError, CustomError } from "@lib/exceptions";
+import { baseURL } from "../constants";
 
 export const addTransaction = async (transaction: FormData) => {
+    const amount = Number(transaction.get("amount"));
+    const type = transaction.get("type");
+    const categoriesIds = [];
+    const description = transaction.get("description") || "";
+
+    for (const [key, value] of transaction.entries()) {
+        if (key.startsWith("categories[") && key.endsWith("][id]")) {
+            categoriesIds.push(value);
+        }
+    }
+
+    const payload = {
+        type: "add",
+        data: {
+            amount,
+            type,
+            categoriesIds,
+            description,
+        },
+    };
+    const payloadLength = JSON.stringify(payload).length;
     try {
-        const res = await fetch("/api/transaction", {
+        const res = await fetch(baseURL + "/api/transaction", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Content-Length": payloadLength.toString(),
             },
-            body: JSON.stringify({
-                type: "add",
-                data: {
-                    amount: transaction.get("amount"),
-                    type: transaction.get("type"),
-                    description: transaction.get("description"),
-                    mainCategoryId: transaction.get("mainCategoryId"),
-                },
-            }),
+            body: JSON.stringify(payload),
         });
 
         return res;
-    } catch (e) {
-        throw new CustomError("Error adding transaction");
+    } catch (e: any) {
+        throw new CustomError("Error adding transaction", e);
     }
 };
 
-export const editTransaction = async (transaction: TTransaction) => {
+// export const editTransaction = async (transaction: TTransaction) => {
+//     const payload = {
+//         type: "edit",
+//         data: {
+//             transaction,
+//         },
+//     };
+
+//     try {
+//         const res = await fetch("/api/mainCategory", {
+//             method: "POST",
+//             headers: Object.fromEntries([
+//                 ...headers(),
+//                 ["content-type", "application/json"],
+//                 ["content-length", JSON.stringify(payload).length],
+//             ]),
+//             body: JSON.stringify(payload),
+//         });
+//         return res;
+//     } catch (e) {
+//         throw new CustomError("Error editing category");
+//     }
+// };
+
+export const removeTransaction = async (transaction: FormData) => {
+    const payload = {
+        type: "remove",
+        data: {
+            transaction,
+        },
+    };
+    const payloadLength = JSON.stringify(payload).length;
     try {
         const res = await fetch("/api/mainCategory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Content-Length": payloadLength.toString(),
             },
-            body: JSON.stringify({
-                type: "edit",
-                data: {
-                    transaction,
-                },
-            }),
-        });
-        return res;
-    } catch (e) {
-        throw new CustomError("Error editing category");
-    }
-};
-
-export const removeTransaction = async (transaction: TTransaction) => {
-    try {
-        const res = await fetch("/api/mainCategory", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                type: "remove",
-                data: {
-                    transaction,
-                },
-            }),
+            body: JSON.stringify(payload),
         });
 
         return res;
@@ -82,7 +103,7 @@ export const fetchTransactions = async (session: {
 
         if (!session) {
             throw new AuthRequiredError(
-                "You must be logged in to view main categories."
+                "You must be logged in to view your transactions."
             );
         }
 
