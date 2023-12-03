@@ -3,7 +3,7 @@
 import {
     PrismaClient as GeneratedPrismaClient,
     TransactionType,
-} from "@prisma/client/edge";
+} from "@prisma/client";
 
 // const prisma = new GeneratedPrismaClient();
 const globalForPrisma = global as unknown as { prisma: GeneratedPrismaClient };
