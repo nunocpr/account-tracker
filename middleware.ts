@@ -21,12 +21,8 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export default auth((req) => {
-    if (req.nextUrl.pathname.startsWith("/_next")) {
+    if (req.nextUrl.pathname.startsWith("/_next") || req.auth) {
         return NextResponse.next();
-    }
-    if (req.auth) {
-        return null;
-        // return NextResponse.json({ user: req.auth.user }, { status: 200 });
     }
     return NextResponse.redirect(new URL("/register", req.nextUrl));
 });
