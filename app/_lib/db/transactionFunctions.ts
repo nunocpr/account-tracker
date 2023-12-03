@@ -74,7 +74,7 @@ export const removeTransaction = async (transaction: FormData) => {
     };
     const payloadLength = JSON.stringify(payload).length;
     try {
-        const res = await fetch("/api/mainCategory", {
+        const res = await fetch(baseURL + "/api/mainCategory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -3,10 +3,11 @@ import { IMainCategory } from "@appTypes/mainCategories";
 import { sanitizeString } from "@lib/utils";
 import { prisma } from "@lib/prisma";
 import { User } from "next-auth";
+import { baseURL } from "../constants";
 
 export const addMainCategory = async (mainCategory: string) => {
     try {
-        const res = await fetch("/api/mainCategory", {
+        const res = await fetch(baseURL + "/api/mainCategory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +31,7 @@ export const editMainCategory = async (
     newMainCategory: string
 ) => {
     try {
-        const res = await fetch("/api/mainCategory", {
+        const res = await fetch(baseURL + "/api/mainCategory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export const editMainCategory = async (
 
 export const removeMainCategory = async (mainCategory: string) => {
     try {
-        const res = await fetch("/api/mainCategory", {
+        const res = await fetch(baseURL + "/api/mainCategory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

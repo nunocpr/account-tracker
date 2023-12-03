@@ -1,8 +1,8 @@
 import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
 import CategoryComboBox from "@components/Form/CategoryComboBox.component";
-import { baseURL } from "@lib/constants";
 import { headers } from "next/headers";
 import { auth } from "@/auth";
+import { baseURL } from "../_lib/constants";
 
 export const preferredRegion = "home";
 export const dynamic = "force-dynamic";

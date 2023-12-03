@@ -1,10 +1,11 @@
 import { signOut } from "next-auth/react";
 import { prisma } from "@lib/prisma";
 import { CustomError } from "@lib/exceptions";
+import { baseURL } from "../constants";
 
 export const handleLogout = async () => {
     try {
-        fetch("/api/auth/logout", {
+        fetch(baseURL + "/api/auth/logout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -19,7 +20,7 @@ export const handleLogout = async () => {
 
 export const handleDeleteUser = async () => {
     try {
-        fetch("/api/auth/delete", {
+        fetch(baseURL + "/api/auth/delete", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

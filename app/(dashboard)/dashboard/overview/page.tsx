@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
-import { baseURL } from "@lib/constants";
 import AddTransaction from "@components/Form/AddTransaction.component";
 import { auth } from "@/auth";
+import { baseURL } from "@/app/_lib/constants";
 
 export const preferredRegion = "home";
 
@@ -12,7 +12,6 @@ export default async function Dashboard() {
     if (!session) {
         redirect("/register");
     }
-
     const res = await fetch(baseURL + "/api/mainCategory", {
         method: "GET",
         headers: Object.fromEntries(headers()),
