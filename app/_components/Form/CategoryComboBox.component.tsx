@@ -5,7 +5,6 @@ import { Combobox } from "@headlessui/react";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
 import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
 import { IMainCategory } from "@appTypes/mainCategories";
-import { useLocalStorage } from "@lib/hooks";
 import { cn } from "@lib/utils";
 import {
     editMainCategory,
@@ -22,9 +21,12 @@ export default function CategoryComboBox({
 }) {
     const router = useRouter();
 
-    const [activeCategories, setActiveCategories] = useLocalStorage<
-        IMainCategory[]
-    >("categoryPreferences", []);
+    // const [activeCategories, setActiveCategories] = useLocalStorage<
+    //     IMainCategory[]
+    // >("categoryPreferences", []);
+    const [activeCategories, setActiveCategories] = useState<IMainCategory[]>(
+        []
+    );
     const [editingCategory, setEditingCategory] =
         useState<IMainCategory | null>(null);
     const [newCategoryName, setNewCategoryName] = useState("");

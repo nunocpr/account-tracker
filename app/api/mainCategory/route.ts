@@ -1,17 +1,16 @@
 import { prisma } from "@lib/prisma";
 import { ActionType } from "@appTypes/api";
 import { revalidateTag } from "next/cache";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { handleErrorResponse } from "@lib/exceptions";
 import { fetchMainCategories } from "@lib/db/mainCategoryFunctions";
 import { sanitizeString } from "@lib/utils";
 import { auth } from "@/auth";
 
-export const GET = async () => {
-    const session = await auth();
-    if (session && session?.user) {
+export const GET = auth(async (req) => {
+    if (req.auth && req.auth.user) {
         try {
-            const mainCategories = await fetchMainCategories(session?.user);
+            const mainCategories = await fetchMainCategories(req.auth.user);
 
             revalidateTag("mainCategory");
 
@@ -28,26 +27,25 @@ export const GET = async () => {
             }
         );
     }
-};
+}) as any;
 
 /**
  *
- * Having in mind the user, this route will create, edit or remove a main category, based on the type of the request.
- * The request should be a POST request with a JSON body containing the type of the request and the main category.
+ * Having in mind the user, this route will create, edit or remove a main category, based on the type of the req.
+ * The req should be a POST req with a JSON body containing the type of the req and the main category.
  * ex: { type: 'add', mainCategory: 'Bank' }
  *     { type: 'edit', mainCategory: 'Bank', newMainCategory: 'Banking' }
  *     { type: 'delete', mainCategory: 'Bank' }
  *
- * @param request POST request
+ * @param req POST req
  * @returns a Nextresponse with the new main category or errors
  */
-export const POST = async (request: NextRequest) => {
-    const session = await auth();
-
-    if (session && session?.user) {
+export const POST = auth(async (req) => {
+    const session = req.auth;
+    if (session && req.auth?.user) {
         try {
-            // get request body
-            const { type, data } = await request.json();
+            // get req body
+            const { type, data } = await req.json();
 
             // Perform add, edit or remove actions based on type
             if (type === ActionType.Add) {
@@ -64,7 +62,7 @@ export const POST = async (request: NextRequest) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             name: sanitizeString(mainCategory),
-                            userId: session.user.id,
+                            userId: session.user?.id,
                         },
                     });
 
@@ -83,7 +81,7 @@ export const POST = async (request: NextRequest) => {
                         name: sanitizeString(mainCategory),
                         user: {
                             connect: {
-                                id: session.user.id,
+                                id: session.user?.id,
                             },
                         },
                     },
@@ -99,7 +97,7 @@ export const POST = async (request: NextRequest) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             name: sanitizeString(mainCategory),
-                            userId: session.user.id,
+                            userId: session.user?.id,
                         },
                     });
 
@@ -107,7 +105,7 @@ export const POST = async (request: NextRequest) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             name: sanitizeString(newMainCategory),
-                            userId: session.user.id,
+                            userId: session.user?.id,
                         },
                     });
 
@@ -186,7 +184,7 @@ export const POST = async (request: NextRequest) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             id: mainCategory,
-                            userId: session.user.id,
+                            userId: session.user?.id,
                         },
                     });
 
@@ -225,10 +223,10 @@ export const POST = async (request: NextRequest) => {
                     }
                 );
             } else {
-                // if the request type is none of the above, return 'Invalid Request' error
+                // if the req type is none of the above, return 'Invalid req' error
                 return NextResponse.json(
-                    { error: "Invalid request" },
-                    { status: 400, statusText: "Invalid request" }
+                    { error: "Invalid req" },
+                    { status: 400, statusText: "Invalid req" }
                 );
             }
         } catch (error) {
@@ -243,4 +241,4 @@ export const POST = async (request: NextRequest) => {
             }
         );
     }
-};
+}) as any;

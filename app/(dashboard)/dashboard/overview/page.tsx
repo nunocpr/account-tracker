@@ -19,7 +19,9 @@ export default async function Dashboard() {
             tags: ["mainCategory"],
         },
     });
+    console.log("RESPONSE: ", res);
     const { mainCategories } = await res.json();
+    console.log("mainCategories: ", mainCategories);
 
     return (
         <div className="px-12 md:px-32 py-12 text-gray-700 dark:text-white">
