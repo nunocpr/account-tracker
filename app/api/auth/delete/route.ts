@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@lib/prisma";
 import { auth } from "@/auth";
-import { User } from "next-auth";
 
-export const POST = auth(async (req) => {
-    if (req.auth && req.auth.user) {
-        const user: User = req.auth.user;
-        const userEmail = user.email;
+export const POST = async () => {
+    const session = await auth();
+
+    if (session && session?.user) {
+        const userId = session?.user?.id;
+        const userEmail = session?.user?.email;
 
         if (userEmail) {
             // find the user
@@ -20,17 +21,17 @@ export const POST = auth(async (req) => {
             if (user) {
                 await prisma.transaction.deleteMany({
                     where: {
-                        userId: user.id,
+                        userId,
                     },
                 });
                 await prisma.mainCategory.deleteMany({
                     where: {
-                        userId: user.id,
+                        userId,
                     },
                 });
                 await prisma.account.deleteMany({
                     where: {
-                        userId: user.id,
+                        userId,
                     },
                 });
                 await prisma.user.delete({
@@ -62,4 +63,4 @@ export const POST = auth(async (req) => {
             },
         });
     }
-});
+};

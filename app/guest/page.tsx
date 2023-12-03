@@ -1,15 +1,14 @@
 import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
 import CategoryComboBox from "@components/Form/CategoryComboBox.component";
-import { authOptions } from "@api/auth/[...nextauth]/route";
 import { baseURL } from "@lib/constants";
 import { headers } from "next/headers";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
 
 export const preferredRegion = "home";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     const res = await fetch(baseURL + "/api/mainCategory", {
         method: "GET",

@@ -1,9 +1,9 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import googleSVG from "@/images/google.svg";
+import Image from "next/image";
 
 export const LoginForm = () => {
     const searchParams = useSearchParams();

@@ -3,26 +3,27 @@ import { ActionType } from "@appTypes/api";
 import { revalidateTag } from "next/cache";
 import { sanitizeNumber, sanitizeString } from "@lib/utils";
 import { handleErrorResponse } from "@lib/exceptions";
-import { NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { NextRequest } from "next/server";
 
-export const GET = auth(async (request) => {
-    if (request.auth && request.auth.user) {
+export const GET = async () => {
+    const session = await auth();
+    if (session && session.user) {
         try {
             const transactions = await prisma.transaction.findMany({
                 where: {
-                    userId: request.auth.user.id,
+                    userId: session.user.id,
                 },
             });
 
             revalidateTag("transaction");
 
-            return NextResponse.json({ transactions }, { status: 200 });
+            return Response.json({ transactions }, { status: 200 });
         } catch (error) {
             return handleErrorResponse(error);
         }
     } else {
-        return NextResponse.json(
+        return Response.json(
             { error: "Unauthorized" },
             {
                 status: 401,
@@ -30,7 +31,7 @@ export const GET = auth(async (request) => {
             }
         );
     }
-});
+};
 
 /**
  *
@@ -40,8 +41,9 @@ export const GET = auth(async (request) => {
  * @param request POST request
  * @returns a response with the new transaction or errors
  */
-export const POST = auth(async (request) => {
-    if (request.auth && request.auth.user) {
+export const POST = async (request: NextRequest) => {
+    const session = await auth();
+    if (session && session.user) {
         try {
             // get request body
             const { type, data } = await request.json();
@@ -50,7 +52,7 @@ export const POST = auth(async (request) => {
             if (type === ActionType.Add) {
                 // validate input
                 if (!data.amount || sanitizeNumber(data.amount) === 0) {
-                    return NextResponse.json(
+                    return Response.json(
                         { error: "Amount is required" },
                         { status: 400, statusText: "Amount is required" }
                     );
@@ -75,12 +77,12 @@ export const POST = auth(async (request) => {
                         description: data.description
                             ? sanitizeString(data.description)
                             : undefined,
-                        user: { connect: { id: request.auth.user.id } },
+                        user: { connect: { id: session.user.id } },
                     },
                 });
                 revalidateTag("transaction");
 
-                return NextResponse.json({ newTransaction }, { status: 200 });
+                return Response.json({ newTransaction }, { status: 200 });
             } else if (type === ActionType.Edit) {
                 console.log("EDIT: ", data);
             } else if (type === ActionType.Remove) {
@@ -88,7 +90,7 @@ export const POST = auth(async (request) => {
             }
 
             // if the request type is none of the above, return 'Invalid Request' error
-            return NextResponse.json(
+            return Response.json(
                 { error: "Invalid request" },
                 { status: 400, statusText: "Invalid request" }
             );
@@ -96,7 +98,7 @@ export const POST = auth(async (request) => {
             return handleErrorResponse(error);
         }
     } else {
-        return NextResponse.json(
+        return Response.json(
             { error: "Unauthorized" },
             {
                 status: 401,
@@ -104,4 +106,4 @@ export const POST = auth(async (request) => {
             }
         );
     }
-});
+};

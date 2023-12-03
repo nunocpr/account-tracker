@@ -1,20 +1,21 @@
 import { prisma } from "@lib/prisma";
 import { ActionType } from "@appTypes/api";
 import { revalidateTag } from "next/cache";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { handleErrorResponse } from "@lib/exceptions";
 import { fetchMainCategories } from "@lib/db/mainCategoryFunctions";
 import { sanitizeString } from "@lib/utils";
 import { auth } from "@/auth";
 
-export const GET = auth(async (request) => {
-    if (request.auth && request.auth.user) {
+export const GET = async () => {
+    const session = await auth();
+    if (session && session?.user) {
         try {
-            const mainCategories = await fetchMainCategories(request.auth.user);
+            const mainCategories = await fetchMainCategories(session?.user);
 
             revalidateTag("mainCategory");
 
-            return NextResponse.json({ mainCategories }, { status: 200 });
+            return Response.json({ mainCategories }, { status: 200 });
         } catch (error) {
             return handleErrorResponse(error);
         }
@@ -27,7 +28,7 @@ export const GET = auth(async (request) => {
             }
         );
     }
-});
+};
 
 /**
  *
@@ -38,10 +39,12 @@ export const GET = auth(async (request) => {
  *     { type: 'delete', mainCategory: 'Bank' }
  *
  * @param request POST request
- * @returns a response with the new main category or errors
+ * @returns a Nextresponse with the new main category or errors
  */
-export const POST = auth(async (request) => {
-    if (request.auth && request.auth.user) {
+export const POST = async (request: NextRequest) => {
+    const session = await auth();
+
+    if (session && session?.user) {
         try {
             // get request body
             const { type, data } = await request.json();
@@ -61,7 +64,7 @@ export const POST = auth(async (request) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             name: sanitizeString(mainCategory),
-                            userId: request.auth.user.id,
+                            userId: session.user.id,
                         },
                     });
 
@@ -80,7 +83,7 @@ export const POST = auth(async (request) => {
                         name: sanitizeString(mainCategory),
                         user: {
                             connect: {
-                                id: request.auth.user.id,
+                                id: session.user.id,
                             },
                         },
                     },
@@ -96,7 +99,7 @@ export const POST = auth(async (request) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             name: sanitizeString(mainCategory),
-                            userId: request.auth.user.id,
+                            userId: session.user.id,
                         },
                     });
 
@@ -104,7 +107,7 @@ export const POST = auth(async (request) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             name: sanitizeString(newMainCategory),
-                            userId: request.auth.user.id,
+                            userId: session.user.id,
                         },
                     });
 
@@ -183,7 +186,7 @@ export const POST = auth(async (request) => {
                     await prisma.mainCategory.findFirst({
                         where: {
                             id: mainCategory,
-                            userId: request.auth.user.id,
+                            userId: session.user.id,
                         },
                     });
 
@@ -240,4 +243,4 @@ export const POST = auth(async (request) => {
             }
         );
     }
-});
+};
