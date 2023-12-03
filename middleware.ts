@@ -17,19 +17,19 @@
 // import authConfig from "./auth.config";
 // import NextAuth from "next-auth";
 // export const { auth: middleware } = NextAuth(authConfig);
-import { auth } from "@/auth";
-import { NextResponse } from "next/server";
+// import { auth } from "@/auth";
+// import { NextResponse } from "next/server";
 
-export default auth((req) => {
-    if (req.nextUrl.pathname.startsWith("/_next") || req.auth) {
-        return NextResponse.next();
-    }
-    return NextResponse.redirect(new URL("/register", req.nextUrl));
-});
+// export default auth((req) => {
+//     if (req.nextUrl.pathname.startsWith("/_next") || req.auth) {
+//         return NextResponse.next();
+//     }
+//     return NextResponse.redirect(new URL("/register", req.nextUrl));
+// });
 
-export const config = {
-    matcher: [
-        // "/example", // will be protected
-        "/((?!register|api|login|$).*)", // will not be protected
-    ],
-};
+// export const config = {
+//     matcher: [
+//         // "/example", // will be protected
+//         "/((?!register|api|login|$).*)", // will not be protected
+//     ],
+// };
