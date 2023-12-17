@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { Disclosure, Popover } from "@headlessui/react";
 import { handleDeleteUser, handleLogout } from "@lib/auth/authFunctions";
-import { getNav, getDashboardNav } from "@lib/routes/routes";
+import { getNav, getDashboardNav, EnumPageStatus } from "@lib/routes/routes";
 import { cn } from "@lib/utils";
 
 import Profile from "@components/Header/Profile.component";
@@ -20,8 +20,15 @@ import {
     UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import AddTransactionModalButton from "../Modals/AddTransactionModalButton.component";
 
-export default function Header({ session }: { session: any }) {
+export default function Header({
+    session,
+    mainCategories,
+}: {
+    session: any;
+    mainCategories: any;
+}) {
     const pathname = usePathname();
     const nav = useMemo(() => getNav(), []);
     const dashboardNav = useMemo(() => getDashboardNav(), []);
@@ -96,9 +103,9 @@ export default function Header({ session }: { session: any }) {
                                                             pathname.includes(
                                                                 item.current
                                                             )
-                                                                ? "bg-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-indigo-500"
+                                                                ? "bg-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-indigo-600"
                                                                 : "dark:bg-gray-800 dark:hover:bg-gray-900",
-                                                            "rounded-md px-3 py-2 text-sm font-medium text-gray-500 dark:text-white transition-colors duration-200"
+                                                            "rounded-md px-3 py-2 text-sm font-medium text-gray-500 dark:text-white dark:hover:bg-indigo-500"
                                                         )}
                                                         aria-current={
                                                             pathname.includes(
@@ -115,31 +122,66 @@ export default function Header({ session }: { session: any }) {
                                                         <div className="overflow-hidden rounded-b-md shadow-lg ring-1 ring-black ring-opacity-5">
                                                             <div className="relative grid gap-y-4 py-2 divide-y divide-gray-200 dark:divide-gray-600">
                                                                 {item.children.map(
-                                                                    (child) => (
-                                                                        <Link
-                                                                            key={
-                                                                                child.name
-                                                                            }
-                                                                            href={
-                                                                                child.href
-                                                                            }
-                                                                            className={cn(
-                                                                                pathname.includes(
-                                                                                    child.current
-                                                                                ) &&
-                                                                                    "bg-gray-300 text-gray-700 dark:bg-indigo-500",
-                                                                                "-m-2 p-2 flex items-start text-gray-500 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200"
-                                                                            )}
-                                                                        >
-                                                                            <div className="ml-4">
-                                                                                <p className="text-sm font-medium  dark:text-white">
+                                                                    (child) =>
+                                                                        child.status !==
+                                                                        EnumPageStatus.Soon ? (
+                                                                            <Link
+                                                                                key={
+                                                                                    child.name
+                                                                                }
+                                                                                href={
+                                                                                    child.href
+                                                                                }
+                                                                                className={cn(
+                                                                                    pathname.includes(
+                                                                                        child.current
+                                                                                    ) &&
+                                                                                        "bg-gray-300 text-gray-700 dark:bg-indigo-600",
+                                                                                    "-m-2 p-2 flex items-start text-gray-500 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 text-sm font-medium dark:text-white"
+                                                                                )}
+                                                                            >
+                                                                                <div className="ml-4">
                                                                                     {
                                                                                         child.name
                                                                                     }
-                                                                                </p>
+                                                                                </div>
+                                                                            </Link>
+                                                                        ) : (
+                                                                            <div
+                                                                                key={
+                                                                                    child.name
+                                                                                }
+                                                                                className={cn(
+                                                                                    child.status ===
+                                                                                        EnumPageStatus.Soon &&
+                                                                                        "dark:text-gray-600 cursor-default dark:hover:text-gray-500 dark:hover:bg-transparent",
+                                                                                    pathname.includes(
+                                                                                        child.current
+                                                                                    ) &&
+                                                                                        child.status !==
+                                                                                            EnumPageStatus.Soon &&
+                                                                                        "bg-gray-300 text-gray-700 dark:bg-indigo-600",
+                                                                                    "-m-2 p-2 flex items-start text-gray-500 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 text-sm font-medium dark:text-white"
+                                                                                )}
+                                                                            >
+                                                                                <div className="ml-4">
+                                                                                    {
+                                                                                        child.name
+                                                                                    }
+
+                                                                                    {child.status ===
+                                                                                        EnumPageStatus.Soon && (
+                                                                                        <span className="text-xs">
+                                                                                            {
+                                                                                                " - "
+                                                                                            }
+                                                                                            Available
+                                                                                            soon
+                                                                                        </span>
+                                                                                    )}
+                                                                                </div>
                                                                             </div>
-                                                                        </Link>
-                                                                    )
+                                                                        )
                                                                 )}
                                                             </div>
                                                         </div>
@@ -153,12 +195,15 @@ export default function Header({ session }: { session: any }) {
                                 <div className="flex items-center">
                                     {/* Account Options (new transaction, notifications, user account, etc) */}
                                     <div className="flex-shrink-0">
-                                        <PrimaryButton buttonText="New Transaction">
+                                        <AddTransactionModalButton
+                                            buttonText="New Transaction"
+                                            mainCategories={mainCategories}
+                                        >
                                             <PlusIcon
                                                 className="-ml-0.5 h-5 w-5"
                                                 aria-hidden="true"
                                             />
-                                        </PrimaryButton>
+                                        </AddTransactionModalButton>
                                     </div>
 
                                     <div className="hidden md:ml-4 md:flex md:flex-shrink-0 md:items-center">
@@ -224,29 +269,66 @@ export default function Header({ session }: { session: any }) {
                                         className="divide-y divide-gray-300 dark:divide-gray-700 rounded-md"
                                     >
                                         {session &&
-                                            dashboardNav.map((item) => (
-                                                <Disclosure.Button
-                                                    key={item.name}
-                                                    as="a"
-                                                    href={item.href}
-                                                    className={cn(
-                                                        pathname.includes(
-                                                            item.current
-                                                        ) &&
-                                                            "bg-gray-300 text-gray-700 dark:bg-indigo-500 dark:text-white",
-                                                        "block ml-2 px-2 py-1 text-base font-medium text-gray-500 dark:text-gray-300 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 "
-                                                    )}
-                                                    aria-current={
-                                                        pathname.includes(
-                                                            item.current
-                                                        )
-                                                            ? "page"
-                                                            : undefined
-                                                    }
-                                                >
-                                                    {item.name}
-                                                </Disclosure.Button>
-                                            ))}
+                                            dashboardNav.map((item) =>
+                                                item.status !==
+                                                EnumPageStatus.Soon ? (
+                                                    <Disclosure.Button
+                                                        key={item.name}
+                                                        as="a"
+                                                        href={item.href}
+                                                        className={cn(
+                                                            pathname.includes(
+                                                                item.current
+                                                            ) &&
+                                                                "bg-gray-300 text-gray-700 dark:bg-indigo-600 dark:text-white",
+                                                            "block ml-2 px-2 py-1 text-base font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 "
+                                                        )}
+                                                        aria-current={
+                                                            pathname.includes(
+                                                                item.current
+                                                            )
+                                                                ? "page"
+                                                                : undefined
+                                                        }
+                                                    >
+                                                        {item.name}
+                                                    </Disclosure.Button>
+                                                ) : (
+                                                    <Disclosure.Button
+                                                        key={item.name}
+                                                        as="div"
+                                                        className={cn(
+                                                            item.status ===
+                                                                EnumPageStatus.Soon &&
+                                                                "dark:text-gray-700 dark:hover:text-gray-600 dark:hover:bg-transparent",
+                                                            pathname.includes(
+                                                                item.current
+                                                            ) &&
+                                                                item.status !==
+                                                                    EnumPageStatus.Soon &&
+                                                                "bg-gray-300 text-gray-700 dark:bg-indigo-600 dark:text-white",
+                                                            "w-full cursor-default block ml-2 px-2 py-1 text-start text-base font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 "
+                                                        )}
+                                                        aria-current={
+                                                            pathname.includes(
+                                                                item.current
+                                                            )
+                                                                ? "page"
+                                                                : undefined
+                                                        }
+                                                    >
+                                                        {item.name}
+
+                                                        {item.status ===
+                                                            EnumPageStatus.Soon && (
+                                                            <span className="text-xs">
+                                                                {" - "}
+                                                                Available soon
+                                                            </span>
+                                                        )}
+                                                    </Disclosure.Button>
+                                                )
+                                            )}
                                         {!session && (
                                             <p className="pl-8 dark:text-white text-sm">
                                                 You must be logged in to access

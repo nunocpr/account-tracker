@@ -1,13 +1,14 @@
 import "@styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { cn } from "@lib/utils";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { Inter } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import { NextAuthProvider } from "@/app/clientProviders";
 import Header from "@components/Header/Header.component";
 import { ReactNode } from "react";
 import { auth } from "@/auth";
+import { baseURL } from "./_lib/constants";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -31,6 +32,15 @@ export default async function RootLayout({
 
     const session = await auth();
 
+    const res = await fetch(baseURL + "/api/mainCategory", {
+        method: "GET",
+        headers: Object.fromEntries(headers()),
+        next: {
+            tags: ["mainCategory"],
+        },
+    });
+    const { mainCategories } = await res.json();
+
     return (
         <html lang="en" className={cn(themeCookie?.value || "dark")}>
             <body
@@ -41,7 +51,7 @@ export default async function RootLayout({
             >
                 <NextAuthProvider>
                     <ToastContainer position="top-right" theme="light" />
-                    <Header session={session} />
+                    <Header session={session} mainCategories={mainCategories} />
                     <main className="pt-16">{children}</main>
                 </NextAuthProvider>
             </body>

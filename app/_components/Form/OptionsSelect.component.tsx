@@ -3,7 +3,11 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { cn } from "@lib/utils";
 
-export default function Example({ options }: { options: { name: string }[] }) {
+export default function OptionsSelect({
+    options,
+}: {
+    options: { name: string }[];
+}) {
     const [selected, setSelected] = useState(options[0]);
 
     return (
@@ -14,7 +18,7 @@ export default function Example({ options }: { options: { name: string }[] }) {
                         Type
                     </Listbox.Label>
                     <div className="relative mt-2">
-                        <Listbox.Button className="block w-full rounded-md border-0 bg-white dark:bg-white/5 shadow py-1.5 text-gray-500 dark:text-white ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 font-medium">
+                        <Listbox.Button className="block w-full rounded-md border-0 bg-white dark:bg-white/5 shadow py-1.5 text-gray-500 dark:text-white ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-amber-500 text-sm sm:leading-6 font-medium">
                             <span className="block truncate text-left pl-3">
                                 {selected.name}
                             </span>
@@ -33,7 +37,7 @@ export default function Example({ options }: { options: { name: string }[] }) {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 shadow py-1.5 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                            <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 shadow py-1.5 ring-1 ring-black ring-opacity-5 focus:outline-none text-sm">
                                 {options.map((option, i) => (
                                     <Listbox.Option
                                         key={i}

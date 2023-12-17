@@ -127,14 +127,14 @@ export default function CategoryComboBox({
 
             <div className="relative mt-2">
                 <div className="inline-block w-full rounded-md shadow-sm ">
-                    <div className="relative w-full cursor-default rounded-md shadow-sm bg-white dark:bg-white/5 dark:text-white sm:text-sm pl-2 pr-10 text-left transition duration-150 ease-in-out sm:leading-5 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                    <div className="relative w-full cursor-default rounded-md shadow-sm bg-white dark:bg-white/5 dark:text-white sm:text-sm pl-2 pr-10 text-left transition duration-150 ease-in-out sm:leading-5 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500">
                         <span className="flex gap-2 space-x-2">
                             <Combobox.Input
                                 id="searchCategory"
                                 onChange={(event) =>
                                     setQuery(event.target.value)
                                 }
-                                className="py-1.5 w-1/4 rounded-sm text-gray-500 font-medium dark:text-white bg-transparent border-0 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                                className="py-1.5 w-1/4 rounded-sm text-gray-500 font-medium dark:text-white bg-transparent border-0 ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-amber-500"
                                 // eslint-disable-next-line no-unused-vars
                                 displayValue={(_) => query}
                                 placeholder="Search..."
@@ -283,7 +283,7 @@ export default function CategoryComboBox({
                 </div>
 
                 <div className="absolute mt-1 w-full rounded-md bg-white dark:bg-gray-700 shadow-lg z-20">
-                    <Combobox.Options className="flex flex-col shadow-xs max-h-60 overflow-auto scrollbar-thin scrollbar-thumb-amber-500 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500  rounded-md py-6 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5">
+                    <Combobox.Options className="flex flex-col shadow-xs max-h-60 overflow-auto scrollbar-thin scrollbar-thumb-amber-500 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500  rounded-md py-6 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5">
                         <>
                             {mainCategories.length !== 0 ? (
                                 mainCategories
