@@ -44,6 +44,7 @@ export const GET = async () => {
 export const POST = async (request: NextRequest) => {
     const session = await auth();
     if (session && session.user) {
+        console.log(session.user);
         try {
             // get request body
             const { type, data } = await request.json();
@@ -95,6 +96,7 @@ export const POST = async (request: NextRequest) => {
                 { status: 400, statusText: "Invalid request" }
             );
         } catch (error) {
+            // console.log("error in api", error);
             return handleErrorResponse(error);
         }
     } else {

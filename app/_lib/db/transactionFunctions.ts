@@ -34,7 +34,6 @@ export const addTransaction = async (transaction: FormData) => {
             },
             body: JSON.stringify(payload),
         });
-
         return res;
     } catch (e: any) {
         throw new CustomError("Error adding transaction", e);
