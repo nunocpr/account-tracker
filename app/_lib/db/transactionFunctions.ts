@@ -1,7 +1,6 @@
 import { prisma } from "@lib/prisma";
 import { getUserIdFromSession } from "@lib/auth/authFunctions";
 import { AuthRequiredError, CustomError } from "@lib/exceptions";
-import { baseURL } from "../constants";
 
 export const addTransaction = async (transaction: FormData) => {
     const amount = Number(transaction.get("amount"));
@@ -26,7 +25,7 @@ export const addTransaction = async (transaction: FormData) => {
     };
     const payloadLength = JSON.stringify(payload).length;
     try {
-        const res = await fetch(baseURL + "/api/transaction", {
+        const res = await fetch("/api/transaction", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -73,7 +72,7 @@ export const removeTransaction = async (transaction: FormData) => {
     };
     const payloadLength = JSON.stringify(payload).length;
     try {
-        const res = await fetch(baseURL + "/api/mainCategory", {
+        const res = await fetch("/api/mainCategory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
