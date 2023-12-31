@@ -52,6 +52,7 @@ export default function AddMainCategory({ className }: { className?: string }) {
                 name="add_category"
                 onChange={handleChange}
                 value={category}
+                autoComplete="off"
                 placeholder="Add a Main Category"
                 className="min-w-0 py-1 pl-3 placeholder:text-sm rounded-l-md text-gray-800 dark:bg-gray-600 dark:text-white"
             />

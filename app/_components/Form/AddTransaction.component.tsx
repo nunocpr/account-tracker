@@ -66,6 +66,7 @@ export default function AddTransaction({
                                         name="amount"
                                         id="amount"
                                         className="flex-1 pr-3 border-0 bg-transparent py-1.5 dark:text-white focus:ring-0 sm:text-sm sm:leading-6"
+                                        autoComplete="off"
                                         required
                                         aria-required
                                         placeholder="12.50"
@@ -101,6 +102,7 @@ export default function AddTransaction({
                                 <input
                                     type="text"
                                     name="description"
+                                    autoComplete="off"
                                     id="description"
                                     placeholder="Write a small description for the transaction"
                                     className="block w-full rounded-md border-0 bg-white dark:bg-white/5 shadow py-1.5 text-gray-500

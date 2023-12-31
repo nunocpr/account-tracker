@@ -137,6 +137,7 @@ export default function CategoryComboBox({
                                 className="py-1.5 w-1/4 rounded-sm text-gray-500 font-medium dark:text-white bg-transparent border-0 ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-amber-500"
                                 // eslint-disable-next-line no-unused-vars
                                 displayValue={(_) => query}
+                                autoComplete="off"
                                 placeholder="Search..."
                             />
                             <div className="divide-x-2 flex flex-wrap">

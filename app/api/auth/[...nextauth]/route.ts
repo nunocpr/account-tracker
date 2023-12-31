@@ -133,4 +133,4 @@
 
 // export { auth as GET, auth as POST };
 export { GET, POST } from "@/auth";
-export const runtime = "nodejs";
+export const runtime = "edge";
