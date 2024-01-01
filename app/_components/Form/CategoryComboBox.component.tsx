@@ -4,36 +4,34 @@ import { useRouter } from "next/navigation";
 import { Combobox } from "@headlessui/react";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/20/solid";
 import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
-import { IMainCategory } from "@appTypes/mainCategories";
 import { cn } from "@lib/utils";
 import {
     editMainCategory,
     removeMainCategory,
 } from "@lib/db/mainCategoryFunctions";
 import AddMainCategory from "@components/MainCategory/AddMainCategory.component";
+import { MainCategory } from "@prisma/client";
 
 export default function CategoryComboBox({
     mainCategories,
     name,
 }: {
-    mainCategories: IMainCategory[];
+    mainCategories: MainCategory[];
     name: string;
 }) {
     const router = useRouter();
 
-    // const [activeCategories, setActiveCategories] = useLocalStorage<
-    //     IMainCategory[]
-    // >("categoryPreferences", []);
-    const [activeCategories, setActiveCategories] = useState<IMainCategory[]>(
+    const [activeCategories, setActiveCategories] = useState<MainCategory[]>(
         []
     );
-    const [editingCategory, setEditingCategory] =
-        useState<IMainCategory | null>(null);
+    const [editingCategory, setEditingCategory] = useState<MainCategory | null>(
+        null
+    );
     const [newCategoryName, setNewCategoryName] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [query, setQuery] = useState("");
 
-    const handleCategoryClick = (category: IMainCategory) => {
+    const handleCategoryClick = (category: MainCategory) => {
         setActiveCategories((existing) => {
             const categoryExists = existing.find(
                 (cat) => cat.id === category.id
@@ -46,7 +44,7 @@ export default function CategoryComboBox({
         });
     };
 
-    const handleCategoryDelete = async (category: IMainCategory) => {
+    const handleCategoryDelete = async (category: MainCategory) => {
         const confirm = window.confirm(
             `Are you sure you want to delete the Category ${category.name}?`
         );
@@ -75,7 +73,7 @@ export default function CategoryComboBox({
     };
 
     const handleCategoryEdit = async (
-        category: IMainCategory,
+        category: MainCategory,
         newCategoryName: string
     ) => {
         if (newCategoryName === "" || category.name === newCategoryName) {

@@ -1,8 +1,8 @@
 import { CustomError } from "@lib/exceptions";
-import { IMainCategory } from "@appTypes/mainCategories";
 import { sanitizeString } from "@lib/utils";
 import { prisma } from "@lib/prisma";
 import { User } from "next-auth";
+import { MainCategory } from "@prisma/client";
 
 export const addMainCategory = async (mainCategory: string) => {
     try {
@@ -26,7 +26,7 @@ export const addMainCategory = async (mainCategory: string) => {
 };
 
 export const editMainCategory = async (
-    mainCategory: IMainCategory,
+    mainCategory: MainCategory,
     newMainCategory: string
 ) => {
     try {

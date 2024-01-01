@@ -3,14 +3,14 @@ import OptionsSelect from "./OptionsSelect.component";
 import CategoryComboBox from "./CategoryComboBox.component";
 import { addTransaction } from "@lib/db/transactionFunctions";
 import { notifyError, notifySuccess } from "@lib/toast/toastFunctions";
-import { IMainCategory } from "@appTypes/mainCategories";
 import { FormEvent, useRef } from "react";
+import { MainCategory } from "@prisma/client";
 
 export default function AddTransaction({
     mainCategories,
     onClose,
 }: {
-    mainCategories: IMainCategory[];
+    mainCategories: MainCategory[];
     onClose?: () => void;
 }) {
     const formRef = useRef<HTMLFormElement>(null);

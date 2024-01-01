@@ -119,6 +119,10 @@ export const fetchTransactions = async (session: {
             },
             select: {
                 id: true,
+                amount: true,
+                type: true,
+                description: true,
+                mainCategories: true,
             },
         });
 
