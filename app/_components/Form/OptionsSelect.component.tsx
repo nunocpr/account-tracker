@@ -69,7 +69,7 @@ export default function OptionsSelect({
                                                         className={cn(
                                                             active
                                                                 ? "text-gray-500 dark:text-white"
-                                                                : "text-indigo-600",
+                                                                : "text-gray-400",
                                                             "absolute inset-y-0 right-0 flex items-center pr-4"
                                                         )}
                                                     >

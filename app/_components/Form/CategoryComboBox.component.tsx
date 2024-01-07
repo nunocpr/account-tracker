@@ -125,26 +125,26 @@ export default function CategoryComboBox({
 
             <div className="relative mt-2">
                 <div className="inline-block w-full rounded-md shadow-sm ">
-                    <div className="relative w-full cursor-default rounded-md shadow-sm bg-white dark:bg-white/5 dark:text-white sm:text-sm pl-2 pr-10 text-left transition duration-150 ease-in-out sm:leading-5 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500">
-                        <span className="flex gap-2 space-x-2">
+                    <div className="relative w-full cursor-default rounded-sm shadow-sm bg-white dark:bg-white/5 dark:text-white sm:text-sm pr-10 text-left transition duration-150 ease-in-out sm:leading-5 ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500">
+                        <span className="flex">
                             <Combobox.Input
                                 id="searchCategory"
                                 onChange={(event) =>
                                     setQuery(event.target.value)
                                 }
-                                className="py-1.5 w-1/4 rounded-sm text-gray-500 font-medium dark:text-white bg-transparent border-0 ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-amber-500"
+                                className="py-1.5 w-1/4 rounded-sm text-gray-500 font-normal text-sm dark:text-white bg-transparent border-0 ring-1 ring-inset ring-white/10 focus:ring-1 focus:ring-inset focus:ring-amber-500"
                                 // eslint-disable-next-line no-unused-vars
                                 displayValue={(_) => query}
                                 autoComplete="off"
                                 placeholder="Search..."
                             />
-                            <div className="divide-x-2 flex flex-wrap">
-                                {activeCategories.length <= 2 ? (
+                            <div className="divide-x-2 flex truncate text-ellipsis overflow-scroll">
+                                {activeCategories.length <= 1 ? (
                                     activeCategories.map(
                                         (category: any, i: number) => (
                                             <div
                                                 key={i}
-                                                className="group flex cursor-pointer items-center font-semibold p-1.5 group transition-all duration-200  border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
+                                                className="group flex cursor-pointer items-center font-normal p-1.5 group transition-all duration-200  border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     e.preventDefault();
@@ -181,11 +181,11 @@ export default function CategoryComboBox({
                                 ) : (
                                     <>
                                         {activeCategories
-                                            .slice(0, 2)
+                                            .slice(0, 1)
                                             .map((category: any, i: number) => (
                                                 <div
                                                     key={i}
-                                                    className="group flex cursor-pointer items-center font-semibold p-1.5 group transition-all duration-200  border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
+                                                    className="group flex cursor-pointer items-center font-normal p-1.5 group transition-all duration-200  border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         e.preventDefault();
@@ -220,9 +220,9 @@ export default function CategoryComboBox({
                                                 </div>
                                             ))}
                                         <div
-                                            className="group flex cursor-pointer items-center font-semibold p-1.5 group transition-all duration-200 border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
+                                            className="group flex cursor-pointer items-center font-normal p-1.5 group transition-all duration-200 border-amber-400 hover:bg-gray-500 hover:bg-opacity-10 dark:hover:bg-gray-500 dark:hover:bg-opacity-10"
                                             title={activeCategories
-                                                .slice(2)
+                                                .slice(1)
                                                 .map(
                                                     (category: any) =>
                                                         category.name
@@ -232,15 +232,15 @@ export default function CategoryComboBox({
                                             <span className="break-all line-clamp-2 align-middle leading-normal px-2 text-gray-600 dark:text-white">
                                                 {`+ ${
                                                     activeCategories.length -
-                                                        2 ===
+                                                        1 ===
                                                     1
                                                         ? `${
                                                               activeCategories.length -
-                                                              2
+                                                              1
                                                           } category`
                                                         : `${
                                                               activeCategories.length -
-                                                              2
+                                                              1
                                                           } categories`
                                                 }`}
                                             </span>
@@ -263,7 +263,7 @@ export default function CategoryComboBox({
                                 )}
                             </div>
                         </span>
-                        <Combobox.Button className="absolute right-0 pr-4 pl-12 inset-y-0 flex items-center justify-center">
+                        <Combobox.Button className="absolute right-0 pr-4 pl-6 inset-y-0 flex items-center justify-center">
                             <svg
                                 className="h-5 w-5 text-gray-400"
                                 viewBox="0 0 20 20"
@@ -377,8 +377,8 @@ export default function CategoryComboBox({
                                                             className={cn(
                                                                 "block truncate",
                                                                 selected
-                                                                    ? "font-bold "
-                                                                    : "font-normal"
+                                                                    ? "font-normal "
+                                                                    : "font-thin"
                                                             )}
                                                         >
                                                             {category.name}
@@ -386,7 +386,7 @@ export default function CategoryComboBox({
                                                     )}
                                                     <div className="flex space-x-4">
                                                         <PencilSquareIcon
-                                                            className="h-6 w-6 cursor-pointer text-indigo-600 dark:group-hover:text-indigo-400"
+                                                            className="h-6 w-6 cursor-pointer text-gray-300 dark:group-hover:text-gray-100"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 e.preventDefault();
@@ -410,7 +410,7 @@ export default function CategoryComboBox({
                                                         />
 
                                                         <TrashIcon
-                                                            className="h-6 w-6 cursor-pointer text-red-500 dark:group-hover:text-red-400"
+                                                            className="h-6 w-6 cursor-pointer text-red-400 dark:group-hover:text-red-300"
                                                             onClick={(e) => {
                                                                 e.preventDefault();
                                                                 handleCategoryDelete(

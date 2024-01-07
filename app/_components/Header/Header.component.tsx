@@ -140,11 +140,11 @@ export default function Header({
                                                                                     "-m-2 p-2 flex items-start text-gray-500 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 text-sm font-medium dark:text-white"
                                                                                 )}
                                                                             >
-                                                                                <div className="ml-4">
+                                                                                <p className="ml-4 text-sm">
                                                                                     {
                                                                                         child.name
                                                                                     }
-                                                                                </div>
+                                                                                </p>
                                                                             </Link>
                                                                         ) : (
                                                                             <div
@@ -154,7 +154,7 @@ export default function Header({
                                                                                 className={cn(
                                                                                     child.status ===
                                                                                         EnumPageStatus.Soon &&
-                                                                                        "dark:text-gray-600 cursor-default dark:hover:text-gray-500 dark:hover:bg-transparent",
+                                                                                        "dark:text-gray-500 cursor-default dark:hover:text-gray-400 dark:hover:bg-transparent",
                                                                                     pathname.includes(
                                                                                         child.current
                                                                                     ) &&
@@ -164,7 +164,7 @@ export default function Header({
                                                                                     "-m-2 p-2 flex items-start text-gray-500 hover:bg-gray-200 dark:hover:bg-indigo-500 transition-colors duration-200 text-sm font-medium dark:text-white"
                                                                                 )}
                                                                             >
-                                                                                <div className="ml-4">
+                                                                                <p className="ml-4 text-sm">
                                                                                     {
                                                                                         child.name
                                                                                     }
@@ -179,7 +179,7 @@ export default function Header({
                                                                                             soon
                                                                                         </span>
                                                                                     )}
-                                                                                </div>
+                                                                                </p>
                                                                             </div>
                                                                         )
                                                                 )}

@@ -15,7 +15,8 @@ export default async function Dashboard() {
     const transactions = await fetchTransactions(session);
 
     return (
-        <div className="px-12 md:px-32 py-12 text-gray-700 dark:text-white">
+        <div className="mx-auto w-screen max-w-7xl px-4 sm:px-6 lg:px-8 py-12 text-gray-700 dark:text-white">
+            {/* <div className="px-12 md:px-32 py-12 text-gray-700 dark:text-white"> */}
             <h1 className="text-3xl font-bold">Overview</h1>
             <section className="">
                 <div className="mt-6">

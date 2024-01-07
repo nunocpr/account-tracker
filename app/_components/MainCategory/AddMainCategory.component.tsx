@@ -59,8 +59,8 @@ export default function AddMainCategory({ className }: { className?: string }) {
             <button
                 onClick={onSubmit}
                 className={cn(
-                    loading ? "bg-slate-400" : "bg-indigo-500 ",
-                    "px-2 py-1 max-w-36 rounded-r-md cursor-pointer text-white text-sm hover:bg-indigo-400"
+                    loading ? "bg-slate-400" : "bg-amber-500 ",
+                    "px-2 py-1 max-w-36 rounded-r-md cursor-pointer text-white text-sm hover:bg-amber-600"
                 )}
                 disabled={loading}
             >
